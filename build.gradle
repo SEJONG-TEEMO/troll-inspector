@@ -1,0 +1,46 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.4'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+allprojects {
+	apply plugin: 'java'
+	group = 'sejong'
+	version = '0.0.1-SNAPSHOT'
+	sourceCompatibility = '21'
+
+	repositories {
+		mavenCentral()
+	}
+}
+
+subprojects {
+	sourceCompatibility = '21'
+
+	apply plugin: "io.spring.dependency-management"
+	apply plugin: "org.springframework.boot"
+
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+	}
+
+	dependencies {
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+		annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+		implementation 'org.springframework.boot:spring-boot-starter'
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	}
+
+	tasks.named('test') {
+		useJUnitPlatform()
+	}
+}
+
+bootJar.enabled = false
+jar.enabled = true

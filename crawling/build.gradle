@@ -1,0 +1,4 @@
+dependencies {
+    //mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+    implementation 'org.seleniumhq.selenium:selenium-java:4.19.1'
+}
