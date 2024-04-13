@@ -1,0 +1,6 @@
+web:
+  url: "https://www.op.gg/leaderboards/tier"
+
+spring:
+  jpa:
+    database:
