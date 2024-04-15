@@ -18,13 +18,13 @@ public class ParserUtil {
                 .tier(subLine[0])
                 .leaguePoint(Long.parseLong(subLine[1].replace(",", "")))
                 .level(Integer.parseInt(lines[4]))
-                .wins(extractTotalGames(lines[5], "W"))
-                .losses(extractTotalGames(lines[6], "L"))
+                .wins(extractTotalGames(lines[5]))
+                .losses(extractTotalGames(lines[6]))
                 .build();
     }
 
-    private static int extractTotalGames(String line, String type) {
+    private static int extractTotalGames(String line) {
         // "295W" 또는 "214L"에서 승리 또는 패배 횟수 추출
-        return Integer.parseInt(line.substring(0, line.indexOf(type)));
+        return Integer.parseInt(line.substring(0, line.length() - 1));
     }
 }
