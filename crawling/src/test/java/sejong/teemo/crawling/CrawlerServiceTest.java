@@ -14,6 +14,6 @@ class CrawlerServiceTest {
     void 크롤링_테스트() {
         CrawlerService crawlerService = new CrawlerService(url);
 
-        crawlerService.crawler();
+        crawlerService.crawler(1, 100, 5);
     }
 }
