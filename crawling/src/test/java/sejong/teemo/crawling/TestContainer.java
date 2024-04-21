@@ -37,7 +37,7 @@ public class TestContainer {
                     );
 
     @DynamicPropertySource
-    public static void dynamicProperties(DynamicPropertyRegistry registry) {
+    static void dynamicProperties(DynamicPropertyRegistry registry) {
         final String host = composeContainer.getServiceHost(MYSQL_DB, MY_SQL_PORT);
         final Integer port = composeContainer.getServicePort(MYSQL_DB, MY_SQL_PORT);
 
