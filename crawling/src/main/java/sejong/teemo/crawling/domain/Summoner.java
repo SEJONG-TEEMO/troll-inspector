@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @NoArgsConstructor
 @Getter
@@ -34,22 +36,31 @@ public class Summoner {
     @Column(nullable = false)
     private int losses;
 
+    @Column(nullable = false)
+    private LocalDateTime createAt;
+
+    @Column(nullable = false)
+    private LocalDateTime updateAt;
+
     @Builder
-    public Summoner(Long id, Long leaguePoint, int level, int losses, String name, String tag, String tier, int wins) {
+    public Summoner(Long id, String name, String tag, String tier, Long leaguePoint, int level, int wins, int losses, LocalDateTime createAt, LocalDateTime updateAt) {
         this.id = id;
-        this.leaguePoint = leaguePoint;
-        this.level = level;
-        this.losses = losses;
         this.name = name;
         this.tag = tag;
         this.tier = tier;
+        this.leaguePoint = leaguePoint;
+        this.level = level;
         this.wins = wins;
+        this.losses = losses;
+        this.createAt = createAt;
+        this.updateAt = updateAt;
     }
 
     @Override
     public String toString() {
         return "Summoner{" +
-                "id=" + id +
+                "createAt=" + createAt +
+                ", id=" + id +
                 ", name='" + name + '\'' +
                 ", tag='" + tag + '\'' +
                 ", tier='" + tier + '\'' +
@@ -57,6 +68,7 @@ public class Summoner {
                 ", level=" + level +
                 ", wins=" + wins +
                 ", losses=" + losses +
+                ", updateAt=" + updateAt +
                 '}';
     }
 }
