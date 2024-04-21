@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url:
+    username:
+    password:
+    hikari:
+      maximum-pool-size: 50
+      driver-class-name: com.mysql.cj.jdbc.Driver
