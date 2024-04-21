@@ -2,18 +2,16 @@ package sejong.teemo.crawling;
 
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import sejong.teemo.crawling.property.CrawlerProperties;
 import sejong.teemo.crawling.repository.CrawlerRepository;
 import sejong.teemo.crawling.service.CrawlerService;
 
 class CrawlerServiceTest extends TestContainer {
 
-    @Value("web.url")
-    private String url;
-
-    @Value("remote.ip")
-    private String remoteIp;
+    private static final Logger log = LoggerFactory.getLogger(CrawlerServiceTest.class);
 
     @Autowired
     private FirefoxOptions options;
@@ -21,10 +19,18 @@ class CrawlerServiceTest extends TestContainer {
     @Autowired
     private CrawlerRepository crawlerRepository;
 
+    @Autowired
+    private CrawlerProperties crawlerProperties;
+
+    @Autowired
+    private CrawlerService crawlerService;
+
     @Test
     void 크롤링_테스트() {
-        CrawlerService crawlerService = new CrawlerService(options, crawlerRepository);
 
-        crawlerService.crawler(url, remoteIp, 1, 1, 1);
+        log.info("url = {}", crawlerProperties.getWebUrl());
+        log.info("remoteIp = {}", crawlerProperties.getRemoteIp());
+
+        crawlerService.crawler(1, 1, 1);
     }
 }
