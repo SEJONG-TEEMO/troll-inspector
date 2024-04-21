@@ -3,6 +3,8 @@ package sejong.teemo.crawling.util;
 import lombok.extern.slf4j.Slf4j;
 import sejong.teemo.crawling.domain.Summoner;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 public class ParserUtil {
 
@@ -20,6 +22,8 @@ public class ParserUtil {
                 .level(Integer.parseInt(lines[4]))
                 .wins(extractTotalGames(lines[5]))
                 .losses(extractTotalGames(lines[6]))
+                .createAt(LocalDateTime.now())
+                .updateAt(LocalDateTime.now())
                 .build();
     }
 
