@@ -10,21 +10,42 @@ public class ParserUtil {
 
     public static Summoner parseSummoner(String summonerStr) {
         String[] lines = summonerStr.split("\n");
+        //log.info("lines: {}", (Object) lines);
 
         String[] subLine = lines[3].split(" ");
+        //log.info("subLine: {}", (Object) subLine);
 
-        return Summoner.builder()
-                .id(Long.parseLong(lines[0]))
-                .name(lines[1])
-                .tag(lines[2])
-                .tier(subLine[0])
-                .leaguePoint(Long.parseLong(subLine[1].replace(",", "")))
-                .level(Integer.parseInt(lines[4]))
-                .wins(extractTotalGames(lines[5]))
-                .losses(extractTotalGames(lines[6]))
-                .createAt(LocalDateTime.now())
-                .updateAt(LocalDateTime.now())
-                .build();
+        return isTierMapping(lines, subLine);
+    }
+
+    private static Summoner isTierMapping(String[] lines, String[] subLine) {
+        if (subLine.length == 3) {
+            return Summoner.builder()
+                    .id(Long.parseLong(lines[0]))
+                    .name(lines[1])
+                    .tag(lines[2])
+                    .tier(subLine[0])
+                    .leaguePoint(Long.parseLong(subLine[1].replace(",", "")))
+                    .level(Integer.parseInt(lines[4]))
+                    .wins(extractTotalGames(lines[5]))
+                    .losses(extractTotalGames(lines[6]))
+                    .createAt(LocalDateTime.now())
+                    .updateAt(LocalDateTime.now())
+                    .build();
+        } else {
+            return Summoner.builder()
+                    .id(Long.parseLong(lines[0]))
+                    .name(lines[1])
+                    .tag(lines[2])
+                    .tier(subLine[0] + " " + subLine[1])
+                    .leaguePoint(Long.parseLong(subLine[2].replace(",", "")))
+                    .level(Integer.parseInt(lines[4]))
+                    .wins(extractTotalGames(lines[5]))
+                    .losses(extractTotalGames(lines[6]))
+                    .createAt(LocalDateTime.now())
+                    .updateAt(LocalDateTime.now())
+                    .build();
+        }
     }
 
     private static int extractTotalGames(String line) {
