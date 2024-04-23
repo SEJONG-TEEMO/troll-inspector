@@ -32,7 +32,7 @@ public class ParserUtil {
                     .createAt(LocalDateTime.now())
                     .updateAt(LocalDateTime.now())
                     .build();
-        } else {
+        } else if(subLine.length == 4){
             return Summoner.builder()
                     .id(Long.parseLong(lines[0]))
                     .name(lines[1])
@@ -42,6 +42,19 @@ public class ParserUtil {
                     .level(Integer.parseInt(lines[4]))
                     .wins(extractTotalGames(lines[5]))
                     .losses(extractTotalGames(lines[6]))
+                    .createAt(LocalDateTime.now())
+                    .updateAt(LocalDateTime.now())
+                    .build();
+        } else {
+            return Summoner.builder()
+                    .id(Long.parseLong(lines[0]))
+                    .name(lines[1])
+                    .tag(lines[2])
+                    .tier(subLine[0] + " " + subLine[1])
+                    .leaguePoint(Long.parseLong(subLine[2].replace(",", "")))
+                    .level(Integer.parseInt(subLine[4]))
+                    .wins(extractTotalGames(lines[4]))
+                    .losses(extractTotalGames(lines[5]))
                     .createAt(LocalDateTime.now())
                     .updateAt(LocalDateTime.now())
                     .build();
