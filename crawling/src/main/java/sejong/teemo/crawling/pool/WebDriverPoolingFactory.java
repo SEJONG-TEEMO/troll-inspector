@@ -6,31 +6,24 @@ import org.apache.commons.pool2.DestroyMode;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import sejong.teemo.crawling.property.CrawlingProperties;
 
-import java.net.URI;
 import java.net.URL;
 
 @Component
+@RequiredArgsConstructor
 public class WebDriverPoolingFactory extends BasePooledObjectFactory<WebDriver> {
 
     private final FirefoxOptions options;
-    private final String remoteIp;
-
-    public WebDriverPoolingFactory(FirefoxOptions options, @Value("remote.ip") String remoteIp) {
-        this.options = options;
-        this.remoteIp = remoteIp;
-    }
+    private final CrawlingProperties crawlingProperties;
 
     @Override
     public WebDriver create() {
         try {
-            return new RemoteWebDriver(new URL(remoteIp), options);
+            return new RemoteWebDriver(new URL(crawlingProperties.remoteIp()), options);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
