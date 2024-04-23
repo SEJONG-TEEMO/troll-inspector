@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Getter
+@Table(name = "summoner", indexes = @Index(name = "name_tag_idx", columnList = "name, tag"))
 public class Summoner {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
