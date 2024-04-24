@@ -19,46 +19,37 @@ public class ParserUtil {
     }
 
     private static Summoner isTierMapping(String[] lines, String[] subLine) {
+
+        Summoner.SummonerBuilder builder = Summoner.builder()
+                .id(Long.parseLong(lines[0]))
+                .name(lines[1])
+                .tag(lines[2])
+                .createAt(LocalDateTime.now())
+                .updateAt(LocalDateTime.now());
+
         if (subLine.length == 3) {
-            return Summoner.builder()
-                    .id(Long.parseLong(lines[0]))
-                    .name(lines[1])
-                    .tag(lines[2])
-                    .tier(subLine[0])
+            builder.tier(subLine[0])
                     .leaguePoint(Long.parseLong(subLine[1].replace(",", "")))
-                    .level(Integer.parseInt(lines[4]))
                     .wins(extractTotalGames(lines[5]))
                     .losses(extractTotalGames(lines[6]))
-                    .createAt(LocalDateTime.now())
-                    .updateAt(LocalDateTime.now())
-                    .build();
+                    .level(Integer.parseInt(lines[4]));
+
         } else if(subLine.length == 4){
-            return Summoner.builder()
-                    .id(Long.parseLong(lines[0]))
-                    .name(lines[1])
-                    .tag(lines[2])
-                    .tier(subLine[0] + " " + subLine[1])
+            builder.tier(subLine[0] + " " + subLine[1])
                     .leaguePoint(Long.parseLong(subLine[2].replace(",", "")))
-                    .level(Integer.parseInt(lines[4]))
                     .wins(extractTotalGames(lines[5]))
                     .losses(extractTotalGames(lines[6]))
-                    .createAt(LocalDateTime.now())
-                    .updateAt(LocalDateTime.now())
-                    .build();
-        } else {
-            return Summoner.builder()
-                    .id(Long.parseLong(lines[0]))
-                    .name(lines[1])
-                    .tag(lines[2])
-                    .tier(subLine[0] + " " + subLine[1])
+                    .level(Integer.parseInt(lines[4]));
+
+        } else if(subLine.length == 5){
+            builder.tier(subLine[0] + " " + subLine[1])
                     .leaguePoint(Long.parseLong(subLine[2].replace(",", "")))
-                    .level(Integer.parseInt(subLine[4]))
                     .wins(extractTotalGames(lines[4]))
                     .losses(extractTotalGames(lines[5]))
-                    .createAt(LocalDateTime.now())
-                    .updateAt(LocalDateTime.now())
-                    .build();
+                    .level(Integer.parseInt(subLine[4]));
         }
+
+        return builder.build();
     }
 
     private static int extractTotalGames(String line) {
