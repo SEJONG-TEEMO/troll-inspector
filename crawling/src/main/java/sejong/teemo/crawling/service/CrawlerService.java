@@ -14,6 +14,7 @@ import sejong.teemo.crawling.domain.Summoner;
 import sejong.teemo.crawling.pool.WebDriverPool;
 import sejong.teemo.crawling.pool.WebDriverPoolingFactory;
 import sejong.teemo.crawling.property.CrawlingProperties;
+import sejong.teemo.crawling.property.CrawlingPropertiesV1;
 import sejong.teemo.crawling.repository.CrawlerRepository;
 import sejong.teemo.crawling.util.ParserUtil;
 
@@ -28,15 +29,13 @@ import java.util.stream.IntStream;
 @Transactional(readOnly = true)
 public class CrawlerService {
 
-    private final FirefoxOptions options;
     private final CrawlerRepository crawlerRepository;
-    private final CrawlingProperties crawlingProperties;
 
     @Transactional
-    public void crawler(int startPage, int endPage, int maxPoolSize) {
-        log.info("url = {}", crawlingProperties.url());
+    public void crawler(CrawlingProperties properties, int startPage, int endPage, int maxPoolSize) {
+        log.info("url = {}", properties.url());
         
-        WebDriverPool webDriverPool = new WebDriverPool(new WebDriverPoolingFactory(options, crawlingProperties), maxPoolSize);
+        WebDriverPool webDriverPool = new WebDriverPool(new WebDriverPoolingFactory(properties), maxPoolSize);
 
         webDriverPool.addObjects(maxPoolSize);
 
@@ -46,7 +45,7 @@ public class CrawlerService {
                     log.info("page = {}", page);
                     WebDriver webDriver = webDriverPool.borrowWebDriver();
 
-                    webDriver.get(crawlingProperties.url() + page);
+                    webDriver.get(properties.url() + page);
 
                     // 랭킹 정보가 표시된 테이블 요소 선택 (XPath 또는 CSS Selector 사용)
                     WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(20));

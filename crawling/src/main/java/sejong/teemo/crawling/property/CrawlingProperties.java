@@ -1,7 +1,9 @@
 package sejong.teemo.crawling.property;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import java.util.List;
 
-@ConfigurationProperties(prefix = "crawling")
-public record CrawlingProperties(String url, String remoteIp) {
+public interface CrawlingProperties {
+
+    String url();
+    String remoteIp();
 }
