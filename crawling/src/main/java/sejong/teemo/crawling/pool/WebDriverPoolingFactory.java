@@ -10,7 +10,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import sejong.teemo.crawling.property.CrawlingProperties;
 
 import java.net.URI;
-import java.net.URL;
 
 public class WebDriverPoolingFactory extends BasePooledObjectFactory<WebDriver> {
 
