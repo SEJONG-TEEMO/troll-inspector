@@ -19,6 +19,10 @@ spring:
         show_sql: true
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
-crawling:
+crawling-v1:
   url: https://www.op.gg/leaderboards/tier?page=
   remote-ip: http://${REMOTE_IP}:${REMOTE_PORT}
+
+crawling-v2:
+  url: https://www.op.gg/leaderboards/tier?page=
+  remote-ip: http://${REMOTE_IP2}:${REMOTE_PORT2}
