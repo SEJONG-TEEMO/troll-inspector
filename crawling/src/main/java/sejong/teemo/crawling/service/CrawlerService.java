@@ -5,34 +5,34 @@ import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.util.UriBuilder;
 import sejong.teemo.crawling.domain.Summoner;
 import sejong.teemo.crawling.dto.MatchDataDto;
-import sejong.teemo.crawling.pool.WebDriverPool;
-import sejong.teemo.crawling.pool.WebDriverPoolingFactory;
+import sejong.teemo.crawling.exception.CrawlingException;
+import sejong.teemo.crawling.webDriver.pool.WebDriverPool;
+import sejong.teemo.crawling.webDriver.pool.WebDriverPoolingFactory;
+import sejong.teemo.crawling.property.CrawlingMatchDataPropertiesV1;
 import sejong.teemo.crawling.property.CrawlingProperties;
-import sejong.teemo.crawling.property.CrawlingPropertiesV1;
 import sejong.teemo.crawling.repository.CrawlerRepository;
 import sejong.teemo.crawling.util.ParserUtil;
 
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class CrawlerService {
 
     private final CrawlerRepository crawlerRepository;
@@ -46,7 +46,7 @@ public class CrawlerService {
         webDriverPool.addObjects(maxPoolSize);
 
         ExecutorService executorService = Executors.newFixedThreadPool(maxPoolSize);
-        List<CompletableFuture<Object>> futures = IntStream.rangeClosed(startPage, endPage)
+        List<CompletableFuture<List<Summoner>>> futures = IntStream.rangeClosed(startPage, endPage)
                 .mapToObj(page -> CompletableFuture.supplyAsync(() -> {
                     log.info("page = {}", page);
                     WebDriver webDriver = webDriverPool.borrowWebDriver();
@@ -67,23 +67,23 @@ public class CrawlerService {
                     webDriverPool.returnObject(webDriver);
                     return summoners;
                 }, executorService).exceptionally(ex -> {
-                    throw new RuntimeException(ex);
-                }).thenApply(summoners -> {
-                    crawlerRepository.bulkInsert(summoners);
-                    return null;
+                    throw new CrawlingException(ex.getMessage());
                 })).toList();
 
-        List<Object> result = futures.parallelStream()
-                .map(CompletableFuture::join)
-                .toList();
+        insertCrawlingData(futures);
 
-        log.info("result = {}", result.size());
-
+        executorService.shutdown();
         webDriverPool.clear();
         webDriverPool.close();
     }
 
-    public List<MatchDataDto> crawlingMatchData(CrawlingProperties properties, String name, String tag) {
+    public void insertCrawlingData(List<CompletableFuture<List<Summoner>>> futures) {
+        futures.stream()
+                .map(CompletableFuture::join)
+                .forEach(crawlerRepository::bulkInsert);
+    }
+
+    public List<MatchDataDto> crawlingMatchData(CrawlingMatchDataPropertiesV1 properties, String name, String tag) {
 
         try {
             WebDriver webDriver = new RemoteWebDriver(new URI(properties.remoteIp()).toURL(), new FirefoxOptions());
@@ -103,7 +103,7 @@ public class CrawlerService {
                     .toList();
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new CrawlingException(e.getMessage());
         }
     }
 }
