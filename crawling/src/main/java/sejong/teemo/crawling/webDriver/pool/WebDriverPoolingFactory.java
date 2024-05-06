@@ -1,6 +1,5 @@
-package sejong.teemo.crawling.pool;
+package sejong.teemo.crawling.webDriver.pool;
 
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.DestroyMode;
 import org.apache.commons.pool2.PooledObject;
@@ -8,22 +7,24 @@ import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.springframework.stereotype.Component;
 import sejong.teemo.crawling.property.CrawlingProperties;
 
-import java.net.URL;
+import java.net.URI;
 
-@Component
-@RequiredArgsConstructor
 public class WebDriverPoolingFactory extends BasePooledObjectFactory<WebDriver> {
 
-    private final FirefoxOptions options;
     private final CrawlingProperties crawlingProperties;
+
+    public WebDriverPoolingFactory(CrawlingProperties crawlingProperties) {
+        this.crawlingProperties = crawlingProperties;
+    }
 
     @Override
     public WebDriver create() {
+        FirefoxOptions firefoxOptions = new FirefoxOptions();
+
         try {
-            return new RemoteWebDriver(new URL(crawlingProperties.remoteIp()), options);
+            return new RemoteWebDriver(new URI(crawlingProperties.remoteIp()).toURL(), firefoxOptions);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -1,4 +1,4 @@
-package sejong.teemo.crawling;
+package sejong.teemo.crawling.container;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -46,6 +46,7 @@ public class TestContainer {
         registry.add("spring.datasource.username", () -> "root");
         registry.add("spring.datasource.password", () -> "password");
         registry.add("spring.jpa.hibernate.ddl-auto", () -> "create");
+        registry.add("spring.datasource.hikari.maximum-pool-size", () -> "100");
     }
 
     @Test
