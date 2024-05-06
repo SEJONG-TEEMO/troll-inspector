@@ -14,8 +14,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
-import static sejong.teemo.crawling.domain.QSummoner.*;
-import static sejong.teemo.crawling.exception.ExceptionController.*;
+import static sejong.teemo.crawling.exception.ExceptionProvider.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -64,12 +63,12 @@ public class CrawlerRepositoryImpl implements CrawlerRepository {
 
     @Override
     public Summoner findById(Long id) {
-        return jpaRepository.findById(id).orElseThrow(SUMMONER_NOT_FOUND::getSummonerException);
+        return jpaRepository.findById(id).orElseThrow(SUMMONER_NOT_FOUND::getSummonerNotFoundException);
     }
 
     @Override
     public Summoner findByNameAndTag(String name, String tag) {
-        return jpaRepository.findByNameAndTag(name, tag).orElseThrow(SUMMONER_NOT_FOUND::getSummonerException);
+        return jpaRepository.findByNameAndTag(name, tag).orElseThrow(SUMMONER_NOT_FOUND::getSummonerNotFoundException);
     }
 
     @Override
