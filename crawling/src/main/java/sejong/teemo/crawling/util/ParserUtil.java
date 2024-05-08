@@ -7,6 +7,7 @@ import sejong.teemo.crawling.dto.MatchDataDto;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
+@Deprecated
 @Slf4j
 public class ParserUtil {
 
@@ -92,10 +93,6 @@ public class ParserUtil {
         }
 
         return builder.build();
-    }
-
-    public static String skipString(String target, String str) {
-        return str.replaceAll(target, str);
     }
 
     private static int extractTotalGames(String line) {
