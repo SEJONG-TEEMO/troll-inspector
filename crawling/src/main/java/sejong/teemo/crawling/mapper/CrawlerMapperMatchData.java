@@ -18,11 +18,11 @@ public class CrawlerMapperMatchData implements CrawlerMapper<MatchDataDto> {
         String[] controlWards = lines[8].split(" ");
         String[] totalMinionsKilled = lines[9].split(" ");
 
-        log.info("kill death assist: {}", Arrays.toString(killDeathAssist));
-        log.info("rating: {}", Arrays.toString(ratings));
-        log.info("killParticipation: {}", Arrays.toString(killParticipation));
-        log.info("controlWards: {}", Arrays.toString(controlWards));
-        log.info("totalMinionsKilled: {}", Arrays.toString(totalMinionsKilled));
+        //log.info("kill death assist: {}", Arrays.toString(killDeathAssist));
+        //log.info("rating: {}", Arrays.toString(ratings));
+        //log.info("killParticipation: {}", Arrays.toString(killParticipation));
+        //log.info("controlWards: {}", Arrays.toString(controlWards));
+        //log.info("totalMinionsKilled: {}", Arrays.toString(totalMinionsKilled));
 
         return isMappingMatchData(killDeathAssist, ratings, killParticipation, controlWards, totalMinionsKilled);
     }

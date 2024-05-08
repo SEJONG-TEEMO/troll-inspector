@@ -28,4 +28,8 @@ public enum UrlGenerator {
 
         return this.url + sb;
     }
+
+    public String skipString(String target, String str) {
+        return str.replaceAll(target, str);
+    }
 }
