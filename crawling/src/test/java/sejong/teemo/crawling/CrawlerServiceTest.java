@@ -72,11 +72,12 @@ class CrawlerServiceTest extends TestContainer {
         // given
         String name = "타 잔";
         String tag = "KR1";
+        UrlGenerator urlGenerator = UrlGenerator.RIOT_SUMMONERS;
 
         // when
         WebDriver webDriver = new FirefoxDriver(new FirefoxOptions());
 
-        webDriver.get(UrlGenerator.RIOT_LEADER_BOARD.generateUrl(name, "-", ParserUtil.skipString("#", tag)));
+        webDriver.get(urlGenerator.generateUrl(name, "-", urlGenerator.skipString("#", tag)));
 
         WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
 
