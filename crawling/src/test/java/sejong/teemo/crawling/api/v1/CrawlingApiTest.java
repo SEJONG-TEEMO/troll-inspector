@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import sejong.teemo.crawling.dto.MatchDataDto;
 import sejong.teemo.crawling.exception.CrawlingException;
 import sejong.teemo.crawling.exception.ExceptionProvider;
-import sejong.teemo.crawling.property.CrawlingMatchDataPropertiesV1;
 import sejong.teemo.crawling.service.CrawlerService;
 
 import java.util.List;
@@ -33,8 +32,6 @@ class CrawlingApiTest {
     private MockMvc mockMvc;
     @MockBean
     private CrawlerService crawlerService;
-    @MockBean
-    private CrawlingMatchDataPropertiesV1 properties;
 
     @Test
     void 크롤링_하여_매치_데이터를_가져온다_200() throws Exception {
@@ -47,7 +44,7 @@ class CrawlingApiTest {
                 provideMatchDataDto()
         );
 
-        given(crawlerService.crawlingMatchData(any(), anyString(), anyString())).willReturn(data);
+        given(crawlerService.crawlingMatchData(any(), any(), anyString(), anyString())).willReturn(data);
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/api/v1/crawling/{summoner-name}/{tag}", summonerName, tag));
@@ -58,12 +55,12 @@ class CrawlingApiTest {
     }
 
     @Test
-    void 크롤링_하여_매치_데이터를_가져오는_것을_실패한다() throws Exception {
+    void 크롤링_하여_매치_데이터를_가져오는_것을_실패한다_500() throws Exception {
         // given
         String summonerName = "타 잔";
         String tag = "KR1";
 
-        given(crawlerService.crawlingMatchData(any(), anyString(), anyString()))
+        given(crawlerService.crawlingMatchData(any(), any(), anyString(), anyString()))
                 .willThrow(CrawlingException.class);
 
         // when
