@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import sejong.teemo.crawling.property.CrawlingProperties;
 import sejong.teemo.crawling.service.CrawlerService;
+import sejong.teemo.crawling.webDriver.generator.UrlGenerator;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -23,7 +24,7 @@ public class CrawlerFacade {
         log.info("properties = {}", list);
 
         List<CompletableFuture<Void>> completableFutures = IntStream.rangeClosed(0, list.size() - 1)
-                .mapToObj(i -> CompletableFuture.runAsync(() -> crawlerService.crawler(list.get(i), startPage[i], endPage[i], 3)))
+                .mapToObj(i -> CompletableFuture.runAsync(() -> crawlerService.crawler(UrlGenerator.RIOT_LEADER_BOARD, list.get(i), startPage[i], endPage[i], 3)))
                 .toList();
 
         completableFutures.forEach(CompletableFuture::join);
