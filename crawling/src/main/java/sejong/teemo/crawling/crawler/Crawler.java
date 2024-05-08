@@ -1,14 +1,65 @@
 package sejong.teemo.crawling.crawler;
 
+import lombok.Builder;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import sejong.teemo.crawling.webDriver.generator.UrlGenerator;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
-public interface Crawler<T> {
+public class Crawler<T> {
 
-    default List<T> action(Supplier<List<T>> supplier) { return null; }
-    default List<T> action(Function<WebDriver, List<T>> function) { return null; }
-    List<T> action();
+    private final WebDriver driver;
+    private final WebDriverWait driverWait;
+    private final UrlGenerator urlGenerator;
+
+    private static WebElement webElement;
+
+    @Builder
+    public Crawler(
+            WebDriver driver,
+            WebDriverWait driverWait,
+            UrlGenerator urlGenerator
+    ) {
+        Objects.requireNonNull(driver);
+        Objects.requireNonNull(driverWait);
+        Objects.requireNonNull(urlGenerator);
+
+        this.driver = driver;
+        this.driverWait = driverWait;
+        this.urlGenerator = urlGenerator;
+    }
+
+    public Crawler<T> urlGenerate(Function<UrlGenerator, String> function) {
+        String url = function.apply(urlGenerator);
+        driver.get(url);
+        return this;
+    }
+
+    public Crawler<T> click(By cssSelector) {
+        driver.findElement(cssSelector).click();
+        return this;
+    }
+
+    public Crawler<T> isWaitingUntilLoadedPage(By cssSelector) {
+        webElement = driverWait.until(ExpectedConditions.visibilityOfElementLocated(cssSelector));
+        return this;
+    }
+
+    public List<T> actionFromDriver(Function<WebDriver, List<T>> function) {
+        return function.apply(driver);
+    }
+
+    public List<T> actionFromElement(Function<WebElement, List<T>> function) {
+        return function.apply(webElement);
+    }
+
+    public List<T> action() {
+        return null;
+    }
 }
