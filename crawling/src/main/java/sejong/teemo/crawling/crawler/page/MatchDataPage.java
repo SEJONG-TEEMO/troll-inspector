@@ -13,7 +13,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class SummonerPage implements Page<MatchDataDto> {
+public class MatchDataPage implements Page<MatchDataDto> {
 
     @Override
     public List<MatchDataDto> crawler(WebDriver webDriver, UrlGenerator url, String subUrl) {
