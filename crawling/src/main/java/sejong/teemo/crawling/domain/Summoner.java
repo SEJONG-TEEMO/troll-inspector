@@ -57,11 +57,14 @@ public class Summoner {
         this.updateAt = updateAt;
     }
 
+    public void setUpdateAt(LocalDateTime updateAt) {
+        this.updateAt = updateAt;
+    }
+
     @Override
     public String toString() {
         return "Summoner{" +
-                "createAt=" + createAt +
-                ", id=" + id +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", tag='" + tag + '\'' +
                 ", tier='" + tier + '\'' +
@@ -69,6 +72,7 @@ public class Summoner {
                 ", level=" + level +
                 ", wins=" + wins +
                 ", losses=" + losses +
+                ", createAt=" + createAt +
                 ", updateAt=" + updateAt +
                 '}';
     }
