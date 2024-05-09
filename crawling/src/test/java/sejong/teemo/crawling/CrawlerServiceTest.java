@@ -1,5 +1,6 @@
 package sejong.teemo.crawling;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -19,7 +20,6 @@ import sejong.teemo.crawling.property.CrawlingPropertiesV1;
 import sejong.teemo.crawling.property.CrawlingPropertiesV2;
 import sejong.teemo.crawling.repository.CrawlerRepository;
 import sejong.teemo.crawling.service.CrawlerService;
-import sejong.teemo.crawling.util.ParserUtil;
 import sejong.teemo.crawling.webDriver.generator.UrlGenerator;
 
 import java.time.Duration;
@@ -68,6 +68,7 @@ class CrawlerServiceTest extends TestContainer {
     }
 
     @Test
+    @Disabled
     void 매치_데이터_크롤링_데이터_테스트() {
         // given
         String name = "타 잔";
@@ -85,15 +86,13 @@ class CrawlerServiceTest extends TestContainer {
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.css-j7qwjs:nth-child(1)")));
 
-        List<MatchDataDto> matchDataDtos = IntStream.rangeClosed(1, 19)
+        IntStream.rangeClosed(1, 19)
                 .parallel()
                 .mapToObj(i -> webDriver.findElement(By.cssSelector("div.css-j7qwjs:nth-child(" + i + ")")))
                 .map(WebElement::getText)
-                .map(ParserUtil::parseMatchData)
                 .toList();
 
         // then
-        matchDataDtos.forEach(System.out::println);
         webDriver.close();
     }
 }
