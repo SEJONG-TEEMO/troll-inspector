@@ -2,7 +2,7 @@ export default function bottom() {
     return (
         <footer id="footer">
             <div>
-                <div className="px-3 py-3 mb-5">
+                <div className="px-3 py-3">
                     <strong>TEEMO.GG</strong>
                 </div>
                 <hr />

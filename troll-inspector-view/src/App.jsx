@@ -1,14 +1,13 @@
 import {Header} from "./header/Header.jsx";
 import React from "react";
-import BackGroundImage from "./main/BackGroundImage.jsx";
 import Bottom from "./footer/Bottom.jsx"
 
-function App() {
+function App(props){
 
   return (
     <>
         <Header/>
-        <BackGroundImage />
+            {props.main}
         <Bottom />
     </>
   )
