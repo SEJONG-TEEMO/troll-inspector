@@ -1,17 +1,22 @@
 import {Navbar, NavbarContent, NavbarItem, Link, Button, NavbarBrand} from "@nextui-org/react";
 import {AcmeLogo} from "./AcmeLogo.jsx";
 import {useNavigate} from "react-router-dom";
+import {useState} from "react";
 
 export function Header() {
 
     const navigate = useNavigate();
 
+    const [active, setActive] = useState('main');
+
     const onTrollClick = () => {
         navigate("/troll-inspector");
+        setActive('troll');
     }
 
     const onSearchClick = () => {
         navigate("/");
+        setActive('main');
     }
 
     const onMainClick = () => {
@@ -25,13 +30,13 @@ export function Header() {
                 <p className="font-bold text-inherit">TEEMO.GG</p>
             </NavbarBrand>
             <NavbarContent className="sm:flex gap-4" justify="center">
-                <NavbarItem isActive>
-                    <Link color="foreground" onClick={onSearchClick}>
+                <NavbarItem isActive={active === 'main'} >
+                    <Link color={active === 'main' ? "primary" : "foreground"} onClick={onSearchClick}>
                         전적 검색
                     </Link>
                 </NavbarItem>
-                <NavbarItem>
-                    <Link color="foreground" onClick={onTrollClick}>
+                <NavbarItem isActive={active === 'troll'}>
+                    <Link color={active === 'troll' ? "primary" : "foreground"} onClick={onTrollClick}>
                         트롤 검색
                     </Link>
                 </NavbarItem>
