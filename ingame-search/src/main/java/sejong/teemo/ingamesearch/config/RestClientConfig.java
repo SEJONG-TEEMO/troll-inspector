@@ -8,7 +8,12 @@ import org.springframework.web.client.RestClient;
 public class RestClientConfig {
 
     @Bean
-    public RestClient restClient() {
-        return RestClient.builder().baseUrl("https://asia.api.riotgames.com").build();
+    public RestClient.Builder restBuilderClient() {
+        return RestClient.builder().baseUrl("https://asia.api.riotgames.com");
+    }
+
+    @Bean
+    public RestClient restClient(RestClient.Builder restClientBuilder) {
+        return restClientBuilder.build();
     }
 }
