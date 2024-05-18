@@ -1,0 +1,5 @@
+crawling-v1:
+  remote-ip: http://${REMOTE_IP}:${REMOTE_PORT}
+
+crawling-v2:
+  remote-ip: http://${REMOTE_IP2}:${REMOTE_PORT2}
