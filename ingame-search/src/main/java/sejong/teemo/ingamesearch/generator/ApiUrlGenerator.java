@@ -6,7 +6,8 @@ import lombok.Getter;
 public enum ApiUrlGenerator {
 
     RIOT_SPECTATOR("/lol/spectator/v5/active-games/by-summoner/{encryptedPUUID}"),
-    RIOT_ACCOUNT("/riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}");
+    RIOT_ACCOUNT("/riot/account/v1/accounts/by-riot-id/{gameName}/{tag}"),
+    RIOT_CHAMPION_MASTERY("/lol/champion-mastery/v4/champion-masteries/by-puuid/{encryptedPUUID}/by-champion/{championId}");
 
     private final String url;
 
