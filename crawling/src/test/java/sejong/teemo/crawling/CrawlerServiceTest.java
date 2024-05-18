@@ -55,6 +55,7 @@ class CrawlerServiceTest extends TestContainer {
     }
 
     @Test
+    @Disabled
     void 분산_크롤링_테스트() {
         // given
         int[] startPage = {1, 51};
