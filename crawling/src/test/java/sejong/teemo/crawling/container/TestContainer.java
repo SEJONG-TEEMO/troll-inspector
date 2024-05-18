@@ -33,7 +33,7 @@ public class TestContainer {
                     .withExposedService(
                             MYSQL_DB,
                             MY_SQL_PORT,
-                            Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(20))
+                            Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(10))
                     );
 
     @DynamicPropertySource
