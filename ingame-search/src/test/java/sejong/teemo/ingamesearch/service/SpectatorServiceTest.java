@@ -12,9 +12,7 @@ import sejong.teemo.ingamesearch.exception.FailedApiCallingException;
 import sejong.teemo.ingamesearch.extension.TestExtension;
 import sejong.teemo.ingamesearch.property.ApikeyProperties;
 
-import static java.nio.charset.StandardCharsets.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withResourceNotFound;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
@@ -66,7 +64,7 @@ class SpectatorServiceTest extends TestExtension {
 
         // then
         assertThat(spectator.gameType()).isEqualTo("type");
-        assertThat(spectator.currentGameParticipants()).hasSize(0);
+        assertThat(spectator.participants()).hasSize(0);
     }
 
     @Test
