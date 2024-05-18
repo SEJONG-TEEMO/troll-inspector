@@ -5,12 +5,8 @@ public record InGameView(
         String gameName,
         String tagLine,
         String tier,
-        int kills,
-        int deaths,
-        int assists,
-        double rating,
         int championLevel,
         int championPoint,
-        int recentGameCount
+        Champion champion
 ) {
 }
