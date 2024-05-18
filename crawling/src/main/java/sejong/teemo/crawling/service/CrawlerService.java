@@ -7,7 +7,6 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sejong.teemo.crawling.crawler.AsyncCrawler;
 import sejong.teemo.crawling.crawler.page.LeaderBoardPage;
 import sejong.teemo.crawling.crawler.page.Page;
 import sejong.teemo.crawling.crawler.page.MatchDataPage;
@@ -24,7 +23,6 @@ import sejong.teemo.crawling.repository.CrawlerRepository;
 import java.net.URI;
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.stream.IntStream;
 
 import static sejong.teemo.crawling.webDriver.generator.UrlGenerator.RIOT_LEADER_BOARD;
 
@@ -45,11 +43,9 @@ public class CrawlerService {
             Pages<Summoner> pages = new LeaderBoardPage();
 
             List<List<Summoner>> lists = pages.asyncCrawler(url, webDriverPool, executorService, startPage, endPage, maxPoolSize);
+            insertCrawlingData(lists);
 
             executorService.shutdown();
-            webDriverPool.close();
-
-            insertCrawlingData(lists);
         } catch (Exception e) {
             throw new CrawlingException(e.getMessage());
         }
@@ -73,4 +69,5 @@ public class CrawlerService {
             throw new CrawlingException(e.getMessage());
         }
     }
+
 }
