@@ -9,7 +9,7 @@ public class RestClientConfig {
 
     @Bean
     public RestClient.Builder restBuilderClient() {
-        return RestClient.builder().baseUrl("https://asia.api.riotgames.com");
+        return RestClient.builder();
     }
 
     @Bean
