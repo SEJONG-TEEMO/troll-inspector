@@ -1,16 +1,38 @@
 package sejong.teemo.crawling.api.v1;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sejong.teemo.crawling.dto.MatchDataDto;
+import sejong.teemo.crawling.property.CrawlingProperties;
 import sejong.teemo.crawling.service.CrawlerService;
+import sejong.teemo.crawling.webDriver.generator.UrlGenerator;
+
+import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1")
 public class CrawlingApi {
 
     private final CrawlerService crawlerService;
+    private final CrawlingProperties crawlingProperties;
 
+    public CrawlingApi(CrawlerService crawlerService,
+                       @Qualifier("crawling-v1-sejong.teemo.crawling.property.CrawlingPropertiesV1") CrawlingProperties crawlingProperties) {
+        this.crawlerService = crawlerService;
+        this.crawlingProperties = crawlingProperties;
+    }
 
+    @GetMapping("crawling/{summoner-name}/{tag}")
+    ResponseEntity<List<MatchDataDto>> apiCrawlMatchData(@PathVariable("summoner-name") String summonerName,
+                                                         @PathVariable("tag") String tag) {
+
+        List<MatchDataDto> matchDataDtos = crawlerService.crawlingMatchData(UrlGenerator.RIOT_SUMMONERS, crawlingProperties, summonerName, tag);
+
+        return ResponseEntity.ok(matchDataDtos);
+    }
 }
