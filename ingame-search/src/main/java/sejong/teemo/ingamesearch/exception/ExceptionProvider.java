@@ -10,7 +10,8 @@ import org.springframework.web.ErrorResponse;
 public enum ExceptionProvider implements ErrorResponse {
 
     RIOT_SPECTATOR_API_CALL_FAILED(HttpStatus.NOT_FOUND, "SPECTATOR_100","SPECTATOR API 호출에 실패하였습니다."),
-    RIOT_ACCOUNT_API_CALL_FAILED(HttpStatus.NOT_FOUND, "ACCOUNT_100", "ACCOUNT API 호출에 실패하였습니다.");
+    RIOT_ACCOUNT_API_CALL_FAILED(HttpStatus.NOT_FOUND, "ACCOUNT_100", "ACCOUNT API 호출에 실패하였습니다."),
+    RIOT_CHAMPION_MASTERY_API_CALL_FAILED(HttpStatus.NOT_FOUND, "CHAMPION_MASTERY_100", "CHAMPION_MASTERY API 호출에 실패하였습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
@@ -34,6 +35,4 @@ public enum ExceptionProvider implements ErrorResponse {
 
         return pd;
     }
-
-
 }
