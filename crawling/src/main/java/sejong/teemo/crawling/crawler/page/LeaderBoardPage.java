@@ -20,11 +20,11 @@ import static sejong.teemo.crawling.webDriver.generator.UrlGenerator.RIOT_LEADER
 public class LeaderBoardPage implements Page<Summoner>, Pages<Summoner> {
 
     @Override
-    public List<Summoner> crawler(WebDriver webDriver, UrlGenerator url, String subUrl) {
+    public List<Summoner> crawler(WebDriver webDriver, UrlGenerator url, String... subUrl) {
         return Crawler.<Summoner>builder()
                 .driver(webDriver)
                 .driverWait(new WebDriverWait(webDriver, Duration.ofSeconds(20)))
-                .urlGenerator(url)
+                .baseUrlGenerator(url)
                 .build()
                 .urlGenerate(urlGenerator -> urlGenerator.generateUrl(subUrl))
                 .isWaitingUntilLoadedPage(By.cssSelector("tbody"))

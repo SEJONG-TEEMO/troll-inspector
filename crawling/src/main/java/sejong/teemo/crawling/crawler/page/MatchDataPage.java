@@ -16,12 +16,12 @@ import java.util.stream.IntStream;
 public class MatchDataPage implements Page<MatchDataDto> {
 
     @Override
-    public List<MatchDataDto> crawler(WebDriver webDriver, UrlGenerator url, String subUrl) {
+    public List<MatchDataDto> crawler(WebDriver webDriver, UrlGenerator url, String... subUrl) {
 
         return Crawler.<MatchDataDto>builder()
                 .driver(webDriver)
                 .driverWait(new WebDriverWait(webDriver, Duration.ofSeconds(10)))
-                .urlGenerator(url)
+                .baseUrlGenerator(url)
                 .build()
                 .urlGenerate(urlGenerator -> urlGenerator.generateUrl(subUrl))
                 .click(By.cssSelector("li.css-1j5gzz7:nth-child(2)"))
