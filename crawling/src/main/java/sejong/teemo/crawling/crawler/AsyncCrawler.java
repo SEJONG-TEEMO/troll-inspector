@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.BiFunction;
 import java.util.stream.IntStream;
 
-public class AsyncCrawler<T> {
+public class AsyncCrawler<T> implements AutoCloseable {
 
     private final WebDriverPool pool;
     private final ExecutorService executor;
@@ -49,5 +49,10 @@ public class AsyncCrawler<T> {
                 })).toList();
 
         return futures.stream().map(CompletableFuture::join).toList();
+    }
+
+    @Override
+    public void close() throws Exception {
+        pool.close();
     }
 }

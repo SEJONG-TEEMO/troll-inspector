@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-public class Crawler<T> {
+public class Crawler<T> implements AutoCloseable {
 
     private final WebDriver driver;
     private final WebDriverWait driverWait;
-    private final UrlGenerator urlGenerator;
+    private final UrlGenerator baseUrlGenerator;
 
     private static WebElement webElement;
 
@@ -24,19 +24,19 @@ public class Crawler<T> {
     public Crawler(
             WebDriver driver,
             WebDriverWait driverWait,
-            UrlGenerator urlGenerator
+            UrlGenerator baseUrlGenerator
     ) {
         Objects.requireNonNull(driver);
         Objects.requireNonNull(driverWait);
-        Objects.requireNonNull(urlGenerator);
+        Objects.requireNonNull(baseUrlGenerator);
 
         this.driver = driver;
         this.driverWait = driverWait;
-        this.urlGenerator = urlGenerator;
+        this.baseUrlGenerator = baseUrlGenerator;
     }
 
     public Crawler<T> urlGenerate(Function<UrlGenerator, String> function) {
-        String url = function.apply(urlGenerator);
+        String url = function.apply(baseUrlGenerator);
         driver.get(url);
         return this;
     }
@@ -61,5 +61,10 @@ public class Crawler<T> {
 
     public List<T> action() {
         return null;
+    }
+
+    @Override
+    public void close() throws Exception {
+        driver.close();
     }
 }
