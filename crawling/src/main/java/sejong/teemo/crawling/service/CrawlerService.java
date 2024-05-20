@@ -3,15 +3,14 @@ package sejong.teemo.crawling.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sejong.teemo.crawling.crawler.page.LeaderBoardPage;
-import sejong.teemo.crawling.crawler.page.Page;
-import sejong.teemo.crawling.crawler.page.MatchDataPage;
-import sejong.teemo.crawling.crawler.page.Pages;
+import sejong.teemo.crawling.crawler.page.*;
 import sejong.teemo.crawling.domain.Summoner;
+import sejong.teemo.crawling.dto.InGameDto;
 import sejong.teemo.crawling.dto.MatchDataDto;
 import sejong.teemo.crawling.exception.CrawlingException;
 import sejong.teemo.crawling.webDriver.generator.UrlGenerator;
@@ -29,6 +28,7 @@ import static sejong.teemo.crawling.webDriver.generator.UrlGenerator.RIOT_LEADER
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CrawlerService {
 
     private final CrawlerRepository crawlerRepository;
@@ -70,4 +70,10 @@ public class CrawlerService {
         }
     }
 
+    public List<InGameDto> crawlingInGame(UrlGenerator url, CrawlingProperties properties, String name, String tag) {
+
+        Page<InGameDto> page = new InGamePage();
+
+        return page.crawler(new FirefoxDriver(), url, name, tag);
+    }
 }

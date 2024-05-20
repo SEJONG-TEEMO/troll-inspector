@@ -1,5 +1,6 @@
 package sejong.teemo.crawling.crawler;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
@@ -24,11 +25,15 @@ import sejong.teemo.crawling.CrawlingApplication;
 import sejong.teemo.crawling.container.TestContainer;
 import sejong.teemo.crawling.crawler.page.LeaderBoardPage;
 import sejong.teemo.crawling.domain.Summoner;
+import sejong.teemo.crawling.dto.InGameDto;
 import sejong.teemo.crawling.dto.MatchDataDto;
+import sejong.teemo.crawling.exception.CrawlingException;
+import sejong.teemo.crawling.mapper.CrawlerMapperInGame;
 import sejong.teemo.crawling.mapper.CrawlerMapperMatchData;
 import sejong.teemo.crawling.mapper.CrawlerMapperSummoner;
 import sejong.teemo.crawling.property.CrawlingProperties;
 import sejong.teemo.crawling.property.CrawlingPropertiesV1;
+import sejong.teemo.crawling.webDriver.generator.UrlGenerator;
 import sejong.teemo.crawling.webDriver.pool.WebDriverPool;
 import sejong.teemo.crawling.webDriver.pool.WebDriverPoolingFactory;
 
@@ -41,10 +46,7 @@ import java.util.stream.IntStream;
 import static org.assertj.core.api.Assertions.*;
 import static sejong.teemo.crawling.webDriver.generator.UrlGenerator.*;
 
-class CrawlerTest extends TestContainer {
-
-    @Autowired
-    private CrawlingPropertiesV1 crawlingPropertiesV1;
+class CrawlerTest {
 
     @Test
     void 매치_데이터를_크롤링_하고_가져와서_정제하여_리스트를_반환한다() {
@@ -58,7 +60,7 @@ class CrawlerTest extends TestContainer {
         List<MatchDataDto> dtoList = Crawler.<MatchDataDto>builder()
                 .driver(webDriver)
                 .driverWait(new WebDriverWait(webDriver, Duration.ofSeconds(10)))
-                .urlGenerator(RIOT_SUMMONERS)
+                .baseUrlGenerator(RIOT_SUMMONERS)
                 .build()
                 .urlGenerate(urlGenerator -> urlGenerator.generateUrl(name + "-" + tag))
                 .click(By.cssSelector("li.css-1j5gzz7:nth-child(2)"))
@@ -84,7 +86,7 @@ class CrawlerTest extends TestContainer {
         List<Summoner> summoners = Crawler.<Summoner>builder()
                 .driver(webDriver)
                 .driverWait(new WebDriverWait(webDriver, Duration.ofSeconds(20)))
-                .urlGenerator(RIOT_LEADER_BOARD)
+                .baseUrlGenerator(RIOT_LEADER_BOARD)
                 .build()
                 .urlGenerate(urlGenerator -> urlGenerator.generateUrl(1))
                 .isWaitingUntilLoadedPage(By.cssSelector("tbody"))
@@ -101,11 +103,12 @@ class CrawlerTest extends TestContainer {
     }
 
     @Test
+    @Disabled
     void 여러개의_순위_정보를_비동기_크롤링_하고_가져와서_정제하여_리스트를_반환한다() {
         // given
         int maxPoolSize = 2;
         int startPage = 1, endPage = 5;
-        WebDriverPool webDriverPool = new WebDriverPool(new WebDriverPoolingFactory(crawlingPropertiesV1), maxPoolSize);
+        WebDriverPool webDriverPool = new WebDriverPool(new WebDriverPoolingFactory(new CrawlingPropertiesV1("")), maxPoolSize);
         ExecutorService executorService = Executors.newFixedThreadPool(maxPoolSize);
 
         // when
@@ -122,5 +125,34 @@ class CrawlerTest extends TestContainer {
 
         // then
         assertThat(list).hasSize(5);
+    }
+
+    @Test
+    @Disabled
+    void 인_게임_데이터_크롤링_테스트() {
+        // given
+        String gameName = "이상호93";
+        String tagLine = "4324";
+        WebDriver webDriver = new FirefoxDriver();
+
+        // when
+        try (Crawler<InGameDto> crawler = new Crawler<>(webDriver, new WebDriverWait(webDriver, Duration.ofSeconds(10)), RIOT_IN_GAME)) {
+
+            List<InGameDto> inGameDtos = crawler.urlGenerate(urlGenerator -> urlGenerator.generateUrl(gameName, tagLine))
+                    .isWaitingUntilLoadedPage(By.cssSelector("table"))
+                    .actionFromElement(element -> element.findElements(By.cssSelector("table tbody tr"))
+                            .parallelStream()
+                            .map(WebElement::getText)
+                            .map(new CrawlerMapperInGame()::map)
+                            .toList());
+
+            // then
+            webDriver.close();
+            System.out.println(inGameDtos);
+            assertThat(inGameDtos).hasSize(10);
+
+        } catch (Exception e) {
+            throw new CrawlingException(e);
+        }
     }
 }

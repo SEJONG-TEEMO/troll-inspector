@@ -1,12 +1,12 @@
 package sejong.teemo.crawling.api.v1;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sejong.teemo.crawling.dto.InGameDto;
 import sejong.teemo.crawling.dto.MatchDataDto;
 import sejong.teemo.crawling.property.CrawlingProperties;
 import sejong.teemo.crawling.service.CrawlerService;
@@ -27,12 +27,21 @@ public class CrawlingApi {
         this.crawlingProperties = crawlingProperties;
     }
 
-    @GetMapping("crawling/{summoner-name}/{tag}")
+    @GetMapping("crawling/{summoner-name}/{tag}/match")
     ResponseEntity<List<MatchDataDto>> apiCrawlMatchData(@PathVariable("summoner-name") String summonerName,
                                                          @PathVariable("tag") String tag) {
 
         List<MatchDataDto> matchDataDtos = crawlerService.crawlingMatchData(UrlGenerator.RIOT_SUMMONERS, crawlingProperties, summonerName, tag);
 
         return ResponseEntity.ok(matchDataDtos);
+    }
+
+    @GetMapping("crawling/{summoner-name}/{tag}/ingame")
+    ResponseEntity<List<InGameDto>> apiCrawlingInGame(@PathVariable("summoner-name") String summonerName,
+                                                      @PathVariable("tag") String tag) {
+
+        List<InGameDto> inGameDtos = crawlerService.crawlingInGame(UrlGenerator.RIOT_IN_GAME, crawlingProperties, summonerName, tag);
+
+        return ResponseEntity.ok(inGameDtos);
     }
 }
