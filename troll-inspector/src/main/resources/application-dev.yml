@@ -1,7 +1,9 @@
 secret:
   elasticsearch:
-    rest-client:
-      apikey: ${ELASTICSEARCH_API_KEY}
+    scheme: http
+    host: localhost
+    port: 9200
+    apikey: ${ELASTICSEARCH_API_KEY}
   riot:
     apikey: ${RIOT_API_KEY}
 
