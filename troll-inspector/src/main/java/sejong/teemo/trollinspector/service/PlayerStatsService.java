@@ -11,7 +11,6 @@ import co.elastic.clients.json.JsonData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import sejong.teemo.trollinspector.elasticsearch.ElasticsearchClientService;
 import sejong.teemo.trollinspector.record.*;
 
 import java.io.IOException;
@@ -34,12 +33,11 @@ import static sejong.teemo.trollinspector.util.parsing.JsonToPlayerPerformance.p
 @Slf4j
 public class PlayerStatsService {
 
-    private final ElasticsearchClientService elasticsearchClientService;
+    private final ElasticsearchClient elasticsearchClient;
 
     public List<SummonerPerformanceRecord> searchGameData(String username) {
 
         try {
-            ElasticsearchClient elasticsearchClient = elasticsearchClientService.getClient();
             SearchResponse<SummonerPerformanceRecord> searchResponse = elasticsearchClient.search(s -> s
                             .index("player_performance")
                             .query(q -> q
@@ -62,7 +60,6 @@ public class PlayerStatsService {
 
     public GameInspectorRecord analyzePerformance(String username) throws IOException {
 
-        ElasticsearchClient elasticsearchClient = elasticsearchClientService.getClient();
         String jsonQuery = new String(Files.readAllBytes(Paths.get("troll-inspector/src/main/resources/aggregation_query.json")));
 
         // 카테고리 분류 수행
