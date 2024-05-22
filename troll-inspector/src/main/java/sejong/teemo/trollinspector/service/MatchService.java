@@ -2,13 +2,13 @@ package sejong.teemo.trollinspector.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import sejong.teemo.trollinspector.domain.Account;
 import sejong.teemo.trollinspector.domain.SummonerPerformance;
 import sejong.teemo.trollinspector.repository.SummonerPerformanceRepository;
+import sejong.teemo.trollinspector.util.ConfigProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +19,12 @@ import static sejong.teemo.trollinspector.util.parsing.JsonToPlayerPerformance.j
 @RequiredArgsConstructor
 @Slf4j
 public class MatchService {
-    private final RestClient restClient;
 
-    @Value("${secret.riot.apikey}")
-    private String API_KEYS;
-    private final int PAGE_SIZE = 20;
+    private final RestClient restClient;
+    private final ConfigProperties configProperties;
     private final SummonerPerformanceRepository summonerPerformanceRepository;
+
+    private final int PAGE_SIZE = 20;
 
     public List<SummonerPerformance> getItemByUsername(String username) {
         return summonerPerformanceRepository.findByUsername(username);
@@ -62,7 +62,7 @@ public class MatchService {
         return this.restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}")
-                        .queryParam("api_key", API_KEYS)
+                        .queryParam("api_key", configProperties.riot().apikey())
                         .build(gameName, tagLine))
                 .retrieve()
                 .body(Account.class);
@@ -74,7 +74,7 @@ public class MatchService {
                         .path("/lol/match/v5/matches/by-puuid/{puuid}/ids")
                         .queryParam("start", 0)
                         .queryParam("count", PAGE_SIZE)
-                        .queryParam("api_key", API_KEYS)
+                        .queryParam("api_key", configProperties.riot().apikey())
                         .build(puuid))
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {
@@ -85,7 +85,7 @@ public class MatchService {
         return this.restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/lol/match/v5/matches/{matchId}")
-                        .queryParam("api_key", API_KEYS)
+                        .queryParam("api_key", configProperties.riot().apikey())
                         .build(matchId))
                 .retrieve()
                 .body(String.class);
