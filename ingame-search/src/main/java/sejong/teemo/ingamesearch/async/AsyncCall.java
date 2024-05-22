@@ -15,8 +15,8 @@ import java.util.function.Function;
  *     I는 인풋 타입 O는 아웃풋 타입으로 구성된다.
  *     <br/>ex) CurrentGameParticipant (input) -> ChampionMastery (output)
  * </p>
- * @param <I> request
- * @param <O> response
+ * @param <I> input
+ * @param <O> output
  */
 @Slf4j
 public class AsyncCall<I, O> {
