@@ -31,7 +31,7 @@ public class MatchSearchController {
 
     @GetMapping("/ids1")
     public ResponseEntity<GameInspectorRecord> analyzeSummonerPerformance2(@RequestParam String gameName) throws IOException {
-        GameInspectorRecord stringSearchResponse = playerStatsService.performAnalysis(gameName);
+        GameInspectorRecord stringSearchResponse = playerStatsService.analyzePerformance(gameName);
         log.info(stringSearchResponse.toString());
         return ResponseEntity.ok(stringSearchResponse);
     }
