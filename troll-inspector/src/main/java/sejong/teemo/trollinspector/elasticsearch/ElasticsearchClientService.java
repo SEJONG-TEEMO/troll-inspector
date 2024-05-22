@@ -24,19 +24,15 @@ import static sejong.teemo.trollinspector.util.ConfigProperties.*;
 public class ElasticsearchClientService {
 
     private ElasticsearchClient esClient;
-
-//    private final static String SCHEME = "http";
-//    private final static String HOST_NAME = "localhost";
-//    private final static int PORT = 9200;
     private final ConfigProperties configProperties;
 
     @PostConstruct
     public void init() {
-        Elasticsearch elasticsearch = configProperties.getElasticsearch();
+        Elasticsearch elasticsearch = configProperties.elasticsearch();
         RestClient restClient = RestClient.builder(new HttpHost(
-                elasticsearch.getHost(), elasticsearch.getPort(), elasticsearch.getScheme()))
+                elasticsearch.host(), elasticsearch.port(), elasticsearch.scheme()))
                 .setDefaultHeaders(new Header[]{
-                        new BasicHeader("Authorization", "ApiKey " + configProperties.getElasticsearch().getApikey())
+                        new BasicHeader("Authorization", "ApiKey " + elasticsearch.apikey())
                 })
                 .build();
 
