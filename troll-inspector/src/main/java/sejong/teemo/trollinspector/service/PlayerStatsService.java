@@ -39,8 +39,8 @@ public class PlayerStatsService {
     public List<SummonerPerformanceRecord> searchGameData(String username) {
 
         try {
-            ElasticsearchClient esClient = elasticsearchClientService.getClient();
-            SearchResponse<SummonerPerformanceRecord> searchResponse = esClient.search(s -> s
+            ElasticsearchClient elasticsearchClient = elasticsearchClientService.getClient();
+            SearchResponse<SummonerPerformanceRecord> searchResponse = elasticsearchClient.search(s -> s
                             .index("player_performance")
                             .query(q -> q
                                     .match(t -> t
@@ -62,7 +62,7 @@ public class PlayerStatsService {
 
     public GameInspectorRecord analyzePerformance(String username) throws IOException {
 
-        ElasticsearchClient esClient = elasticsearchClientService.getClient();
+        ElasticsearchClient elasticsearchClient = elasticsearchClientService.getClient();
         String jsonQuery = new String(Files.readAllBytes(Paths.get("troll-inspector/src/main/resources/aggregation_query.json")));
 
         // 카테고리 분류 수행
@@ -72,7 +72,7 @@ public class PlayerStatsService {
         )._toQuery();
 
         // Perform aggregation analysis
-        SearchResponse<AggregationResultsRecord> search = esClient.search(s -> s
+        SearchResponse<AggregationResultsRecord> search = elasticsearchClient.search(s -> s
                         .index("player_performance")
                         .size(0) // Don't return any documents, only the aggregation results
                         .query(query)
