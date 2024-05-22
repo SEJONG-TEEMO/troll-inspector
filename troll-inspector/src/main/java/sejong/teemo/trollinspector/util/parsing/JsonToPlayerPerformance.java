@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import sejong.teemo.trollinspector.domain.SummonerPerformance;
 import sejong.teemo.trollinspector.record.PositionResultRecord;
-import sejong.teemo.trollinspector.util.parsing.exception.SummonerException;
+import sejong.teemo.trollinspector.util.exception.SummonerException;
 
 import java.io.IOException;
 
-import static sejong.teemo.trollinspector.util.parsing.exception.SummonerException.ErrorType.NOT_FOUND_PUUID;
+import static sejong.teemo.trollinspector.util.exception.SummonerException.ErrorType.NOT_FOUND_PUUID;
 
 @Slf4j
 public class JsonToPlayerPerformance {
