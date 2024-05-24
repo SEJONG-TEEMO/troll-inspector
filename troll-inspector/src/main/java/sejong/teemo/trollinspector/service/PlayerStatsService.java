@@ -1,6 +1,7 @@
 package sejong.teemo.trollinspector.service;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.ElasticsearchException;
 import co.elastic.clients.elasticsearch._types.aggregations.*;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation.Builder.ContainerBuilder;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
@@ -60,7 +61,15 @@ public class PlayerStatsService {
 
     public GameInspectorRecord analyzePerformance(String username) throws IOException {
 
-        String jsonQuery = new String(Files.readAllBytes(Paths.get("troll-inspector/src/main/resources/aggregation_query.json")));
+//        String jsonQuery = new String(Files.readAllBytes(Paths.get("troll-inspector/src/main/resources/aggregation_query.json")));
+        String jsonQuery;
+        try {
+            jsonQuery = new String(Files.readAllBytes(Paths.get("troll-inspector/src/main/resources/aggregation_query.json")));
+        } catch (IOException e) {
+            log.error("Failed to read the query file", e);
+            throw e;
+        }
+        log.info("username: {}", username);
 
         // 카테고리 분류 수행
         Query query = MatchQuery.of(m -> m
@@ -69,15 +78,21 @@ public class PlayerStatsService {
         )._toQuery();
 
         // Perform aggregation analysis
-        SearchResponse<AggregationResultsRecord> search = elasticsearchClient.search(s -> s
-                        .index("player_performance")
-                        .size(0) // Don't return any documents, only the aggregation results
-                        .query(query)
-                        .aggregations("performance_stats", this::buildPerformanceStatsAggregation)
-                        .withJson(new StringReader(jsonQuery))
-                        .ignoreUnavailable(true),
-                AggregationResultsRecord.class
-        );
+        SearchResponse<AggregationResultsRecord> search;
+        try {
+            search = elasticsearchClient.search(s -> s
+                            .index("player_performance")
+                            .size(0)
+                            .query(query)
+                            .aggregations("performance_stats", this::buildPerformanceStatsAggregation)
+                            .withJson(new StringReader(jsonQuery)),
+//                            .ignoreUnavailable(true),
+                    AggregationResultsRecord.class
+            );
+        } catch (ElasticsearchException e){
+            log.info(e.response().error().toString());
+            throw e;
+        }
 
 
         AggregationResultsRecord aggregationResultsRecord = aggregateSummonerResults(search);
