@@ -23,7 +23,7 @@ public class MatchController {
     @GetMapping("/ids/{gameName}/{tagLine}")
     public ResponseEntity<List<SummonerPerformance>> analyzeSummonerPerformance(@PathVariable("gameName") String gameName,
                                                                                 @PathVariable("tagLine") String tagLine) throws Exception {
-        List<SummonerPerformance> matchIds = matchService.analyzeSummonerPerformance(gameName, tagLine);
+        List<SummonerPerformance> matchIds = matchService.analyzeSummonerPerformanceForPersonalKey(gameName, tagLine);
 
         return ResponseEntity.ok(matchIds);
     }
