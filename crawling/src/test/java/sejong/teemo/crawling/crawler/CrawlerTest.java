@@ -131,15 +131,15 @@ class CrawlerTest {
     @Disabled
     void 인_게임_데이터_크롤링_테스트() {
         // given
-        String gameName = "이상호93";
-        String tagLine = "4324";
+        String gameName = "qweasdzxc";
+        String tagLine = "1103";
         WebDriver webDriver = new FirefoxDriver();
 
         // when
         try (Crawler<InGameDto> crawler = new Crawler<>(webDriver, new WebDriverWait(webDriver, Duration.ofSeconds(10)), RIOT_IN_GAME)) {
 
             List<InGameDto> inGameDtos = crawler.urlGenerate(urlGenerator -> urlGenerator.generateUrl(gameName, tagLine))
-                    .isWaitingUntilLoadedPage(By.cssSelector("table"))
+                    .isWaitingUntilLoadedPage(By.cssSelector(".css-1m2ho5a"))
                     .actionFromElement(element -> element.findElements(By.cssSelector("table tbody tr"))
                             .parallelStream()
                             .map(WebElement::getText)
@@ -147,8 +147,7 @@ class CrawlerTest {
                             .toList());
 
             // then
-            webDriver.close();
-            System.out.println(inGameDtos);
+            inGameDtos.forEach(System.out::println);
             assertThat(inGameDtos).hasSize(10);
 
         } catch (Exception e) {
