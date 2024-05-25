@@ -11,7 +11,7 @@ import sejong.teemo.trollinspector.record.GameInspectorRecord;
 import sejong.teemo.trollinspector.record.SummonerPerformanceRecord;
 import sejong.teemo.trollinspector.service.PlayerStatsService;
 
-import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -23,14 +23,14 @@ public class MatchSearchController {
     private final PlayerStatsService playerStatsService;
 
     @GetMapping("/ids")
-    public ResponseEntity<List<SummonerPerformanceRecord>> analyzeSummonerPerformance(@RequestParam String gameName) {
+    public ResponseEntity<List<SummonerPerformanceRecord>> searchGameData(@RequestParam String gameName) {
         List<SummonerPerformanceRecord> searchResponse = playerStatsService.searchGameData(gameName);
         log.info(searchResponse.toString());
         return ResponseEntity.ok(searchResponse);
     }
 
-    @GetMapping("/ids1")
-    public ResponseEntity<GameInspectorRecord> analyzeSummonerPerformance2(@RequestParam String gameName) throws IOException {
+    @GetMapping("/ids/analyze")
+    public ResponseEntity<GameInspectorRecord> analyzeSummonerPerformance(@RequestParam String gameName) throws URISyntaxException {
         GameInspectorRecord stringSearchResponse = playerStatsService.analyzePerformance(gameName);
         log.info(stringSearchResponse.toString());
         return ResponseEntity.ok(stringSearchResponse);

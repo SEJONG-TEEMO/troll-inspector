@@ -13,20 +13,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import sejong.teemo.trollinspector.record.*;
+import sejong.teemo.trollinspector.util.QueryLoader;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static co.elastic.clients.elasticsearch._types.aggregations.Aggregation.Builder;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static sejong.teemo.trollinspector.util.ChampionFinder.findChampionNameById;
 import static sejong.teemo.trollinspector.util.parsing.JsonToPlayerPerformance.parseKdaScore;
 
 @Service
@@ -59,25 +59,13 @@ public class PlayerStatsService {
         }
     }
 
-    public GameInspectorRecord analyzePerformance(String username) throws IOException {
+    public GameInspectorRecord analyzePerformance(String username) {
 
-//        String jsonQuery = new String(Files.readAllBytes(Paths.get("troll-inspector/src/main/resources/aggregation_query.json")));
-        String jsonQuery;
-        try {
-            jsonQuery = new String(Files.readAllBytes(Paths.get("troll-inspector/src/main/resources/aggregation_query.json")));
-        } catch (IOException e) {
-            log.error("Failed to read the query file", e);
-            throw e;
-        }
-        log.info("username: {}", username);
-
-        // 카테고리 분류 수행
         Query query = MatchQuery.of(m -> m
                 .field("username")
                 .query(username)
         )._toQuery();
 
-        // Perform aggregation analysis
         SearchResponse<AggregationResultsRecord> search;
         try {
             search = elasticsearchClient.search(s -> s
@@ -85,15 +73,15 @@ public class PlayerStatsService {
                             .size(0)
                             .query(query)
                             .aggregations("performance_stats", this::buildPerformanceStatsAggregation)
-                            .withJson(new StringReader(jsonQuery)),
-//                            .ignoreUnavailable(true),
+                            .withJson(new StringReader(QueryLoader.loadJsonQuery("aggregation_query.json"))),
                     AggregationResultsRecord.class
             );
-        } catch (ElasticsearchException e){
-            log.info(e.response().error().toString());
+        } catch (ElasticsearchException e) {
+            log.error(e.getMessage());
             throw e;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
 
         AggregationResultsRecord aggregationResultsRecord = aggregateSummonerResults(search);
         List<PositionResultRecord> positionResultRecords = aggregatePositionResults(search);
@@ -146,9 +134,9 @@ public class PlayerStatsService {
         Double averageKda = getAverage(aggregations, "average_kda");
 
         Map<Long, SummonerStatsRecord> summonerStatsRecordMap = aggregations.get("champion_frequency").lterms().buckets().array().stream()
-                .collect(Collectors.toMap(
+                .collect(toMap(
                         LongTermsBucket::key,
-                        championBucket -> mapToSummonerStatsRecord(championBucket, bucket.key().stringValue())
+                        championBucket -> mapToSummonerStatsRecord(championBucket, findChampionNameById(championBucket.key()))
                 ));
 
         return AggregationResultsRecord.of(
