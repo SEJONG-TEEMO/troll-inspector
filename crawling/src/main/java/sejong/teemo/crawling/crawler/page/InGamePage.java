@@ -22,17 +22,13 @@ public class InGamePage implements Page<InGameDto> {
 
         try (Crawler<InGameDto> crawler = new Crawler<>(webDriver, new WebDriverWait(webDriver, Duration.ofSeconds(10)), url)) {
 
-            List<InGameDto> inGameDtos = crawler.urlGenerate(urlGenerator -> urlGenerator.generateUrl(subUrl))
-                    .isWaitingUntilLoadedPage(By.cssSelector("table"))
+            return crawler.urlGenerate(urlGenerator -> urlGenerator.generateUrl(subUrl))
+                    .isWaitingUntilLoadedPage(By.cssSelector(".css-1m2ho5a"))
                     .actionFromElement(element -> element.findElements(By.cssSelector("table tbody tr"))
                             .parallelStream()
                             .map(WebElement::getText)
                             .map(new CrawlerMapperInGame()::map)
                             .toList());
-
-            webDriver.close();
-
-            return inGameDtos;
 
         } catch (Exception e) {
             throw new CrawlingException(e);
