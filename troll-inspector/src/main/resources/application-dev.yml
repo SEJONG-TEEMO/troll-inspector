@@ -12,7 +12,7 @@ spring:
     name: troll-inspector
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/teemo?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3308/teemo?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: 1234
 
@@ -24,3 +24,6 @@ logging:
           elasticsearch:
             client:
               WIRE: TRACE
+            core: DEBUG
+      apache:
+        http: TRACE
