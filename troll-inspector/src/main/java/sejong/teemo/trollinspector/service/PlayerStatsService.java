@@ -4,8 +4,6 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.ElasticsearchException;
 import co.elastic.clients.elasticsearch._types.aggregations.*;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation.Builder.ContainerBuilder;
-import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.json.JsonData;
@@ -61,23 +59,17 @@ public class PlayerStatsService {
 
     public GameInspectorRecord analyzePerformance(String username) {
 
-        Query query = MatchQuery.of(m -> m
-                .field("username")
-                .query(username)
-        )._toQuery();
-
         SearchResponse<AggregationResultsRecord> search;
         try {
             search = elasticsearchClient.search(s -> s
                             .index("player_performance")
                             .size(0)
-                            .query(query)
                             .aggregations("performance_stats", this::buildPerformanceStatsAggregation)
                             .withJson(new StringReader(QueryLoader.loadJsonQuery("aggregation_query.json"))),
                     AggregationResultsRecord.class
             );
         } catch (ElasticsearchException e) {
-            log.error(e.getMessage());
+            log.error("error -> {}" + e.getMessage());
             throw e;
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -101,7 +93,7 @@ public class PlayerStatsService {
      */
     ContainerBuilder buildPerformanceStatsAggregation(Builder builder) {
         return builder.terms(t -> t
-                .field("username")
+                .field("username.keyword")
                 .size(20)
         ).aggregations("average_kills", avg -> addAverageAggregation(avg, "kills")
         ).aggregations("average_deaths", avg -> addAverageAggregation(avg, "deaths")
