@@ -1,1 +1,0 @@
-delete from summoner where id > 30000;
