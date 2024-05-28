@@ -28,7 +28,7 @@ COPY --from=build /app/crawling/build/libs/*.jar /app/crawling.jar
 LABEL authors="yungwang-o"
 
 # Expose the port the app runs on
-EXPOSE 8081
+EXPOSE 8080
 
 # Command to run the application
 ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "/app/crawling.jar"]
