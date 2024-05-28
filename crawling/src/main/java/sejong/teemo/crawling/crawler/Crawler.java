@@ -18,7 +18,7 @@ public class Crawler<T> implements AutoCloseable {
     private final WebDriverWait driverWait;
     private final UrlGenerator baseUrlGenerator;
 
-    private static WebElement webElement;
+    private WebElement webElement;
 
     @Builder
     public Crawler(
@@ -64,7 +64,7 @@ public class Crawler<T> implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
-        driver.close();
+    public void close() {
+        driver.quit();
     }
 }
