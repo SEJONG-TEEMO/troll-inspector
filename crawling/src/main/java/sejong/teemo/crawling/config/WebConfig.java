@@ -12,6 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:5173")
+                .allowedOrigins("https://react-kscupel2fq-du.a.run.app/")
                 .allowedMethods("GET", "POST", "PUT", "DELETE") // 허용할 HTTP 메서드
                 .allowedHeaders("*");
     }
