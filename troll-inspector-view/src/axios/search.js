@@ -14,9 +14,7 @@ export default function searchNameAndTag(search) {
         const tag = split[1].trim();
 
         console.log(name, tag);
-        return axios.get(baseUrl + searchUrl + `${name}` + "/" + `${tag}`)
-            .catch(error => console.log(error))
-            .then(response => response.data);
+        return axios.get(baseUrl + searchUrl + `${name}` + "/" + `${tag}` + "/ingame");
     } else {
         alert("잘못된 입력입니다.")
     }

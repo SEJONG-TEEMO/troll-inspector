@@ -32,14 +32,14 @@ export function Header() {
             <NavbarContent className="sm:flex gap-4" justify="center">
                 <NavbarItem isActive={active === 'main'} >
                     <Link color={active === 'main' ? "primary" : "foreground"} onClick={onSearchClick}>
-                        전적 검색
+                        인게임 분석
                     </Link>
                 </NavbarItem>
-                <NavbarItem isActive={active === 'troll'}>
-                    <Link color={active === 'troll' ? "primary" : "foreground"} onClick={onTrollClick}>
-                        트롤 검색
-                    </Link>
-                </NavbarItem>
+                {/*<NavbarItem isActive={active === 'troll'}>*/}
+                {/*    <Link color={active === 'troll' ? "primary" : "foreground"} onClick={onTrollClick}>*/}
+                {/*        트롤 검색*/}
+                {/*    </Link>*/}
+                {/*</NavbarItem>*/}
             </NavbarContent>
             <NavbarContent justify="end">
                 <NavbarItem className="hidden lg:flex">

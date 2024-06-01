@@ -1,19 +1,38 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Input} from "@nextui-org/react";
 import {SearchIcon} from "./SearchIcon.jsx";
 import searchNameAndTag from "../axios/search.js";
+import ResultModal from "./ResultModal.jsx";
 
 export function SummonerSearchBar() {
 
     const [search, setSearch] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [searchResult, setSearchResult] = useState([]);
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            searchNameAndTag(event.target.value);
+            handleSearch(event.target.value);
             setSearch('');
         }
     };
+
+    const handleSearch = (search) => {
+        const res = searchNameAndTag(search);
+        res.then(response => {
+            setSearchResult(response.data)
+            setIsModalOpen(true);
+        }).catch(error => {
+            alert("데이터를 가져오지 못했습니다.")
+            console.error(error)
+        });
+    }
+
+    const handleSearchClick = () => {
+        handleSearch(search);
+        setSearch('');
+    }
 
     return (
         <div className="w-screen h-screen p-8 flex items-center justify-center">
@@ -34,9 +53,14 @@ export function SummonerSearchBar() {
                 }}
                 onKeyDown={handleKeyDown}
             />
-            <Button type="submit" isIconOnly size={"lg"} onClick={searchNameAndTag}>
+            <Button type="button" isIconOnly size={"lg"} onPress={handleSearchClick}>
                 <SearchIcon/>
             </Button>
+            <ResultModal
+                isOpen={isModalOpen}
+                onOpenChange={setIsModalOpen}
+                searchResult={searchResult}
+            />
         </div>
     )
 }
