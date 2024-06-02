@@ -24,8 +24,13 @@ public enum UriGenerator {
         return UriComponentsBuilder.fromHttpUrl(this.url).build(obj);
     }
 
+    @Deprecated
     public URI generateUri(int page, Object... obj) {
         return UriComponentsBuilder.fromHttpUrl(this.url).queryParam("page", page).build(obj);
+    }
+
+    public UriComponentsBuilder generateUri() {
+        return UriComponentsBuilder.fromHttpUrl(this.url);
     }
 
     public String skipString(String target, String str) {
