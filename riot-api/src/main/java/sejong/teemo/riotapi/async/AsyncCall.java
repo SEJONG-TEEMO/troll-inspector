@@ -27,7 +27,7 @@ public class AsyncCall<I, O> {
         this.lists = lists;
     }
 
-    public List<O> asyncCallApi(int nThread, Function<I, O> function) {
+    public List<O> execute(int nThread, Function<I, O> function) {
         try (ExecutorService executorService = Executors.newFixedThreadPool(nThread)) {
             List<CompletableFuture<O>> futures = lists.stream()
                     .map(list -> CompletableFuture.supplyAsync(() -> function.apply(list), executorService))
