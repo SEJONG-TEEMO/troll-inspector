@@ -1,11 +1,11 @@
 package sejong.teemo.riotapi.dto;
 
 import jakarta.validation.constraints.NotNull;
-import sejong.teemo.batch.entity.LeagueEntry;
+import lombok.Builder;
 
 /**
- * DTO for {@link LeagueEntry}
  */
+@Builder
 public record LeagueEntryDto(
         @NotNull String leagueId,
         @NotNull String summonerId,

@@ -1,9 +1,9 @@
 package sejong.teemo.riotapi.dto;
 
-import sejong.teemo.batch.entity.MiniSeries;
+import lombok.Builder;
 
 /**
- * DTO for {@link MiniSeries}
  */
+@Builder
 public record MiniSeriesDto(int losses, String progress, int target, int wins) {
 }

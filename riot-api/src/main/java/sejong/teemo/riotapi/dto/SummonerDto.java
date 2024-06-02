@@ -1,10 +1,9 @@
 package sejong.teemo.riotapi.dto;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
-/**
- * DTO for {@link sejong.teemo.batch.entity.Summoner}
- */
+@Builder
 public record SummonerDto(
         @NotNull String summonerId,
         @NotNull String accountId,
