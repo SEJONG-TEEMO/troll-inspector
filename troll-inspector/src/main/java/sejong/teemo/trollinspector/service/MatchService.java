@@ -53,7 +53,6 @@ public class MatchService {
             return futures.stream()
                     .map(CompletableFuture::join)
                     .collect(toList());
-
         } catch (Exception e) {
             e.printStackTrace();
         }
