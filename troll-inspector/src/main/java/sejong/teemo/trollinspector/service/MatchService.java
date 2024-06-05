@@ -44,21 +44,15 @@ public class MatchService {
 
             List<CompletableFuture<SummonerPerformance>> futures = matchIds.stream()
                     .map(matchId -> getMatchDetail(matchId)
-                            .map(matchDetail -> jsonToPlayerPerformance(matchDetail, username, account.puuid()))
+                            .map(matchDetail -> {
+                                SummonerPerformance performance = jsonToPlayerPerformance(matchDetail, username, account.puuid());
+                                return storePerformanceToElasticsearch(performance);
+                            })
                             .toFuture()).toList();
 
-            List<SummonerPerformance> matchDetails = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
-                    .thenApply(v -> futures.stream()
-                            .map(CompletableFuture::join)
-                            .collect(toList()))
-                    .join();
-
-            log.info(String.valueOf(account));
-            log.info(String.valueOf(matchIds));
-
-            storePerformancesToElasticsearch(matchDetails);
-
-            return matchDetails;
+            return futures.stream()
+                    .map(CompletableFuture::join)
+                    .collect(toList());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,7 +114,7 @@ public class MatchService {
                 });
     }
 
-        private Mono<String> getMatchDetail(String matchId) {
+    private Mono<String> getMatchDetail(String matchId) {
         return this.webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/lol/match/v5/matches/{matchId}")
