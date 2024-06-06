@@ -5,9 +5,23 @@ import lombok.Getter;
 @Getter
 public class SummonerException extends RuntimeException {
 
-    private final ExceptionController exceptionController;
+    public SummonerException() {
+        super();
+    }
 
-    public SummonerException(ExceptionController exceptionController) {
-        this.exceptionController = exceptionController;
+    public SummonerException(String message) {
+        super(message);
+    }
+
+    public SummonerException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public SummonerException(Throwable cause) {
+        super(cause);
+    }
+
+    protected SummonerException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

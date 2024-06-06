@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import sejong.teemo.crawling.property.CrawlingProperties;
+import sejong.teemo.crawling.webDriver.option.WebDriverOption;
 
 import java.net.URI;
 

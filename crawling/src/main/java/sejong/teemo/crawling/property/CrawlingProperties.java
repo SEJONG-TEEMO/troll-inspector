@@ -4,6 +4,5 @@ import java.util.List;
 
 public interface CrawlingProperties {
 
-    String url();
     String remoteIp();
 }
