@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sejong.teemo.riotapi.dto.match.MatchDataDto;
+import sejong.teemo.riotapi.dto.match.MatchDto;
 import sejong.teemo.riotapi.facade.MatchFacade;
 
 import java.util.List;
@@ -20,14 +22,14 @@ public class MatchApiV1 {
     private final MatchFacade matchFacade;
 
     @GetMapping("/match/{gameName}/{tagLine}")
-    public ResponseEntity<List<String>> callApiMatch(@PathVariable("gameName") String gameName,
-                                                     @PathVariable("tagLine") String tagLine) {
+    public ResponseEntity<List<MatchDto>> callApiMatch(@PathVariable("gameName") String gameName,
+                                                       @PathVariable("tagLine") String tagLine) {
 
         return ResponseEntity.ok(matchFacade.callRiotMatch(gameName, tagLine));
     }
 
     @GetMapping("/match/{puuid}")
-    public ResponseEntity<List<String>> callApiMatch(@PathVariable String puuid) {
+    public ResponseEntity<List<MatchDataDto>> callApiMatch(@PathVariable String puuid) {
         return ResponseEntity.ok(matchFacade.callRiotMatch(puuid));
     }
 }

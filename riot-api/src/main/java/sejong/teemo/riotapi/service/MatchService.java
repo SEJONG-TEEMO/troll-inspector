@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import sejong.teemo.riotapi.dto.match.MatchDataDto;
 import sejong.teemo.riotapi.exception.ExceptionProvider;
 import sejong.teemo.riotapi.exception.FailedApiCallingException;
 import sejong.teemo.riotapi.generator.UriGenerator;
@@ -40,7 +41,7 @@ public class MatchService {
                 })).body(new ParameterizedTypeReference<>() {});
     }
 
-    public String callRiotApiMatchMatchId(String matchId) {
+    public MatchDataDto callRiotApiMatchMatchId(String matchId) {
         return restClient.get()
                 .uri(UriGenerator.RIOT_MATCH.generateUri(matchId))
                 .accept(MediaType.APPLICATION_JSON)
@@ -50,6 +51,6 @@ public class MatchService {
                     log.info("match = {}", request.getURI());
                     log.error("match riot match error = {}", response.getStatusText());
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_MATCH_API_CALL_FAILED);
-                })).body(String.class);
+                })).body(MatchDataDto.class);
     }
 }

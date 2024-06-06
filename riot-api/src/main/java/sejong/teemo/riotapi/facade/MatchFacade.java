@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import sejong.teemo.riotapi.async.AsyncCall;
 import sejong.teemo.riotapi.dto.Account;
+import sejong.teemo.riotapi.dto.match.MatchDataDto;
+import sejong.teemo.riotapi.dto.match.MatchDto;
 import sejong.teemo.riotapi.service.AccountService;
 import sejong.teemo.riotapi.service.MatchService;
 
@@ -18,7 +20,7 @@ public class MatchFacade {
     private final MatchService matchService;
     private final AccountService accountService;
 
-    public List<String> callRiotMatch(String gameName, String tagLine) {
+    public List<MatchDto> callRiotMatch(String gameName, String tagLine) {
 
         Account account = accountService.callRiotAccount(gameName, tagLine);
 
@@ -27,16 +29,18 @@ public class MatchFacade {
         List<String> matchDtos = matchService.callRiotApiMatchPuuid(account.puuid());
 
         log.info("matchDtos = {}", matchDtos);
-        AsyncCall<String, String> asyncCall = new AsyncCall<>(matchDtos);
+        AsyncCall<String, MatchDto> asyncCall = new AsyncCall<>(matchDtos);
 
-        return asyncCall.execute(10, matchService::callRiotApiMatchMatchId);
+        return asyncCall.execute(10, matchId ->
+                MatchDto.of(gameName, tagLine, matchService.callRiotApiMatchMatchId(matchId))
+        );
     }
 
-    public List<String> callRiotMatch(String puuid) {
+    public List<MatchDataDto> callRiotMatch(String puuid) {
 
         List<String> matchDtos = matchService.callRiotApiMatchPuuid(puuid);
 
-        AsyncCall<String, String> asyncCall = new AsyncCall<>(matchDtos);
+        AsyncCall<String, MatchDataDto> asyncCall = new AsyncCall<>(matchDtos);
 
         return asyncCall.execute(10, matchService::callRiotApiMatchMatchId);
     }
