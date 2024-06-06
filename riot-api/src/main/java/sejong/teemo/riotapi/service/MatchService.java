@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import sejong.teemo.riotapi.dto.MatchDto;
-import sejong.teemo.riotapi.dto.SummonerPerformanceRecord;
 import sejong.teemo.riotapi.exception.ExceptionProvider;
 import sejong.teemo.riotapi.exception.FailedApiCallingException;
 import sejong.teemo.riotapi.generator.UriGenerator;
@@ -26,9 +24,12 @@ public class MatchService {
 
     private static final String API_KEY = "X-Riot-Token";
 
-    public List<MatchDto> callRiotApiMatchPuuid(String puuid) {
+    public List<String> callRiotApiMatchPuuid(String puuid) {
         return restClient.get()
-                .uri(UriGenerator.RIOT_MATCH_PUUID.generateUri(puuid))
+                .uri(UriGenerator.RIOT_MATCH_PUUID.generateUri()
+                        .queryParam("start", String.valueOf(0))
+                        .queryParam("count", String.valueOf(20))
+                        .build(puuid))
                 .accept(MediaType.APPLICATION_JSON)
                 .header(API_KEY, riotApiProperties.apiKey())
                 .retrieve()
@@ -39,7 +40,7 @@ public class MatchService {
                 })).body(new ParameterizedTypeReference<>() {});
     }
 
-    public SummonerPerformanceRecord callRiotApiMatchMatchId(String matchId) {
+    public String callRiotApiMatchMatchId(String matchId) {
         return restClient.get()
                 .uri(UriGenerator.RIOT_MATCH.generateUri(matchId))
                 .accept(MediaType.APPLICATION_JSON)
@@ -49,6 +50,6 @@ public class MatchService {
                     log.info("match = {}", request);
                     log.error("match riot match error = {}", response);
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_MATCH_API_CALL_FAILED);
-                })).body(SummonerPerformanceRecord.class);
+                })).body(String.class);
     }
 }
