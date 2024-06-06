@@ -34,8 +34,8 @@ public class MatchService {
                 .header(API_KEY, riotApiProperties.apiKey())
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.info("match = {}", request);
-                    log.error("match riot puuid error = {}", response);
+                    log.info("match = {}", request.getURI());
+                    log.error("match riot puuid error = {}", response.getStatusText());
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_MATCH_API_CALL_FAILED);
                 })).body(new ParameterizedTypeReference<>() {});
     }
@@ -47,8 +47,8 @@ public class MatchService {
                 .header(API_KEY, riotApiProperties.apiKey())
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.info("match = {}", request);
-                    log.error("match riot match error = {}", response);
+                    log.info("match = {}", request.getURI());
+                    log.error("match riot match error = {}", response.getStatusText());
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_MATCH_API_CALL_FAILED);
                 })).body(String.class);
     }
