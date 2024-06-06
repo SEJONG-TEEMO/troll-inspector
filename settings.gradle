@@ -1,9 +1,10 @@
 rootProject.name = 'teemo'
 
+include("batch")
 include("crawling")
 include("member")
 include("post")
 include("summoner-search")
 include("troll-inspector")
-include("champion")
-include ("chat")
+include("ingame-search")
+include("riot-api")
