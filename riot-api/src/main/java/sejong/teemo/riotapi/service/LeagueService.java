@@ -29,7 +29,7 @@ public class LeagueService {
     public List<LeagueEntryDto> callRiotLeague(String division, String tier, String queue, int page) {
 
         return restClient.get()
-                .uri(UriGenerator.RIOT_LEAGUE.generateUri(page, division, tier, queue))
+                .uri(UriGenerator.RIOT_LEAGUE.generateUri().queryParam("page", page).build(queue, tier, division))
                 .accept(APPLICATION_JSON)
                 .header(API_KEY, riotApiProperties.apiKey())
                 .retrieve()
@@ -38,6 +38,6 @@ public class LeagueService {
                     log.error("league error status = {} message = {}", response.getStatusCode(), response.getStatusText());
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_SPECTATOR_API_CALL_FAILED);
                 }))
-                .body(ParameterizedTypeReference.forType(LeagueEntryDto.class));
+                .body(new ParameterizedTypeReference<>() {});
     }
 }

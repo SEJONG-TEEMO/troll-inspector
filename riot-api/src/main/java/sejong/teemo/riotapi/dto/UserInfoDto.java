@@ -1,8 +1,10 @@
 package sejong.teemo.riotapi.dto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
+/**
+  link {UserDto}
+ */
 @Builder
 public record UserInfoDto(
         String gameName,

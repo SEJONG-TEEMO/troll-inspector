@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sejong.teemo.riotapi.dto.LeagueEntryDto;
-import sejong.teemo.riotapi.dto.SummonerDto;
-import sejong.teemo.riotapi.facade.LeagueFacade;
-import sejong.teemo.riotapi.service.LeagueService;
+import sejong.teemo.riotapi.facade.UserInfoFacade;
 
 import java.util.List;
 
@@ -15,26 +13,24 @@ import java.util.List;
 @RequestMapping("/teemo.gg/api/v1")
 public class LeagueApiV1 {
 
-    private final LeagueFacade leagueFacade;
-    private final LeagueService leagueService;
+    private final UserInfoFacade userInfoFacade;
 
     @GetMapping("/league-to-summoner/{division}/{tier}/{queue}")
-    public ResponseEntity<List<SummonerDto>> callApiLeagueToSummoner(@PathVariable String division,
-                                                                     @PathVariable String tier,
-                                                                     @PathVariable String queue,
-                                                                     @RequestParam int page) {
+    public ResponseEntity<List<List<LeagueEntryDto>>> callApiLeagueToSummoner(@PathVariable("division") String division,
+                                                                              @PathVariable("tier") String tier,
+                                                                              @PathVariable("queue") String queue,
+                                                                              @RequestParam("startPage") int startPage,
+                                                                              @RequestParam("endPage") int endPage) {
 
-        List<SummonerDto> summonerDtos = leagueFacade.callApiLeagueToSummoner(division, tier, queue, page);
-        return ResponseEntity.ok(summonerDtos);
+        return ResponseEntity.ok(userInfoFacade.callApiLeague(division, tier, queue, startPage, endPage));
     }
 
-    @GetMapping("/league/{division}/{tier}/{queue}")
-    public ResponseEntity<List<LeagueEntryDto>> callApiLeague(@PathVariable String division,
-                                                              @PathVariable String tier,
-                                                              @PathVariable String queue,
-                                                              @RequestParam int page) {
+    @GetMapping("league/{division}/{tier}/{queue}")
+    public ResponseEntity<List<LeagueEntryDto>> callApiLeague(@PathVariable("division") String division,
+                                                              @PathVariable("tier") String tier,
+                                                              @PathVariable("queue") String queue,
+                                                              @RequestParam("page") int page) {
 
-        List<LeagueEntryDto> summonerDtos = leagueService.callRiotLeague(division, tier, queue, page);
-        return ResponseEntity.ok(summonerDtos);
+        return ResponseEntity.ok(userInfoFacade.callApiLeague(division, tier, queue, page));
     }
 }
