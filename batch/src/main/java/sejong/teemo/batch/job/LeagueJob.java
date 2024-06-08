@@ -27,21 +27,23 @@ import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
-public class IronJob {
+public class LeagueJob {
 
     private final PlatformTransactionManager tm;
     private final BatchService batchService;
     private final JdbcRepository jdbcRepository;
 
-    private static final String IRON_JOB = "ironJob";
+    private static final String TIER_JOB = "tierJob";
     private static final String I_STEP = "I";
     private static final String II_STEP = "II";
     private static final String III_STEP = "III";
     private static final String IV_STEP = "IV";
 
+    private static final int CHUNK_SIZE = 100;
+
     @Bean
     public Job leagueInfoJob(JobRepository jobRepository) {
-        return new JobBuilder(IRON_JOB, jobRepository)
+        return new JobBuilder(TIER_JOB, jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .start(leagueInfoStepOne(jobRepository))
                 .next(leagueInfoStepTwo(jobRepository))
@@ -53,8 +55,8 @@ public class IronJob {
     @Bean
     @JobScope
     public Step leagueInfoStepOne(JobRepository jobRepository) {
-        return new StepBuilder(IRON_JOB + I_STEP, jobRepository)
-                .<List<UserInfoDto>, List<UserInfo>>chunk(10, tm)
+        return new StepBuilder(TIER_JOB + I_STEP, jobRepository)
+                .<List<UserInfoDto>, List<UserInfo>>chunk(CHUNK_SIZE, tm)
                 .reader(leagueInfoItemReader())
                 .processor(leagueInfoProcessor())
                 .writer(leagueInfoItemWriter())
@@ -64,8 +66,8 @@ public class IronJob {
     @Bean
     @JobScope
     public Step leagueInfoStepTwo(JobRepository jobRepository) {
-        return new StepBuilder(IRON_JOB + II_STEP, jobRepository)
-                .<List<UserInfoDto>, List<UserInfo>>chunk(10, tm)
+        return new StepBuilder(TIER_JOB + II_STEP, jobRepository)
+                .<List<UserInfoDto>, List<UserInfo>>chunk(CHUNK_SIZE, tm)
                 .reader(leagueInfoItemReader())
                 .processor(leagueInfoProcessor())
                 .writer(leagueInfoItemWriter())
@@ -75,8 +77,8 @@ public class IronJob {
     @Bean
     @JobScope
     public Step leagueInfoStepThree(JobRepository jobRepository) {
-        return new StepBuilder(IRON_JOB + III_STEP, jobRepository)
-                .<List<UserInfoDto>, List<UserInfo>>chunk(10, tm)
+        return new StepBuilder(TIER_JOB + III_STEP, jobRepository)
+                .<List<UserInfoDto>, List<UserInfo>>chunk(CHUNK_SIZE, tm)
                 .reader(leagueInfoItemReader())
                 .processor(leagueInfoProcessor())
                 .writer(leagueInfoItemWriter())
@@ -86,8 +88,8 @@ public class IronJob {
     @Bean
     @JobScope
     public Step leagueInfoStepFour(JobRepository jobRepository) {
-        return new StepBuilder(IRON_JOB + IV_STEP, jobRepository)
-                .<List<UserInfoDto>, List<UserInfo>>chunk(10, tm)
+        return new StepBuilder(TIER_JOB + IV_STEP, jobRepository)
+                .<List<UserInfoDto>, List<UserInfo>>chunk(CHUNK_SIZE, tm)
                 .reader(leagueInfoItemReader())
                 .processor(leagueInfoProcessor())
                 .writer(leagueInfoItemWriter())
@@ -97,7 +99,7 @@ public class IronJob {
     @Bean
     @StepScope
     public ItemReader<List<UserInfoDto>> leagueInfoItemReader() {
-        return new LeagueItemReader(batchService, 10, "IRON", "I");
+        return new LeagueItemReader(batchService,"IRON", "I");
     }
 
     @Bean
