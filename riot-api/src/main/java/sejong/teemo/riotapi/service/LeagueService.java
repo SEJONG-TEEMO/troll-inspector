@@ -40,4 +40,18 @@ public class LeagueService {
                 }))
                 .body(new ParameterizedTypeReference<>() {});
     }
+
+    public LeagueEntryDto callRiotLeague(String summonerId) {
+
+        return restClient.get()
+                .uri(UriGenerator.RIOT_LEAGUE_SUMMONER_ID.generateUri(summonerId))
+                .accept(APPLICATION_JSON)
+                .header(API_KEY, riotApiProperties.apiKey())
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
+                    log.info("get uri = {}", request.getURI());
+                    log.error("league error status = {} message = {}", response.getStatusCode(), response.getStatusText());
+                    throw new FailedApiCallingException(ExceptionProvider.RIOT_SPECTATOR_API_CALL_FAILED);
+                })).body(LeagueEntryDto.class);
+    }
 }
