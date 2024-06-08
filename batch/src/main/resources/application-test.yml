@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:mysql:8.2.0://mysqldb?TC_INITSCRIPT=file:src/test/resources/schema-mysql.sql
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  batch:
+    jdbc:
+      initialize-schema: always
