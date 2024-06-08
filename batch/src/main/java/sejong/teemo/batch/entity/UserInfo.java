@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sejong.teemo.batch.dto.UserInfoDto;
 
 @Entity
 @NoArgsConstructor
@@ -92,6 +93,25 @@ public class UserInfo {
                 .profileIconId(profileIconId)
                 .revisionDate(revisionDate)
                 .summonerLevel(summonerLevel)
+                .build();
+    }
+
+    public static UserInfo from(UserInfoDto userInfoDto) {
+        return UserInfo.builder()
+                .gameName(userInfoDto.gameName())
+                .tagLine(userInfoDto.tagLine())
+                .puuid(userInfoDto.puuid())
+                .summonerId(userInfoDto.summonerId())
+                .queueType(userInfoDto.queueType())
+                .tier(userInfoDto.tier())
+                .rank(userInfoDto.rank())
+                .wins(userInfoDto.wins())
+                .losses(userInfoDto.losses())
+                .leaguePoint(userInfoDto.leaguePoint())
+                .accountId(userInfoDto.accountId())
+                .profileIconId(userInfoDto.profileIconId())
+                .revisionDate(userInfoDto.revisionDate())
+                .summonerLevel(userInfoDto.summonerLevel())
                 .build();
     }
 }
