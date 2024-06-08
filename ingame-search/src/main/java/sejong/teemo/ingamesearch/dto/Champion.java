@@ -1,9 +1,9 @@
 package sejong.teemo.ingamesearch.dto;
 
 public record Champion(
-        int kills,
-        int deaths,
-        int assists,
+        double kills,
+        double deaths,
+        double assists,
         double rating,
         int recentGameCount
 ) {
