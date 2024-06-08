@@ -9,7 +9,10 @@ import org.springframework.web.ErrorResponse;
 @Getter
 public enum ExceptionProvider implements ErrorResponse {
 
-    RIOT_API_MODULE_LEAGUE_SUMMONER_FAILED(HttpStatus.NOT_FOUND, "LEAGUE_SUMMONER_100", "riot api 모듈 요청에 실패하였습니다.");
+    RIOT_API_MODULE_LEAGUE_SUMMONER_FAILED(HttpStatus.NOT_FOUND, "LEAGUE_SUMMONER_100", "riot api 모듈 요청에 실패하였습니다."),
+    RIOT_API_MODULE_SUMMONER_FAILED(HttpStatus.NOT_FOUND, "SUMMONER_100", "riot api 모듈 요청에 실패하였습니다."),
+    RIOT_API_MODULE_ACCOUNT_FAILED(HttpStatus.NOT_FOUND, "ACCOUNT_100","riot api 모듈 요청에 실패하였습니다."),
+    RIOT_API_MODULE_USER_INFO_FAILED(HttpStatus.NOT_FOUND, "USER_INFO_100", "riot api 모듈 요청에 실패하였습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
