@@ -14,6 +14,7 @@ public enum UriGenerator {
     RIOT_CHAMPION_MASTERY("https://kr.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{encryptedPUUID}/by-champion/{championId}"),
     RIOT_SUMMONER("https://kr.api.riotgames.com/lol/summoner/v4/summoners/{encryptedSummonerId}"),
     RIOT_LEAGUE("https://kr.api.riotgames.com/lol/league/v4/entries/{queue}/{tier}/{division}"),
+    RIOT_LEAGUE_SUMMONER_ID("https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/{encryptedSummonerId}"),
     RIOT_MATCH("https://asia.api.riotgames.com/lol/match/v5/matches/{matchId}"),
     RIOT_MATCH_PUUID("https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids");
 
