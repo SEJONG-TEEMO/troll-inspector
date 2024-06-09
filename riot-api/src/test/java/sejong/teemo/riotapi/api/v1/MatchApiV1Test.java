@@ -40,4 +40,19 @@ public class MatchApiV1Test {
         resultActions.andExpect(status().isOk())
                 .andDo(print());
     }
+
+    @Test
+    void 유저의_이름과_태그를_입력하여_소환사_매치_퍼포먼스_데이터를_응답_받는다() throws Exception {
+        // given
+        String gameName = "alh";
+        String tagLine = "KR1";
+
+        // when
+        ResultActions resultActions = mockMvc.perform(get("/teemo.gg/api/v1/match/summoner-performance/{gameName}/{tagLine}", gameName, tagLine)
+                .accept(MediaType.APPLICATION_JSON));
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
+    }
 }
