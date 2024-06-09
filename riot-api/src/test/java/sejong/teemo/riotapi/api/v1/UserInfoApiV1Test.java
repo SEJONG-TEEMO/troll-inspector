@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import sejong.teemo.riotapi.facade.UserInfoFacade;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -23,9 +22,6 @@ class UserInfoApiV1Test {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private UserInfoFacade userInfoFacade;
 
     @Test
     void 소환사_통합_정보_API_응답_테스트() throws Exception {
