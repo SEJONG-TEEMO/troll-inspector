@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import sejong.teemo.riotapi.dto.Account;
-import sejong.teemo.riotapi.dto.Champion;
 import sejong.teemo.riotapi.dto.ChampionMastery;
 import sejong.teemo.riotapi.dto.Spectator;
 import sejong.teemo.riotapi.exception.ExceptionProvider;
@@ -74,9 +73,5 @@ public class SpectatorService {
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_ACCOUNT_API_CALL_FAILED);
                 }))
                 .body(ChampionMastery.class);
-    }
-
-    public Champion callChampionKDA(String puuid, Long championId) {
-        return null;
     }
 }
