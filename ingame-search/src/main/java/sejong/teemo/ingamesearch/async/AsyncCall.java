@@ -27,7 +27,7 @@ public class AsyncCall<I, O> {
         this.lists = lists;
     }
 
-    public List<O> asyncCallApi(int nThread, Function<I, O> function) {
+    public List<O> execute(int nThread, Function<I, O> function) {
         try (ExecutorService executorService = Executors.newFixedThreadPool(nThread)) {
             List<CompletableFuture<O>> futures = lists.stream()
                     .map(list -> CompletableFuture.supplyAsync(() -> function.apply(list), executorService))
@@ -35,8 +35,8 @@ public class AsyncCall<I, O> {
 
             return futures.stream().map(CompletableFuture::join).toList();
         } catch (Exception e) {
-            log.error("champion mastery call error = {}", e.getMessage());
-            throw new FailedApiCallingException(ExceptionProvider.RIOT_CHAMPION_MASTERY_API_CALL_FAILED);
+            log.error("call error = {}", e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }

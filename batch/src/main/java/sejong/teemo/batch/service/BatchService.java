@@ -6,7 +6,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import sejong.teemo.batch.dto.LeagueSummonerDto;
+import sejong.teemo.batch.dto.UserInfoDto;
 import sejong.teemo.batch.exception.ExceptionProvider;
 import sejong.teemo.batch.exception.FailedApiCallingException;
 
@@ -22,14 +22,17 @@ public class BatchService {
 
     private final RestClient restClient;
 
-    public List<LeagueSummonerDto> callRiotApiLeagueSummoner(String division, String tier, String queue, int page) {
+    public List<UserInfoDto> callApiUserInfo(String division, String tier, String queue, int page) {
+
         return restClient.get()
-                .uri(RIOT_API_LEAGUE_SUMMONER.generate().queryParam("page", page).build(division, tier, queue))
+                .uri(RIOT_API_USER_INFO.generate().queryParam("page", page).build(division, tier, queue))
                 .accept(APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.error("Riot API league summoner call failed = {}", response);
-                    throw new FailedApiCallingException(ExceptionProvider.RIOT_API_MODULE_LEAGUE_SUMMONER_FAILED);
+                    log.info("user info = {}", request.getURI());
+                    log.error("user info api call error!! = {}", response.getStatusText());
+                    throw  new FailedApiCallingException(ExceptionProvider.RIOT_API_MODULE_USER_INFO_FAILED);
                 })).body(new ParameterizedTypeReference<>() {});
     }
+
 }

@@ -2,17 +2,19 @@ package sejong.teemo.ingamesearch.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import sejong.teemo.ingamesearch.dto.Account;
-import sejong.teemo.ingamesearch.dto.Champion;
 import sejong.teemo.ingamesearch.dto.ChampionMastery;
-import sejong.teemo.ingamesearch.dto.Spectator;
+import sejong.teemo.ingamesearch.dto.LeagueEntryDto;
+import sejong.teemo.ingamesearch.dto.SummonerDto;
 import sejong.teemo.ingamesearch.exception.ExceptionProvider;
 import sejong.teemo.ingamesearch.exception.FailedApiCallingException;
-import sejong.teemo.ingamesearch.generator.ApiUrlGenerator;
-import sejong.teemo.ingamesearch.property.ApikeyProperties;
+import sejong.teemo.ingamesearch.generator.UriGenerator;
+
+import java.util.List;
 
 import static org.springframework.http.MediaType.*;
 
@@ -22,61 +24,52 @@ import static org.springframework.http.MediaType.*;
 public class SpectatorService {
 
     private final RestClient restClient;
-    private final ApikeyProperties apikeyProperties;
 
-    private static final String API_KEY = "X-Riot-Token";
-
-    public Spectator callRiotSpectatorV5(String puuid) {
-
-        log.info("[callRiotSpectatorV5]");
-        log.info("puuid = {}", puuid);
-
+    public List<ChampionMastery> callApiSpectator(String gameName, String tagLine) {
         return restClient.get()
-                .uri(ApiUrlGenerator.RIOT_SPECTATOR.generateUri(puuid))
+                .uri(UriGenerator.RIOT_API_SPECTATOR.generate(gameName, tagLine))
                 .accept(APPLICATION_JSON)
-                .header(API_KEY, apikeyProperties.apiKey())
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.info("get uri = {}", request.getURI());
-                    log.error("spectator error status = {} message = {}", response.getStatusCode(), response.getStatusText());
+                    log.info("riot module spectator URI = {}", request.getURI());
+                    log.error("riot module spectator response = {}", response.getStatusText());
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_SPECTATOR_API_CALL_FAILED);
-                }))
-                .body(Spectator.class);
+                })).body(new ParameterizedTypeReference<>() {});
     }
 
-    public Account callRiotPUUID(String gameName, String tag) {
-
-        log.info("api key = {}", apikeyProperties.apiKey());
-
+    public Account callApiAccount(String puuid) {
         return restClient.get()
-                .uri(ApiUrlGenerator.RIOT_ACCOUNT.generateUri(gameName, tag))
+                .uri(UriGenerator.RIOT_API_ACCOUNT.generate(puuid))
                 .accept(APPLICATION_JSON)
-                .header(API_KEY, apikeyProperties.apiKey())
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.error("account error status = {}, message = {}", response.getStatusCode(), response.getStatusText());
-                    throw new FailedApiCallingException(ExceptionProvider.RIOT_ACCOUNT_API_CALL_FAILED);
-                }))
-                .body(Account.class);
+                    log.info("riot module account URI = {}", request.getURI());
+                    log.error("riot module account response = {}", response.getStatusText());
+                    throw new FailedApiCallingException(ExceptionProvider.RIOT_SPECTATOR_API_CALL_FAILED);
+                })).body(Account.class);
     }
 
-    public ChampionMastery callRiotChampionMastery(String puuid, Long championId) {
-
-        log.info("puuid = {}, championId = {}", puuid, championId);
-
+    public SummonerDto callApiSummoner(String summonerId) {
         return restClient.get()
-                .uri(ApiUrlGenerator.RIOT_CHAMPION_MASTERY.generateUri(puuid, championId))
+                .uri(UriGenerator.RIOT_API_SUMMONER.generate(summonerId))
                 .accept(APPLICATION_JSON)
-                .header(API_KEY, apikeyProperties.apiKey())
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.error("champion mastery error status = {}, message = {}", response.getStatusCode(), response.getStatusText());
-                    throw new FailedApiCallingException(ExceptionProvider.RIOT_ACCOUNT_API_CALL_FAILED);
-                }))
-                .body(ChampionMastery.class);
+                    log.info("riot module summoner URI = {}", request.getURI());
+                    log.error("riot module summoner response = {}", response.getStatusText());
+                    throw new FailedApiCallingException(ExceptionProvider.RIOT_SPECTATOR_API_CALL_FAILED);
+                })).body(SummonerDto.class);
     }
 
-    public Champion callChampionKDA(String puuid, Long championId) {
-        return null;
+    public LeagueEntryDto callApiLeagueEntry(String summonerId) {
+        return restClient.get()
+                .uri(UriGenerator.RIOT_API_LEAGUE_SUMMONER_ID.generate(summonerId))
+                .accept(APPLICATION_JSON)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
+                    log.info("riot module league URI = {}", request.getURI());
+                    log.error("riot module league response = {}", response.getStatusText());
+                    throw new FailedApiCallingException(ExceptionProvider.RIOT_SPECTATOR_API_CALL_FAILED);
+                }).body(LeagueEntryDto.class);
     }
 }

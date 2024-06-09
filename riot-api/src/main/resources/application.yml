@@ -1,2 +1,9 @@
+spring:
+  threads:
+    virtual:
+      enabled: true
+
 riot:
   api-key: ${API_KEY}
+
+
