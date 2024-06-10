@@ -14,7 +14,9 @@ public enum ExceptionProvider implements ErrorResponse {
     RIOT_CHAMPION_MASTERY_API_CALL_FAILED(HttpStatus.NOT_FOUND, "CHAMPION_MASTERY_100", "CHAMPION_MASTERY API 호출에 실패하였습니다."),
     RIOT_LEAGUE_API_CALL_FAILED(HttpStatus.NOT_FOUND, "LEAGUE_100", "LEAGUE API 호출에 실패하였습니다."),
     RIOT_SUMMONER_API_CALL_FAILED(HttpStatus.NOT_FOUND, "SUMMONER_100", "SUMMONER API 호출에 실패하였습니다."),
-    RIOT_MATCH_API_CALL_FAILED(HttpStatus.NOT_FOUND, "MATCH_100", "MATCH API 호출에 실패하였습니다.");
+    RIOT_MATCH_API_CALL_FAILED(HttpStatus.NOT_FOUND, "MATCH_100", "MATCH API 호출에 실패하였습니다."),
+
+    NOT_FOUND_SUMMONER(HttpStatus.NOT_FOUND, "NOT_FOUND_SUMMONER_100", "소환사를 찾는데에 실패하였습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

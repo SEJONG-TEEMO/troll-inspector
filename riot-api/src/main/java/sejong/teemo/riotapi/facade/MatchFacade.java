@@ -9,6 +9,8 @@ import sejong.teemo.riotapi.dto.SummonerPerformance;
 import sejong.teemo.riotapi.dto.match.MatchDataDto;
 import sejong.teemo.riotapi.dto.match.MatchDto;
 import sejong.teemo.riotapi.dto.match.ParticipantDto;
+import sejong.teemo.riotapi.exception.ExceptionProvider;
+import sejong.teemo.riotapi.exception.NotFoundException;
 import sejong.teemo.riotapi.service.AccountService;
 import sejong.teemo.riotapi.service.MatchService;
 
@@ -75,7 +77,7 @@ public class MatchFacade {
         int targetIdx = IntStream.rangeClosed(0, participants.size() - 1)
                 .filter(idx -> Objects.equals(participants.get(idx).puuid(), account.puuid()))
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow(() -> new NotFoundException(ExceptionProvider.NOT_FOUND_SUMMONER));
 
         return this.getSummonerPerformance(targetIdx, participants.get(targetIdx), account);
     }
