@@ -5,6 +5,7 @@ import sejong.teemo.riotapi.dto.match.ParticipantDto;
 
 @Builder
 public record SummonerPerformance(
+        int championId,
         String puuid,
         int targetIndex,
         String username,
@@ -29,6 +30,7 @@ public record SummonerPerformance(
 
     public static SummonerPerformance of(int targetIdx, ParticipantDto participantDto, Account account) {
         return SummonerPerformance.builder()
+                .championId(participantDto.championId())
                 .puuid(participantDto.puuid())
                 .targetIndex(targetIdx)
                 .username(account.gameName() + "#" + account.tagLine())
