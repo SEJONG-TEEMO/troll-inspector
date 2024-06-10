@@ -36,7 +36,7 @@ public class AsyncCall<I, O> {
             return futures.stream().map(CompletableFuture::join).toList();
         } catch (Exception e) {
             log.error("call error = {}", e.getMessage());
-            throw new FailedApiCallingException(ExceptionProvider.RIOT_CHAMPION_MASTERY_API_CALL_FAILED);
+            throw new RuntimeException(e);
         }
     }
 }

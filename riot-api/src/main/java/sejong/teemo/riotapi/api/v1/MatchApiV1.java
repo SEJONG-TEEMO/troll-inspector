@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sejong.teemo.riotapi.dto.SummonerPerformance;
 import sejong.teemo.riotapi.dto.match.MatchDataDto;
 import sejong.teemo.riotapi.dto.match.MatchDto;
 import sejong.teemo.riotapi.facade.MatchFacade;
@@ -26,6 +27,13 @@ public class MatchApiV1 {
                                                        @PathVariable("tagLine") String tagLine) {
 
         return ResponseEntity.ok(matchFacade.callRiotMatch(gameName, tagLine));
+    }
+
+    @GetMapping("/match/summoner-performance/{gameName}/{tagLine}")
+    public ResponseEntity<List<SummonerPerformance>> callApiMatchSummonerPerformance(@PathVariable("gameName") String gameName,
+                                                                                     @PathVariable("tagLine") String tagLine) {
+
+        return ResponseEntity.ok(matchFacade.callRiotSummonerPerformance(gameName, tagLine));
     }
 
     @GetMapping("/match/{puuid}")

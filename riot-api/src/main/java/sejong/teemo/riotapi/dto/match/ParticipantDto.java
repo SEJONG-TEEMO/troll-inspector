@@ -13,6 +13,8 @@ public record ParticipantDto(
         int magicDamageDealtToChampions,
         int detectorWardsPlaced,
         int damageDealtToBuildings,
-        int teleportTakedowns
+        int teleportTakedowns,
+        int totalMinionsKilled,
+        ChallengesDto challenges
 ) {
 }

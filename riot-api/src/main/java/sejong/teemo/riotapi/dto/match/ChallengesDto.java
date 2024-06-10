@@ -10,6 +10,7 @@ public record ChallengesDto(
         int controlWardsPlaced,
         int dragonTakedowns,
         int baronTakedowns,
+        double killParticipation,
         int teleportTakedowns
 ) {
 }
