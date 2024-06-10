@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record ParticipantDto(
+        int championId,
         String puuid,
         String lane,
         int kills,
