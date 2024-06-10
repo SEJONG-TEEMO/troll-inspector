@@ -1,7 +1,6 @@
 package sejong.teemo.riotapi.dto;
 
 import lombok.Builder;
-import sejong.teemo.riotapi.dto.match.MatchDto;
 import sejong.teemo.riotapi.dto.match.ParticipantDto;
 
 @Builder
