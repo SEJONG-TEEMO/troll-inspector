@@ -6,16 +6,14 @@ import org.springframework.stereotype.Component;
 import sejong.teemo.riotapi.async.AsyncCall;
 import sejong.teemo.riotapi.dto.Account;
 import sejong.teemo.riotapi.dto.SummonerPerformance;
-import sejong.teemo.riotapi.dto.match.InfoDto;
 import sejong.teemo.riotapi.dto.match.MatchDataDto;
 import sejong.teemo.riotapi.dto.match.MatchDto;
 import sejong.teemo.riotapi.dto.match.ParticipantDto;
-import sejong.teemo.riotapi.exception.ExceptionProvider;
-import sejong.teemo.riotapi.exception.FailedApiCallingException;
 import sejong.teemo.riotapi.service.AccountService;
 import sejong.teemo.riotapi.service.MatchService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 @Component
@@ -53,13 +51,10 @@ public class MatchFacade {
                 MatchDto.of(gameName, tagLine, matchService.callRiotApiMatchMatchId(matchId))
         );
 
-        return matchDtoList.stream()
-                .map(MatchDto::matchDataDto)
-                .map(MatchDataDto::info)
-                .map(InfoDto::participants)
-                .map(this::mapToSummonerPerformance)
-                .findAny()
-                .orElseThrow(() -> new FailedApiCallingException(ExceptionProvider.RIOT_ACCOUNT_API_CALL_FAILED));
+        return IntStream.rangeClosed(0, matchDtoList.size() - 1)
+                .parallel()
+                .mapToObj(index-> returnSummonerPerformanceTrackingTargetIdx(index, matchDtoList, account))
+                .toList();
     }
 
     public List<MatchDataDto> callRiotMatch(String puuid) {
@@ -71,17 +66,21 @@ public class MatchFacade {
         return asyncCall.execute(10, matchService::callRiotApiMatchMatchId);
     }
 
-    private List<SummonerPerformance> mapToSummonerPerformance(List<ParticipantDto> participants) {
-        return IntStream.rangeClosed(0, participants.size() - 1)
-                .parallel()
-                .mapToObj(targetIdx -> getSummonerPerformance(participants, targetIdx))
-                .toList();
+    private SummonerPerformance returnSummonerPerformanceTrackingTargetIdx(int index, List<MatchDto> matchDtoList, Account account) {
+        List<ParticipantDto> participants = matchDtoList.get(index)
+                .matchDataDto()
+                .info()
+                .participants();
+
+        int targetIdx = IntStream.rangeClosed(0, participants.size() - 1)
+                .filter(idx -> Objects.equals(participants.get(idx).puuid(), account.puuid()))
+                .findFirst()
+                .orElseThrow();
+
+        return this.getSummonerPerformance(targetIdx, participants.get(targetIdx), account);
     }
 
-    private SummonerPerformance getSummonerPerformance(List<ParticipantDto> participants, int targetIdx) {
-        ParticipantDto participantDto = participants.get(targetIdx);
-        Account account = accountService.callRiotAccount(participantDto.puuid());
-
+    private SummonerPerformance getSummonerPerformance(int targetIdx, ParticipantDto participantDto, Account account) {
         return SummonerPerformance.of(targetIdx, participantDto, account);
     }
 }
