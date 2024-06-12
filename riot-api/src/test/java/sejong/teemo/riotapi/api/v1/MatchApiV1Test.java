@@ -55,4 +55,18 @@ public class MatchApiV1Test {
         resultActions.andExpect(status().isOk())
                 .andDo(print());
     }
+
+    @Test
+    void 유저의_PUUID_입력하여_소환사_매치_퍼포먼스_데이터를_응답_받는다() throws Exception {
+        // given
+        String puuid = "GwKWTBNed920B3CvgGC45kzIplxjIdStCnz2Usy4iw_96FH7MlwLVigmIu_nQx_CeRgl7zu5RJp-pQ";
+
+        // when
+        ResultActions resultActions = mockMvc.perform(get("/teemo.gg/api/v1/match/summoner-performance/{puuid}", puuid)
+                .accept(MediaType.APPLICATION_JSON));
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
+    }
 }
