@@ -34,15 +34,15 @@ public class PlayerStatsService {
 
     private final ElasticsearchClient elasticsearchClient;
 
-    public List<SummonerPerformanceRecord> searchGameData(String username) {
+    public List<SummonerPerformanceRecord> searchGameData(String puuid) {
 
         try {
             SearchResponse<SummonerPerformanceRecord> searchResponse = elasticsearchClient.search(s -> s
                             .index("player_performance")
                             .query(q -> q
                                     .match(t -> t
-                                            .field("username")
-                                            .query(username)
+                                            .field("puuid")
+                                            .query(puuid)
                                     )
                             ),
                     SummonerPerformanceRecord.class
@@ -57,7 +57,7 @@ public class PlayerStatsService {
         }
     }
 
-    public GameInspectorRecord analyzePerformance(String username) {
+    public GameInspectorRecord analyzePerformance(String puuid) {
 
         SearchResponse<AggregationResultsRecord> search;
         try {
@@ -93,7 +93,7 @@ public class PlayerStatsService {
      */
     ContainerBuilder buildPerformanceStatsAggregation(Builder builder) {
         return builder.terms(t -> t
-                .field("username.keyword")
+                .field("puuid.keyword")
                 .size(20)
         ).aggregations("average_kills", avg -> addAverageAggregation(avg, "kills")
         ).aggregations("average_deaths", avg -> addAverageAggregation(avg, "deaths")
