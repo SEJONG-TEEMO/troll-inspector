@@ -12,6 +12,7 @@ import org.springframework.web.client.RestClient;
 import sejong.teemo.batch.dto.UserInfoDto;
 import sejong.teemo.batch.exception.ExceptionProvider;
 import sejong.teemo.batch.exception.FailedApiCallingException;
+import sejong.teemo.batch.exception.FailedRetryException;
 
 import java.util.List;
 
@@ -47,6 +48,6 @@ public class BatchService {
     @Recover
     public List<UserInfoDto> returnEmptyList(FailedApiCallingException e, String division, String tier, String queue, int page) {
         log.info("recover method execute = {}", e.getMessage());
-        return List.of();
+        throw new FailedRetryException(ExceptionProvider.RETRY_FAILED);
     }
 }
