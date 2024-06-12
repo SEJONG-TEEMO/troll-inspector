@@ -8,7 +8,6 @@ public record SummonerPerformance(
         int championId,
         String puuid,
         int targetIndex,
-        String username,
         String lane,
         Double kda,
         Double killParticipation,
@@ -28,12 +27,11 @@ public record SummonerPerformance(
         int totalMinionsKilled
 ) {
 
-    public static SummonerPerformance of(int targetIdx, ParticipantDto participantDto, Account account) {
+    public static SummonerPerformance of(int targetIdx, ParticipantDto participantDto) {
         return SummonerPerformance.builder()
                 .championId(participantDto.championId())
                 .puuid(participantDto.puuid())
                 .targetIndex(targetIdx)
-                .username(account.gameName() + "#" + account.tagLine())
                 .lane(participantDto.lane())
                 .kda(participantDto.challenges().kda())
                 .kills(participantDto.kills())

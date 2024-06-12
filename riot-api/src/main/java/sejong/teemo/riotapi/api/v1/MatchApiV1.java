@@ -36,6 +36,11 @@ public class MatchApiV1 {
         return ResponseEntity.ok(matchFacade.callRiotSummonerPerformance(gameName, tagLine));
     }
 
+    @GetMapping("/match/summoner-performance/{puuid}")
+    public ResponseEntity<List<SummonerPerformance>> callApiMatchSummonerPerformance(@PathVariable("puuid") String puuid) {
+        return ResponseEntity.ok(matchFacade.callRiotSummonerPerformance(puuid));
+    }
+
     @GetMapping("/match/{puuid}")
     public ResponseEntity<List<MatchDataDto>> callApiMatch(@PathVariable String puuid) {
         return ResponseEntity.ok(matchFacade.callRiotMatch(puuid));

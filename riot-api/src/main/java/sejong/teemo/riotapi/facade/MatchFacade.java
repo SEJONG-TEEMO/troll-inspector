@@ -42,6 +42,20 @@ public class MatchFacade {
         );
     }
 
+    public List<SummonerPerformance> callRiotSummonerPerformance(String puuid) {
+        List<String> matchDtos = matchService.callRiotApiMatchPuuid(puuid);
+
+        AsyncCall<String, MatchDataDto> asyncCall = new AsyncCall<>(matchDtos);
+
+        List<MatchDataDto> matchDtoList = asyncCall.execute(10, matchService::callRiotApiMatchMatchId);
+
+        return IntStream.rangeClosed(0, matchDtoList.size() - 1)
+                .parallel()
+                .mapToObj(index-> returnSummonerPerformanceTrackingTargetIdx(index, matchDtoList, puuid))
+                .toList();
+    }
+
+    @Deprecated
     public List<SummonerPerformance> callRiotSummonerPerformance(String gameName, String tagLine) {
         Account account = accountService.callRiotAccount(gameName, tagLine);
 
@@ -68,6 +82,7 @@ public class MatchFacade {
         return asyncCall.execute(10, matchService::callRiotApiMatchMatchId);
     }
 
+    @Deprecated
     private SummonerPerformance returnSummonerPerformanceTrackingTargetIdx(int index, List<MatchDto> matchDtoList, Account account) {
         List<ParticipantDto> participants = matchDtoList.get(index)
                 .matchDataDto()
@@ -79,10 +94,23 @@ public class MatchFacade {
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException(ExceptionProvider.NOT_FOUND_SUMMONER));
 
-        return this.getSummonerPerformance(targetIdx, participants.get(targetIdx), account);
+        return this.getSummonerPerformance(targetIdx, participants.get(targetIdx));
     }
 
-    private SummonerPerformance getSummonerPerformance(int targetIdx, ParticipantDto participantDto, Account account) {
-        return SummonerPerformance.of(targetIdx, participantDto, account);
+    private SummonerPerformance returnSummonerPerformanceTrackingTargetIdx(int index, List<MatchDataDto> matchDtoList, String puuid) {
+        List<ParticipantDto> participants = matchDtoList.get(index)
+                .info()
+                .participants();
+
+        int targetIdx = IntStream.rangeClosed(0, participants.size() - 1)
+                .filter(idx -> Objects.equals(participants.get(idx).puuid(), puuid))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(ExceptionProvider.NOT_FOUND_SUMMONER));
+
+        return this.getSummonerPerformance(targetIdx, participants.get(targetIdx));
+    }
+
+    private SummonerPerformance getSummonerPerformance(int targetIdx, ParticipantDto participantDto) {
+        return SummonerPerformance.of(targetIdx, participantDto);
     }
 }
