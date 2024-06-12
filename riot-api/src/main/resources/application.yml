@@ -5,5 +5,3 @@ spring:
 
 riot:
   api-key: ${API_KEY}
-
-
