@@ -28,11 +28,13 @@ public class BatchService {
 
     @Retryable(
             retryFor = FailedApiCallingException.class,
-            backoff = @Backoff(delay = 10000),
+            backoff = @Backoff(delay = 10000, multiplier = 2),
             recover = "returnEmptyList",
             maxAttempts = 5
     )
     public List<UserInfoDto> callApiUserInfo(String division, String tier, String queue, int page) {
+
+        trackingRetryLog();
 
         return restClient.get()
                 .uri(RIOT_API_USER_INFO.generate().queryParam("page", page).build(division, tier, queue))
@@ -49,5 +51,9 @@ public class BatchService {
     public List<UserInfoDto> returnEmptyList(FailedApiCallingException e, String division, String tier, String queue, int page) {
         log.info("recover method execute = {}", e.getMessage());
         throw new FailedRetryException(ExceptionProvider.RETRY_FAILED);
+    }
+
+    private void trackingRetryLog() {
+        log.info("batch service try!!");
     }
 }
