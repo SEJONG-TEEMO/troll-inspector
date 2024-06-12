@@ -17,8 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class TestContainer {
 
-    public static final String MYSQL_DB = "mysqldb";
-    public static final int MY_SQL_PORT = 3306;
+    private static final String MYSQL_DB = "mysqldb";
+    private static final int MY_SQL_PORT = 3306;
     private static final String MYSQL_VERSION = "mysql:8.2.0";
 
     @Container
@@ -26,6 +26,7 @@ public class TestContainer {
 
     static {
         mySqlContainer.withDatabaseName(MYSQL_DB);
+        mySqlContainer.withInitScript("schema-mysql.sql");
     }
 
     @DynamicPropertySource
