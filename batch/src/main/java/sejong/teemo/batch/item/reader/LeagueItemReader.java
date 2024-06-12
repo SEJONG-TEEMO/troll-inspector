@@ -3,6 +3,8 @@ package sejong.teemo.batch.item.reader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemReader;
 import sejong.teemo.batch.dto.UserInfoDto;
+import sejong.teemo.batch.exception.ExceptionProvider;
+import sejong.teemo.batch.exception.FailedRetryException;
 import sejong.teemo.batch.service.BatchService;
 
 import java.util.List;
@@ -31,10 +33,14 @@ public class LeagueItemReader implements ItemReader<List<UserInfoDto>> {
 
         Thread.sleep(9000L);
 
-        List<UserInfoDto> userInfoDtos = batchService.callApiUserInfo(division, tier, queue, page);
+        try {
+            List<UserInfoDto> userInfoDtos = batchService.callApiUserInfo(division, tier, queue, page);
 
-        if (userInfoDtos.isEmpty()) return null;
+            if (userInfoDtos.isEmpty()) return null;
 
-        return userInfoDtos;
+            return userInfoDtos;
+        } catch (FailedRetryException e) {
+            throw new FailedRetryException(ExceptionProvider.RETRY_FAILED);
+        }
     }
 }
