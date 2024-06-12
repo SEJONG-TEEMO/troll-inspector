@@ -17,6 +17,7 @@ import sejong.teemo.batch.config.RetryConfig;
 import sejong.teemo.batch.dto.UserInfoDto;
 import sejong.teemo.batch.exception.ExceptionProvider;
 import sejong.teemo.batch.exception.FailedApiCallingException;
+import sejong.teemo.batch.exception.FailedRetryException;
 import sejong.teemo.batch.job.DivisionInfo;
 import sejong.teemo.batch.job.TierInfo;
 import sejong.teemo.batch.service.BatchService;
@@ -111,10 +112,10 @@ public class RetryBatchTest {
                 .willThrow(new FailedApiCallingException(ExceptionProvider.RIOT_API_MODULE_LEAGUE_SUMMONER_FAILED));
 
         // when
-        List<UserInfoDto> userInfoDtos = batchService.callApiUserInfo(division, tier, queue, 1);
+        assertThatThrownBy(() -> batchService.callApiUserInfo(division, tier, queue, 1))
+                .isInstanceOf(FailedRetryException.class);
 
         // then
-        assertThat(userInfoDtos).hasSize(0);
 
         then(restClient).should(times(tryCount)).get();
         then(requestHeadersUriSpec).should(times(tryCount)).uri(any(URI.class));
