@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/matches/search")
+@RequestMapping("/api/troll-inspector/v1")
 @Slf4j
 public class MatchSearchController {
 
@@ -29,8 +29,8 @@ public class MatchSearchController {
     }
 
     @GetMapping("/ids/analyze")
-    public ResponseEntity<GameInspectorRecord> analyzeSummonerPerformance(@RequestParam String gameName) {
-        GameInspectorRecord stringSearchResponse = playerStatsService.analyzePerformance(gameName);
+    public ResponseEntity<GameInspectorRecord> analyzeSummonerPerformance(@RequestParam String puuid) {
+        GameInspectorRecord stringSearchResponse = playerStatsService.analyzePerformance(puuid);
         log.info(stringSearchResponse.toString());
         return ResponseEntity.ok(stringSearchResponse);
     }
