@@ -1,4 +1,4 @@
-CREATE TABLE user_info
+CREATE TEMPORARY TABLE user_info
 (
     id              BIGINT AUTO_INCREMENT NOT NULL,
     game_name       VARCHAR(255)          NOT NULL,
@@ -17,5 +17,3 @@ CREATE TABLE user_info
     summoner_level  BIGINT                NOT NULL,
     CONSTRAINT pk_user_info PRIMARY KEY (id)
 );
-
-CREATE INDEX game_name_and_tag_line_idx ON user_info (game_name, tag_line);
