@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.ingame.generator;
+package sejong.teemo.ingamesearch.common.generator;
 
 import lombok.Getter;
 import org.springframework.web.util.UriComponentsBuilder;

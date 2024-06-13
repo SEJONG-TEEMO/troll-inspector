@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.ingame.async;
+package sejong.teemo.ingamesearch.common.async;
 
 import lombok.extern.slf4j.Slf4j;
 

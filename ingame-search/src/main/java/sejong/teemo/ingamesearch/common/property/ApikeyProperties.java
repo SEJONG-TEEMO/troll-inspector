@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.ingame.property;
+package sejong.teemo.ingamesearch.common.property;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.ingame.config;
+package sejong.teemo.ingamesearch.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
