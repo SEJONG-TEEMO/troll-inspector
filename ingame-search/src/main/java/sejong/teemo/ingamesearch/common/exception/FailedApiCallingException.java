@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.ingame.exception;
+package sejong.teemo.ingamesearch.common.exception;
 
 import lombok.Getter;
 
