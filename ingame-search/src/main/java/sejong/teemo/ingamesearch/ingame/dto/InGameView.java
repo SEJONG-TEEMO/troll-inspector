@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.dto;
+package sejong.teemo.ingamesearch.ingame.dto;
 
 import lombok.Builder;
 

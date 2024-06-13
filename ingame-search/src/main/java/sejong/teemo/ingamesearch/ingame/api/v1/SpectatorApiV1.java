@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.api.v1;
+package sejong.teemo.ingamesearch.ingame.api.v1;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;

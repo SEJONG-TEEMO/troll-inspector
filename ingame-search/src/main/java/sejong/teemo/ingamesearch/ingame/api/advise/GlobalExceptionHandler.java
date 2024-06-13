@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.api.advise;
+package sejong.teemo.ingamesearch.ingame.api.advise;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import sejong.teemo.ingamesearch.exception.FailedApiCallingException;
+import sejong.teemo.ingamesearch.ingame.exception.FailedApiCallingException;
 
 @Slf4j
 @RestControllerAdvice(annotations = RestController.class)

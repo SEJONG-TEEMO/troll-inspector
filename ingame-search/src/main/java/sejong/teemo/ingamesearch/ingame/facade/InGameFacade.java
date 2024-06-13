@@ -1,10 +1,12 @@
-package sejong.teemo.ingamesearch.facade;
+package sejong.teemo.ingamesearch.ingame.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import sejong.teemo.ingamesearch.async.AsyncCall;
+import sejong.teemo.ingamesearch.ingame.async.AsyncCall;
 import sejong.teemo.ingamesearch.dto.*;
-import sejong.teemo.ingamesearch.service.SpectatorService;
+import sejong.teemo.ingamesearch.ingame.dto.ChampionMastery;
+import sejong.teemo.ingamesearch.ingame.dto.InGameView;
+import sejong.teemo.ingamesearch.ingame.service.SpectatorService;
 
 import java.util.List;
 

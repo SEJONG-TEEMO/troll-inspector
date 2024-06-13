@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.service;
+package sejong.teemo.ingamesearch.ingame.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,13 +6,13 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import sejong.teemo.ingamesearch.dto.Account;
-import sejong.teemo.ingamesearch.dto.ChampionMastery;
-import sejong.teemo.ingamesearch.dto.LeagueEntryDto;
-import sejong.teemo.ingamesearch.dto.SummonerDto;
-import sejong.teemo.ingamesearch.exception.ExceptionProvider;
-import sejong.teemo.ingamesearch.exception.FailedApiCallingException;
-import sejong.teemo.ingamesearch.generator.UriGenerator;
+import sejong.teemo.ingamesearch.ingame.dto.Account;
+import sejong.teemo.ingamesearch.ingame.dto.ChampionMastery;
+import sejong.teemo.ingamesearch.ingame.dto.LeagueEntryDto;
+import sejong.teemo.ingamesearch.ingame.dto.SummonerDto;
+import sejong.teemo.ingamesearch.ingame.exception.ExceptionProvider;
+import sejong.teemo.ingamesearch.ingame.exception.FailedApiCallingException;
+import sejong.teemo.ingamesearch.ingame.generator.UriGenerator;
 
 import java.util.List;
 

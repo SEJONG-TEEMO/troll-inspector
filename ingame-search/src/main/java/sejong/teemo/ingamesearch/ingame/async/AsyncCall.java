@@ -1,8 +1,6 @@
-package sejong.teemo.ingamesearch.async;
+package sejong.teemo.ingamesearch.ingame.async;
 
 import lombok.extern.slf4j.Slf4j;
-import sejong.teemo.ingamesearch.exception.ExceptionProvider;
-import sejong.teemo.ingamesearch.exception.FailedApiCallingException;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
