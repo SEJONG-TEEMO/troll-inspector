@@ -31,15 +31,19 @@ public class LeagueItemReader implements ItemReader<List<UserInfoDto>> {
 
         log.info("{}-{} page = {}", tier, division, page);
 
-        Thread.sleep(9000L);
+        Thread.sleep(15000L);
 
         try {
             List<UserInfoDto> userInfoDtos = batchService.callApiUserInfo(division, tier, queue, page);
 
-            if (userInfoDtos.isEmpty()) return null;
+            if (userInfoDtos.isEmpty()) {
+                log.info("{}-{} finish!!", tier, division);
+                return null;
+            }
 
             return userInfoDtos;
         } catch (FailedRetryException e) {
+            log.error("{}-{} failed = {}", tier, division, e.getMessage());
             throw new FailedRetryException(ExceptionProvider.RETRY_FAILED);
         }
     }
