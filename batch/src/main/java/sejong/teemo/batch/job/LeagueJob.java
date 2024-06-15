@@ -58,7 +58,7 @@ public class LeagueJob {
                 .writer(leagueInfoItemWriter())
                 .faultTolerant()
                 .skip(FailedRetryException.class)
-                .skipLimit(1)
+                .skipLimit(CHUNK_SIZE)
                 .build();
     }
 
