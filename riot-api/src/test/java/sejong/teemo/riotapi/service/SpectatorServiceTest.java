@@ -41,17 +41,13 @@ class SpectatorServiceTest extends TestExtension {
         this.summonerService = new SummonerService(restClientBuilder.build(), riotApiProperties);
     }
 
-    private static final String accountUrl = "/riot/account/v1/accounts/by-riot-id/";
-    private static final String spectatorUrl = "/lol/spectator/v5/active-games/by-summoner/";
-
-
     @Test
     void RIOT_API를_요청하여_ACCOUNT를_응답_받는다() {
         // given
         String gameName = "a1h";
         String tag = "KR1";
 
-        mockServer.expect(requestTo(accountUrl + gameName + "/" + tag))
+        mockServer.expect(requestTo(UriGenerator.RIOT_ACCOUNT.generateUri(gameName, tag)))
                 .andRespond(withSuccess(getAccount(), MediaType.APPLICATION_JSON));
 
         // when
@@ -68,14 +64,14 @@ class SpectatorServiceTest extends TestExtension {
         // given
         String puuid = "PUUID";
 
-        mockServer.expect(requestTo(spectatorUrl + puuid))
+        mockServer.expect(requestTo(UriGenerator.RIOT_SPECTATOR.generateUri(puuid)))
                 .andRespond(withSuccess(getSpectator(), MediaType.APPLICATION_JSON));
 
         // when
         Spectator spectator = spectatorService.callRiotSpectatorV5(puuid);
 
         // then
-        assertThat(spectator.gameType()).isEqualTo("type");
+        assertThat(spectator.gameType()).isEqualTo("");
         assertThat(spectator.participants()).hasSize(0);
     }
 
@@ -84,7 +80,7 @@ class SpectatorServiceTest extends TestExtension {
         // given
         String malPuuid = "MAL_PUUID";
 
-        mockServer.expect(requestTo(spectatorUrl + malPuuid))
+        mockServer.expect(requestTo(UriGenerator.RIOT_SPECTATOR.generateUri(malPuuid)))
                 .andRespond(withResourceNotFound());
 
         // when && then
@@ -101,7 +97,7 @@ class SpectatorServiceTest extends TestExtension {
 
         int page = 1;
 
-        mockServer.expect(requestTo(UriGenerator.RIOT_LEAGUE.generateUri().queryParam("page", page).build(queue, tier, division)))
+        mockServer.expect(requestTo(UriGenerator.RIOT_LEAGUE.generateUri().queryParam("page", page).build(queue,tier, division)))
                 .andRespond(withSuccess(getLeague(), MediaType.APPLICATION_JSON));
 
         // when
