@@ -24,6 +24,7 @@ public class UserInfoFacade {
     private final SummonerService summonerService;
     private final AccountService accountService;
 
+    @Deprecated
     public List<UserInfoDto> callApiUserInfo(String division, String tier, String queue, int page) {
         List<LeagueEntryDto> leagueEntryDtos = leagueService.callRiotLeague(division, tier, queue, page);
 
