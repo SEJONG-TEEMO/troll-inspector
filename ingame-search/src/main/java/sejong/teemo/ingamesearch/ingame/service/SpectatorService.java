@@ -6,15 +6,10 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import sejong.teemo.ingamesearch.ingame.dto.Account;
-import sejong.teemo.ingamesearch.ingame.dto.ChampionMastery;
-import sejong.teemo.ingamesearch.ingame.dto.LeagueEntryDto;
-import sejong.teemo.ingamesearch.ingame.dto.SummonerDto;
-import sejong.teemo.ingamesearch.ingame.exception.ExceptionProvider;
-import sejong.teemo.ingamesearch.ingame.exception.FailedApiCallingException;
-import sejong.teemo.ingamesearch.ingame.generator.UriGenerator;
-
-import java.util.List;
+import sejong.teemo.ingamesearch.ingame.dto.*;
+import sejong.teemo.ingamesearch.common.exception.ExceptionProvider;
+import sejong.teemo.ingamesearch.common.exception.FailedApiCallingException;
+import sejong.teemo.ingamesearch.common.generator.UriGenerator;
 
 import static org.springframework.http.MediaType.*;
 
@@ -25,7 +20,7 @@ public class SpectatorService {
 
     private final RestClient restClient;
 
-    public List<ChampionMastery> callApiSpectator(String gameName, String tagLine) {
+    public SpectatorDto callApiSpectator(String gameName, String tagLine) {
         return restClient.get()
                 .uri(UriGenerator.RIOT_API_SPECTATOR.generate(gameName, tagLine))
                 .accept(APPLICATION_JSON)
