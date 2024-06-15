@@ -19,4 +19,23 @@ public record UserInfoDto(
         long revisionDate,
         long summonerLevel
 ) {
+
+    public static UserInfoDto of(LeagueEntryDto leagueEntryDto, SummonerDto summonerDto, Account account) {
+        return UserInfoDto.builder()
+                .gameName(account.gameName())
+                .tagLine(account.tagLine())
+                .puuid(account.puuid())
+                .accountId(summonerDto.accountId())
+                .summonerId(leagueEntryDto.summonerId())
+                .queueType(leagueEntryDto.queueType())
+                .tier(leagueEntryDto.tier())
+                .rank(leagueEntryDto.rank())
+                .wins(leagueEntryDto.wins())
+                .losses(leagueEntryDto.losses())
+                .leaguePoint(leagueEntryDto.leaguePoints())
+                .profileIconId(summonerDto.profileIconId())
+                .revisionDate(summonerDto.revisionDate())
+                .summonerLevel(summonerDto.summonerLevel())
+                .build();
+    }
 }

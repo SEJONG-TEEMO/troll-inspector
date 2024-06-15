@@ -8,11 +8,9 @@ import java.net.URI;
 @Getter
 public enum UriGenerator {
 
-    RIOT_API_LEAGUES("http://localhost:8080/teemo.gg/api/v1/league-to-summoner/{division}/{tier}/{queue}"),
-    RIOT_API_LEAGUE("http://localhost:8080/teemo.gg/api/v1/league/{division}/{tier}/{queue}"),
-    RIOT_API_SUMMONER("http://localhost:8080/teemo.gg/api/v1//summoner/{encryptedSummonerId}"),
-    RIOT_API_ACCOUNT("http://localhost:8080/teemo.gg/api/v1/account/{encryptedPuuid}"),
-    RIOT_API_USER_INFO("http://localhost:8080/teemo.gg/api/v1/user-info/{division}/{tier}/{queue}");
+    RIOT_LEAGUE("https://kr.api.riotgames.com/lol/league-exp/v4/entries/{queue}/{tier}/{division}"),
+    RIOT_LEAGUE_SUMMONER_ID("https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/{encryptedSummonerId}"),
+    RIOT_ACCOUNT("https://asia.api.riotgames.com/riot/account/v1/accounts/by-puuid/{puuid}");
 
     private final String url;
 
