@@ -17,6 +17,7 @@ public class LeagueItemWriter implements ItemWriter<List<UserInfo>> {
 
     @Override
     public void write(Chunk<? extends List<UserInfo>> chunk) throws Exception {
+        log.info("Writing league data");
         chunk.forEach(jdbcRepository::bulkInsert);
     }
 }
