@@ -11,9 +11,11 @@ public class RetryConfig {
 //    public RetryTemplate retryTemplate() {
 //        RetryTemplate retryTemplate = new RetryTemplate();
 //
-//        FixedBackOffPolicy fixedBackOffPolicy = new FixedBackOffPolicy();
-//        fixedBackOffPolicy.setBackOffPeriod(10000);
-//        retryTemplate.setBackOffPolicy(fixedBackOffPolicy);
+//        ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
+//        backOffPolicy.setInitialInterval(30000);
+//        backOffPolicy.setMultiplier(2);
+//        backOffPolicy.setMaxInterval(300000);
+//        retryTemplate.setBackOffPolicy(backOffPolicy);
 //
 //        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
 //        retryPolicy.setMaxAttempts(3);
