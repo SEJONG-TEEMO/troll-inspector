@@ -9,7 +9,7 @@ import java.net.URI;
 public enum UriGenerator {
 
     RIOT_LEAGUE("https://kr.api.riotgames.com/lol/league-exp/v4/entries/{queue}/{tier}/{division}"),
-    RIOT_LEAGUE_SUMMONER_ID("https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/{encryptedSummonerId}"),
+    RIOT_SUMMONER("https://kr.api.riotgames.com/lol/summoner/v4/summoners/{encryptedSummonerId}"),
     RIOT_ACCOUNT("https://asia.api.riotgames.com/riot/account/v1/accounts/by-puuid/{puuid}");
 
     private final String url;
