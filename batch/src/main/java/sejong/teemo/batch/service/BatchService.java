@@ -6,7 +6,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -17,7 +16,6 @@ import sejong.teemo.batch.dto.SummonerDto;
 import sejong.teemo.batch.dto.UserInfoDto;
 import sejong.teemo.batch.exception.ExceptionProvider;
 import sejong.teemo.batch.exception.FailedApiCallingException;
-import sejong.teemo.batch.exception.FailedRetryException;
 import sejong.teemo.batch.generator.UriGenerator;
 import sejong.teemo.batch.property.RiotApiProperties;
 
@@ -32,76 +30,75 @@ import static sejong.teemo.batch.generator.UriGenerator.*;
 public class BatchService {
 
     private final RestClient restClient;
-    private final RiotApiProperties properties;
+    private final RiotApiProperties riotApiProperties;
 
     private static final String API_KEY = "X-Riot-Token";
 
-    private static final int DELAY = 20000;
-    private static final double MULTIPLIER = 2.0;
-
     @Retryable(
-            retryFor = FailedApiCallingException.class,
-            backoff = @Backoff(delay = DELAY, multiplier = MULTIPLIER),
-            recover = "returnEmptyList"
+            retryFor = {FailedApiCallingException.class, RuntimeException.class},
+            backoff = @Backoff(delay = 60000, multiplier = 2),
+            recover = "recover"
     )
     public List<UserInfoDto> callApiUserInfo(String division, String tier, String queue, int page) {
-        List<LeagueEntryDto> leagueEntryDtos = this.callRiotLeague(division, tier, queue, page);
 
-        AsyncCall<LeagueEntryDto, UserInfoDto> asyncCall = new AsyncCall<>(leagueEntryDtos);
+        log.info("callApiUserInfo try!!");
 
-        return asyncCall.execute(10, leagueEntryDto -> {
-            SummonerDto summonerDto = this.callApiSummoner(leagueEntryDto.summonerId());
-            Account account = this.callRiotAccount(summonerDto.puuid());
+        try {
+            List<LeagueEntryDto> leagueEntryDtos = this.callRiotLeague(division, tier, queue, page);
 
-            return UserInfoDto.of(leagueEntryDto, summonerDto, account);
-        });
+            AsyncCall<LeagueEntryDto, UserInfoDto> asyncCall = new AsyncCall<>(leagueEntryDtos);
+
+            return asyncCall.execute(10, leagueEntryDto -> {
+                SummonerDto summonerDto = this.callApiSummoner(leagueEntryDto.summonerId());
+                Account account = this.callRiotAccount(summonerDto.puuid());
+
+                return UserInfoDto.of(leagueEntryDto, summonerDto, account);
+            });
+        } catch (RuntimeException e) {
+            throw new FailedApiCallingException(ExceptionProvider.RIOT_API_MODULE_USER_INFO_FAILED);
+        }
     }
 
-    @Recover
-    public List<UserInfoDto> returnEmptyList(FailedApiCallingException e, String division, String tier, String queue, int page) {
-        log.info("recover method execute = {}", e.getMessage());
-        throw new FailedRetryException(ExceptionProvider.RETRY_FAILED);
-    }
-
-    private List<LeagueEntryDto> callRiotLeague(String division, String tier, String queue, int page) {
+    public List<LeagueEntryDto> callRiotLeague(String division, String tier, String queue, int page) {
 
         return restClient.get()
                 .uri(UriGenerator.RIOT_LEAGUE.generate().queryParam("page", page).build(queue, tier, division))
                 .accept(APPLICATION_JSON)
-                .header(API_KEY, properties.apiKey())
+                .header(API_KEY, riotApiProperties.apiKey())
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.info("get uri = {}", request.getURI());
+                    log.info("get league uri = {}", request.getURI());
                     log.error("league error status = {} message = {}", response.getStatusCode(), response.getStatusText());
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_API_MODULE_LEAGUE_SUMMONER_FAILED);
                 }))
                 .body(new ParameterizedTypeReference<>() {});
     }
 
-    private Account callRiotAccount(String encryptedPuuid) {
+    public Account callRiotAccount(String encryptedPuuid) {
 
         return restClient.get()
                 .uri(UriGenerator.RIOT_ACCOUNT.generate(encryptedPuuid))
                 .accept(MediaType.APPLICATION_JSON)
-                .header(API_KEY, properties.apiKey())
+                .header(API_KEY, riotApiProperties.apiKey())
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.info("get uri = {}", request.getURI());
-                    log.error("league error status = {} message = {}", response.getStatusCode(), response.getStatusText());
+                    log.info("get account uri = {}", request.getURI());
+                    log.error("account error status = {} message = {}", response.getStatusCode(), response.getStatusText());
+
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_API_MODULE_ACCOUNT_FAILED);
                 }))
                 .body(Account.class);
     }
 
-    private SummonerDto callApiSummoner(String encryptedSummonerId) {
+    public SummonerDto callApiSummoner(String encryptedSummonerId) {
 
         return restClient.get()
-                .uri(RIOT_LEAGUE_SUMMONER_ID.generate(encryptedSummonerId))
+                .uri(RIOT_SUMMONER.generate(encryptedSummonerId))
                 .accept(APPLICATION_JSON)
-                .header(API_KEY, properties.apiKey())
+                .header(API_KEY, riotApiProperties.apiKey())
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.info("get uri = {}", request.getURI());
+                    log.info("get summoner uri = {}", request.getURI());
                     log.error("summoner error status = {} message = {}", response.getStatusCode(), response.getStatusText());
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_API_MODULE_SUMMONER_FAILED);
                 }))
