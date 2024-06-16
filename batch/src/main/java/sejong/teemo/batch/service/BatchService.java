@@ -3,6 +3,7 @@ package sejong.teemo.batch.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.retry.annotation.Backoff;
@@ -22,6 +23,7 @@ import sejong.teemo.batch.property.RiotApiProperties;
 import java.util.List;
 
 import static org.springframework.http.MediaType.*;
+import static sejong.teemo.batch.exception.ExceptionProvider.*;
 import static sejong.teemo.batch.generator.UriGenerator.*;
 
 @Service
@@ -55,7 +57,7 @@ public class BatchService {
                 return UserInfoDto.of(leagueEntryDto, summonerDto, account);
             });
         } catch (RuntimeException e) {
-            throw new FailedApiCallingException(ExceptionProvider.RIOT_API_MODULE_USER_INFO_FAILED);
+            throw new FailedApiCallingException(RIOT_API_MODULE_USER_INFO_FAILED);
         }
     }
 
@@ -66,11 +68,7 @@ public class BatchService {
                 .accept(APPLICATION_JSON)
                 .header(API_KEY, riotApiProperties.apiKey())
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.info("get league uri = {}", request.getURI());
-                    log.error("league error status = {} message = {}", response.getStatusCode(), response.getStatusText());
-                    throw new FailedApiCallingException(ExceptionProvider.RIOT_API_MODULE_LEAGUE_SUMMONER_FAILED);
-                }))
+                .onStatus(HttpStatusCode::is4xxClientError, (RIOT_API_MODULE_LEAGUE_SUMMONER_FAILED::handler))
                 .body(new ParameterizedTypeReference<>() {});
     }
 
@@ -81,12 +79,7 @@ public class BatchService {
                 .accept(MediaType.APPLICATION_JSON)
                 .header(API_KEY, riotApiProperties.apiKey())
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.info("get account uri = {}", request.getURI());
-                    log.error("account error status = {} message = {}", response.getStatusCode(), response.getStatusText());
-
-                    throw new FailedApiCallingException(ExceptionProvider.RIOT_API_MODULE_ACCOUNT_FAILED);
-                }))
+                .onStatus(HttpStatusCode::is4xxClientError, (RIOT_API_MODULE_ACCOUNT_FAILED::handler))
                 .body(Account.class);
     }
 
@@ -97,11 +90,7 @@ public class BatchService {
                 .accept(APPLICATION_JSON)
                 .header(API_KEY, riotApiProperties.apiKey())
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.info("get summoner uri = {}", request.getURI());
-                    log.error("summoner error status = {} message = {}", response.getStatusCode(), response.getStatusText());
-                    throw new FailedApiCallingException(ExceptionProvider.RIOT_API_MODULE_SUMMONER_FAILED);
-                }))
+                .onStatus(HttpStatusCode::is4xxClientError, (RIOT_API_MODULE_SUMMONER_FAILED::handler))
                 .body(SummonerDto.class);
     }
 }
