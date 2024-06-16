@@ -2,6 +2,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-batch'
     testImplementation 'org.springframework.batch:spring-batch-test'
 
+    implementation 'com.bucket4j:bucket4j-core:8.3.0'
+
     implementation 'org.quartz-scheduler:quartz:2.3.2'
 }
 
