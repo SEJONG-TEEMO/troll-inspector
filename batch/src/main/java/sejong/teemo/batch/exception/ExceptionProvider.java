@@ -12,17 +12,19 @@ import org.springframework.web.ErrorResponse;
 
 import java.io.IOException;
 
+import static org.springframework.http.HttpStatus.*;
+
 @Getter
 @Slf4j
 public enum ExceptionProvider implements ErrorResponse {
 
-    RIOT_API_MODULE_LEAGUE_SUMMONER_FAILED(HttpStatus.NOT_FOUND, "LEAGUE_SUMMONER_100", "riot api 모듈 요청에 실패하였습니다."),
-    RIOT_API_MODULE_SUMMONER_FAILED(HttpStatus.NOT_FOUND, "SUMMONER_100", "riot api 모듈 요청에 실패하였습니다."),
-    RIOT_API_MODULE_ACCOUNT_FAILED(HttpStatus.NOT_FOUND, "ACCOUNT_100","riot api 모듈 요청에 실패하였습니다."),
-    RIOT_API_MODULE_USER_INFO_FAILED(HttpStatus.NOT_FOUND, "USER_INFO_100", "riot api 모듈 요청에 실패하였습니다."),
+    RIOT_API_MODULE_LEAGUE_SUMMONER_FAILED(NOT_FOUND, "LEAGUE_SUMMONER_100", "riot api 모듈 요청에 실패하였습니다."),
+    RIOT_API_MODULE_SUMMONER_FAILED(NOT_FOUND, "SUMMONER_100", "riot api 모듈 요청에 실패하였습니다."),
+    RIOT_API_MODULE_ACCOUNT_FAILED(NOT_FOUND, "ACCOUNT_100","riot api 모듈 요청에 실패하였습니다."),
+    RIOT_API_MODULE_USER_INFO_FAILED(NOT_FOUND, "USER_INFO_100", "riot api 모듈 요청에 실패하였습니다."),
 
-    TOO_MANY_CALLING_FAILED(HttpStatus.TOO_MANY_REQUESTS, "TOO_MANY_100", "riot api 에 과도하게 요청되었습니다."),
-    RETRY_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "RETRY_500", "retry 에 실패 하였습니다.");
+    TOO_MANY_CALLING_FAILED(TOO_MANY_REQUESTS, "TOO_MANY_100", "riot api 에 과도하게 요청되었습니다."),
+    RETRY_FAILED(INTERNAL_SERVER_ERROR, "RETRY_500", "retry 에 실패 하였습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
@@ -42,14 +44,19 @@ public enum ExceptionProvider implements ErrorResponse {
                     response.getStatusText(),
                     response.getHeaders());
 
-            switch (response.getStatusCode()) {
-                case HttpStatus.NOT_FOUND -> throw new FailedApiCallingException(this);
-                case HttpStatus.BAD_REQUEST -> throw new IllegalArgumentException("riot api 모듈 요청에 실패하였습니다.");
-                case HttpStatus.TOO_MANY_REQUESTS -> throw new TooManyApiCallingException(ExceptionProvider.TOO_MANY_CALLING_FAILED);
-                default -> throw new IllegalStateException("Unexpected value: " + response.getStatusCode());
-            }
+            exception(response);
+
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    private void exception(ClientHttpResponse response) throws IOException {
+        switch (response.getStatusCode()) {
+            case NOT_FOUND -> throw new FailedApiCallingException(this);
+            case BAD_REQUEST -> throw new IllegalArgumentException("riot api 모듈 요청에 실패하였습니다.");
+            case TOO_MANY_REQUESTS -> throw new TooManyApiCallingException(ExceptionProvider.TOO_MANY_CALLING_FAILED);
+            default -> throw new IllegalStateException("Unexpected value: " + response.getStatusCode());
         }
     }
 

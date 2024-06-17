@@ -50,12 +50,12 @@ public class SkipBatchTest {
     void item_reader에서_에러가_터지면_배치는_skip_한다() throws Exception {
         // given
         JobParameters jobParameters = new JobParametersBuilder()
-                .addString("tier", TierInfo.IRON.mapToString())
+                .addString("tier", TierInfo.IRON.name())
                 .addString("division", "IV")
                 .toJobParameters();
 
-        String division = DivisionInfo.IV.mapToString();
-        String tier = TierInfo.IRON.mapToString();
+        String division = DivisionInfo.IV.name();
+        String tier = TierInfo.IRON.name();
         String queue = "RANKED_SOLO_5x5";
 
         given(batchService.callApiUserInfo(eq(division), eq(tier), eq(queue), eq(1)))
