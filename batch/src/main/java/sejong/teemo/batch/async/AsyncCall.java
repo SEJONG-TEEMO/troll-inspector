@@ -1,6 +1,8 @@
 package sejong.teemo.batch.async;
 
 import lombok.extern.slf4j.Slf4j;
+import sejong.teemo.batch.exception.ExceptionProvider;
+import sejong.teemo.batch.exception.FailedApiCallingException;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -34,7 +36,7 @@ public class AsyncCall<I, O> {
             return futures.stream().map(CompletableFuture::join).toList();
         } catch (Exception e) {
             log.error("call error = {}", e.getMessage());
-            throw new RuntimeException(e);
+            throw new FailedApiCallingException(ExceptionProvider.RIOT_API_MODULE_USER_INFO_FAILED);
         }
     }
 }
