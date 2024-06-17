@@ -49,8 +49,8 @@ public class RetryBatchTest {
     @Test
     void 배치_서비스_RETRY_3회_실패_테스트_총_5번의_재시도_가능() {
         // given
-        String division = DivisionInfo.IV.mapToString();
-        String tier = TierInfo.IRON.mapToString();
+        String division = DivisionInfo.IV.name();
+        String tier = TierInfo.IRON.name();
         String queue = "RANKED_SOLO_5x5";
 
         int tryCount = 3;
@@ -86,8 +86,8 @@ public class RetryBatchTest {
     @Test
     void RETRY_5회_모두_실패시_RECOVER_METHOD가_동작한다() {
         // given
-        String division = DivisionInfo.IV.mapToString();
-        String tier = TierInfo.IRON.mapToString();
+        String division = DivisionInfo.IV.name();
+        String tier = TierInfo.IRON.name();
         String queue = "RANKED_SOLO_5x5";
 
         int tryCount = 5;
