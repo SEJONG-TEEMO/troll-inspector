@@ -10,5 +10,6 @@ public record SummonerDto(
         int profileIconId,
         long revisionDate,
         @NotNull String puuid,
-        long summonerLevel) {
+        long summonerLevel
+) {
 }
