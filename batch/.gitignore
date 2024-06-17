@@ -23,6 +23,7 @@ bin/
 *.iml
 *.ipr
 **/generated
+*.sql
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
