@@ -1,4 +1,4 @@
-package sejong.teemo.batch.job;
+package sejong.teemo.batch.job.info;
 
 import lombok.Getter;
 
