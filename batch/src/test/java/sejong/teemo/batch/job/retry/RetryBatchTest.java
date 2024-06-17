@@ -18,8 +18,8 @@ import sejong.teemo.batch.dto.UserInfoDto;
 import sejong.teemo.batch.exception.ExceptionProvider;
 import sejong.teemo.batch.exception.FailedApiCallingException;
 import sejong.teemo.batch.exception.FailedRetryException;
-import sejong.teemo.batch.job.DivisionInfo;
-import sejong.teemo.batch.job.TierInfo;
+import sejong.teemo.batch.job.info.DivisionInfo;
+import sejong.teemo.batch.job.info.TierInfo;
 import sejong.teemo.batch.service.BatchService;
 
 import java.net.URI;
@@ -27,11 +27,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withResourceNotFound;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-import static sejong.teemo.batch.generator.UriGenerator.*;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)

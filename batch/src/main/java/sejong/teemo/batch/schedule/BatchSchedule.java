@@ -9,13 +9,13 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import sejong.teemo.batch.job.DivisionInfo;
-import sejong.teemo.batch.job.TierInfo;
+import sejong.teemo.batch.job.info.DivisionInfo;
+import sejong.teemo.batch.job.info.TierInfo;
 
 import java.util.Arrays;
 
-import static sejong.teemo.batch.job.DivisionInfo.*;
-import static sejong.teemo.batch.job.TierInfo.*;
+import static sejong.teemo.batch.job.info.DivisionInfo.*;
+import static sejong.teemo.batch.job.info.TierInfo.*;
 
 @Component
 @RequiredArgsConstructor

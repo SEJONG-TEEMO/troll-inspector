@@ -1,14 +1,8 @@
 package sejong.teemo.batch.job.skip;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -19,16 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.PlatformTransactionManager;
 import sejong.teemo.batch.TestBatchConfig;
 import sejong.teemo.batch.config.RestClientConfig;
 import sejong.teemo.batch.exception.ExceptionProvider;
 import sejong.teemo.batch.exception.FailedRetryException;
-import sejong.teemo.batch.item.reader.LeagueItemReader;
-import sejong.teemo.batch.job.DivisionInfo;
+import sejong.teemo.batch.job.info.DivisionInfo;
 import sejong.teemo.batch.job.LeagueJob;
-import sejong.teemo.batch.job.TierInfo;
+import sejong.teemo.batch.job.info.TierInfo;
 import sejong.teemo.batch.repository.JdbcRepository;
 import sejong.teemo.batch.service.BatchService;
 
