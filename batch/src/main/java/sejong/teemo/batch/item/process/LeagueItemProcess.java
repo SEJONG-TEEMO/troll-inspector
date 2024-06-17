@@ -1,5 +1,6 @@
 package sejong.teemo.batch.item.process;
 
+import io.github.bucket4j.Bucket;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
@@ -20,6 +21,7 @@ import java.util.List;
 public class LeagueItemProcess implements ItemProcessor<List<LeagueEntryDto>, List<UserInfo>> {
 
     private final BatchService batchService;
+    private final Bucket bucket;
 
     @Override
     public List<UserInfo> process(List<LeagueEntryDto> item) throws FailedApiCallingException, InterruptedException {
@@ -28,16 +30,15 @@ public class LeagueItemProcess implements ItemProcessor<List<LeagueEntryDto>, Li
 
         AsyncCall<LeagueEntryDto, UserInfo> asyncCall = new AsyncCall<>(item);
 
-        List<UserInfo> execute = asyncCall.execute(10, this::getUserInfo);
-
-        Thread.sleep(10000);
-
-        return execute;
+        return asyncCall.execute(10, this::getUserInfo);
     }
 
     private UserInfo getUserInfo(LeagueEntryDto leagueEntryDto) throws FailedApiCallingException {
 
         try {
+
+            bucket.asBlocking().consume(1);
+
             SummonerDto summonerDto = batchService.callApiSummoner(leagueEntryDto.summonerId());
             Account account = batchService.callRiotAccount(summonerDto.puuid());
 
