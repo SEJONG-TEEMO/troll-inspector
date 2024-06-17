@@ -25,34 +25,19 @@ public class BatchSchedule {
     private final Job leagueInfoJob;
     private final JobLauncher jobLauncher;
 
-    private final TierInfo[] tierInfos = {
-            IRON,
-            BRONZE,
-            SILVER,
-            GOLD,
-            PLATINUM,
-            EMERALD,
-            DIAMOND,
-            MASTER,
-            GRAND_MASTER,
-            CHALLENGER
-    };
-
-    private final DivisionInfo[] divisions = {I, II, III, IV};
-
     private static final String TIER = "tier";
     private static final String DIVISION = "division";
 
     @Scheduled(cron = "0 0 0 * * SAT")
     public void schedulingBatchUserInfo() {
-        Arrays.stream(tierInfos).forEach(this::executeDivisionJob);
+        Arrays.stream(TierInfo.values()).forEach(this::executeDivisionJob);
     }
 
     private void executeDivisionJob(TierInfo tierInfo) {
-        for (DivisionInfo division : divisions) {
+        for (DivisionInfo division : DivisionInfo.values()) {
             JobParameters jobParameters = new JobParametersBuilder()
-                    .addString(TIER, tierInfo.mapToString())
-                    .addString(DIVISION, division.mapToString())
+                    .addString(TIER, tierInfo.name())
+                    .addString(DIVISION, division.name())
                     .toJobParameters();
 
             try {

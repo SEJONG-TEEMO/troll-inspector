@@ -41,8 +41,8 @@ public class BatchJobTest extends TestContainer {
     void 하나의_티어의_잡을_수행한다() throws Exception {
         // given
         JobParameters jobParameters = new JobParametersBuilder()
-                .addString("tier", TierInfo.IRON.mapToString())
-                .addString("division", DivisionInfo.IV.mapToString())
+                .addString("tier", TierInfo.IRON.name())
+                .addString("division", DivisionInfo.IV.name())
                 .toJobParameters();
 
         // when

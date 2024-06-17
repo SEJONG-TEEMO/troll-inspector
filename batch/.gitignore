@@ -22,6 +22,7 @@ bin/
 *.iws
 *.iml
 *.ipr
+**/generated
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
