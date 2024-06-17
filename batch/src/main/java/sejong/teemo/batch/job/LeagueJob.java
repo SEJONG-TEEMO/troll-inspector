@@ -1,5 +1,6 @@
 package sejong.teemo.batch.job;
 
+import io.github.bucket4j.Bucket;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -15,17 +16,25 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.retry.RetryPolicy;
+import org.springframework.retry.backoff.BackOffPolicy;
+import org.springframework.retry.backoff.ExponentialBackOffPolicy;
+import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.transaction.PlatformTransactionManager;
-import sejong.teemo.batch.dto.UserInfoDto;
+import sejong.teemo.batch.dto.LeagueEntryDto;
 import sejong.teemo.batch.entity.UserInfo;
-import sejong.teemo.batch.exception.FailedRetryException;
+import sejong.teemo.batch.exception.FailedApiCallingException;
+import sejong.teemo.batch.exception.TooManyApiCallingException;
 import sejong.teemo.batch.item.process.LeagueItemProcess;
 import sejong.teemo.batch.item.reader.LeagueItemReader;
 import sejong.teemo.batch.item.writer.LeagueItemWriter;
 import sejong.teemo.batch.repository.JdbcRepository;
 import sejong.teemo.batch.service.BatchService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TooManyListenersException;
 
 @Configuration
 @RequiredArgsConstructor
@@ -34,6 +43,7 @@ public class LeagueJob {
     private final PlatformTransactionManager tm;
     private final BatchService batchService;
     private final JdbcRepository jdbcRepository;
+    private final Bucket bucket;
 
     private static final String TIER_JOB = "tierJob";
     private static final String STEP = "I";
@@ -52,32 +62,52 @@ public class LeagueJob {
     @JobScope
     public Step leagueInfoStepOne(JobRepository jobRepository) {
         return new StepBuilder(TIER_JOB + STEP, jobRepository)
-                .<List<UserInfoDto>, List<UserInfo>>chunk(CHUNK_SIZE, tm)
+                .<List<LeagueEntryDto>, List<UserInfo>>chunk(CHUNK_SIZE, tm)
                 .reader(leagueInfoItemReader(null, null))
                 .processor(leagueInfoProcessor())
                 .writer(leagueInfoItemWriter())
                 .faultTolerant()
-                .skip(FailedRetryException.class)
-                .skipLimit(CHUNK_SIZE)
+                .retryPolicy(retryPolicy())
+                .backOffPolicy(backOffPolicy())
+                .skip(FailedApiCallingException.class)
+                .skip(IllegalArgumentException.class)
+                .skipLimit(Integer.MAX_VALUE)
                 .build();
     }
 
     @Bean
     @StepScope
-    public ItemReader<List<UserInfoDto>> leagueInfoItemReader(@Value("#{jobParameters['tier']}") String tier,
-                                                              @Value("#{jobParameters['division']}") String division) {
+    public ItemReader<List<LeagueEntryDto>> leagueInfoItemReader(@Value("#{jobParameters['tier']}") String tier,
+                                                                 @Value("#{jobParameters['division']}") String division) {
         return new LeagueItemReader(batchService, tier, division);
     }
 
     @Bean
     @StepScope
-    public ItemProcessor<List<UserInfoDto>, List<UserInfo>> leagueInfoProcessor() {
-        return new LeagueItemProcess();
+    public ItemProcessor<List<LeagueEntryDto>, List<UserInfo>> leagueInfoProcessor() {
+        return new LeagueItemProcess(batchService, bucket);
     }
 
     @Bean
     @StepScope
     public ItemWriter<List<UserInfo>> leagueInfoItemWriter() {
         return new LeagueItemWriter(jdbcRepository);
+    }
+
+    @Bean
+    public RetryPolicy retryPolicy() {
+        Map<Class<? extends Throwable>, Boolean> retryableExceptions = new HashMap<>();
+        retryableExceptions.put(TooManyApiCallingException.class, true);
+        return new SimpleRetryPolicy(3, retryableExceptions);
+    }
+
+    @Bean
+    public BackOffPolicy backOffPolicy() {
+        ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
+        backOffPolicy.setInitialInterval(60000);
+        backOffPolicy.setMultiplier(2);
+        backOffPolicy.setMaxInterval(300000);
+
+        return backOffPolicy;
     }
 }
