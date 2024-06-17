@@ -44,6 +44,7 @@ public enum ExceptionProvider implements ErrorResponse {
 
             switch (response.getStatusCode()) {
                 case HttpStatus.NOT_FOUND -> throw new FailedApiCallingException(this);
+                case HttpStatus.BAD_REQUEST -> throw new IllegalArgumentException("riot api 모듈 요청에 실패하였습니다.");
                 case HttpStatus.TOO_MANY_REQUESTS -> throw new TooManyApiCallingException(ExceptionProvider.TOO_MANY_CALLING_FAILED);
                 default -> throw new IllegalStateException("Unexpected value: " + response.getStatusCode());
             }
