@@ -7,28 +7,19 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.PlatformTransactionManager;
-import sejong.teemo.batch.TestBatchConfig;
-import sejong.teemo.batch.config.RestClientConfig;
+import org.springframework.test.context.jdbc.Sql;
 import sejong.teemo.batch.container.TestContainer;
-import sejong.teemo.batch.repository.JdbcRepository;
-import sejong.teemo.batch.service.BatchService;
 
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBatchTest
-@SpringBootTest(classes = {
-        TestBatchConfig.class,
-        LeagueJob.class,
-        PlatformTransactionManager.class,
-        BatchService.class,
-        JdbcRepository.class,
-        RestClientConfig.class,
-})
+@SpringBootTest
+@Sql("/init.sql")
 public class BatchJobTest extends TestContainer {
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
+
 
     @Test
     @Disabled
@@ -49,7 +40,7 @@ public class BatchJobTest extends TestContainer {
         // given
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("tier", TierInfo.IRON.mapToString())
-                .addString("division", "IV")
+                .addString("division", DivisionInfo.IV.mapToString())
                 .toJobParameters();
 
         // when
