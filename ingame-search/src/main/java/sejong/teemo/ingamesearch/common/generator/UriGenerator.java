@@ -16,7 +16,9 @@ public enum UriGenerator {
     RIOT_API_USER_INFO("http://localhost:8080/teemo.gg/api/v1/user-info/{division}/{tier}/{queue}"),
     RIOT_API_SPECTATOR("http://localhost:8080/teemo.gg/api/v1/spectator/{gameName}/{tag}"),
     RIOT_API_SUMMONER_PERFORMANCE_GAME_NAME_TAG("http://localhost:8080/teemo.gg/api/v1/match/summoner-performance/{gameName}/{tag}"),
-    RIOT_API_SUMMONER_PERFORMANCE_PUUID("http://localhost:8080/teemo.gg/api/v1/match/summoner-performance/{puuid}");
+    RIOT_API_SUMMONER_PERFORMANCE_PUUID("http://localhost:8080/teemo.gg/api/v1/match/summoner-performance/{puuid}"),
+
+    CHAMPION_IMAGE_CDN("https://ddragon.leagueoflegends.com/cdn/14.12.1/img/champion/{championName}.png");
 
     private final String url;
 
