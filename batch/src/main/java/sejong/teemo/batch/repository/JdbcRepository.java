@@ -22,7 +22,7 @@ public class JdbcRepository {
 
         if (list.isEmpty()) return;
 
-        String sql = "INSERT INTO user_info (game_name, tag_line, puuid, summoner_id, queue_type, tier, `rank`, wins, losses, league_point, account_id, profile_icon_id, revision_data, summoner_level) " +
+        String sql = "INSERT INTO tmp_user_info (game_name, tag_line, puuid, summoner_id, queue_type, tier, `rank`, wins, losses, league_point, account_id, profile_icon_id, revision_data, summoner_level) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
@@ -40,7 +40,7 @@ public class JdbcRepository {
                 ps.setInt(10, list.get(i).getLeaguePoint());
                 ps.setString(11, list.get(i).getAccountId());
                 ps.setInt(12, list.get(i).getProfileIconId());
-                ps.setLong(13, list.get(i).getRevisionDate());
+                ps.setLong(13, list.get(i).getRevisionData());
                 ps.setLong(14, list.get(i).getSummonerLevel());
             }
 

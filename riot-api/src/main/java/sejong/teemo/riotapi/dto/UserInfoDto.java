@@ -19,7 +19,7 @@ public record UserInfoDto(
         int leaguePoint,
         String accountId,
         int profileIconId,
-        long revisionDate,
+        long revisionData,
         long summonerLevel
 ) {
 
@@ -37,7 +37,7 @@ public record UserInfoDto(
                 .losses(leagueEntryDto.losses())
                 .leaguePoint(leagueEntryDto.leaguePoints())
                 .profileIconId(summonerDto.profileIconId())
-                .revisionDate(summonerDto.revisionDate())
+                .revisionData(summonerDto.revisionDate())
                 .summonerLevel(summonerDto.summonerLevel())
                 .build();
     }

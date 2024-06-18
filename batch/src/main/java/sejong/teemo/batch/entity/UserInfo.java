@@ -54,13 +54,13 @@ public class UserInfo {
     private int profileIconId;
 
     @Column(name = "revision_data", nullable = false)
-    private long revisionDate;
+    private long revisionData;
 
     @Column(name = "summoner_level", nullable = false)
     private long summonerLevel;
 
     @Builder
-    private UserInfo(String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionDate, long summonerLevel) {
+    private UserInfo(String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionData, long summonerLevel) {
         this.gameName = gameName;
         this.tagLine = tagLine;
         this.puuid = puuid;
@@ -73,7 +73,7 @@ public class UserInfo {
         this.leaguePoint = leaguePoint;
         this.accountId = accountId;
         this.profileIconId = profileIconId;
-        this.revisionDate = revisionDate;
+        this.revisionData = revisionData;
         this.summonerLevel = summonerLevel;
     }
 
@@ -91,7 +91,7 @@ public class UserInfo {
                 .leaguePoint(leaguePoint)
                 .accountId(accountId)
                 .profileIconId(profileIconId)
-                .revisionDate(revisionDate)
+                .revisionData(revisionDate)
                 .summonerLevel(summonerLevel)
                 .build();
     }
@@ -110,7 +110,7 @@ public class UserInfo {
                 .leaguePoint(userInfoDto.leaguePoint())
                 .accountId(userInfoDto.accountId())
                 .profileIconId(userInfoDto.profileIconId())
-                .revisionDate(userInfoDto.revisionDate())
+                .revisionData(userInfoDto.revisionData())
                 .summonerLevel(userInfoDto.summonerLevel())
                 .build();
     }
