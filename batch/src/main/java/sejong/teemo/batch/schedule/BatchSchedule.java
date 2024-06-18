@@ -7,6 +7,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import sejong.teemo.batch.job.info.DivisionInfo;
@@ -18,12 +19,21 @@ import static sejong.teemo.batch.job.info.DivisionInfo.*;
 import static sejong.teemo.batch.job.info.TierInfo.*;
 
 @Component
-@RequiredArgsConstructor
 @Slf4j
 public class BatchSchedule {
 
     private final Job leagueInfoJob;
+    private final Job migrateDataJob;
     private final JobLauncher jobLauncher;
+
+    public BatchSchedule(@Qualifier("leagueInfoJob") Job leagueInfoJob,
+                         @Qualifier("migrateDataJob") Job migrateDataJobJob,
+                         JobLauncher jobLauncher) {
+
+        this.leagueInfoJob = leagueInfoJob;
+        this.migrateDataJob = migrateDataJobJob;
+        this.jobLauncher = jobLauncher;
+    }
 
     private static final String TIER = "tier";
     private static final String DIVISION = "division";
