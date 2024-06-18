@@ -9,6 +9,7 @@ import sejong.teemo.batch.dto.Account;
 import sejong.teemo.batch.dto.LeagueEntryDto;
 import sejong.teemo.batch.dto.SummonerDto;
 import sejong.teemo.batch.dto.UserInfoDto;
+import sejong.teemo.batch.entity.TempUserInfo;
 import sejong.teemo.batch.entity.UserInfo;
 import sejong.teemo.batch.exception.ExceptionProvider;
 import sejong.teemo.batch.exception.FailedApiCallingException;
@@ -18,22 +19,22 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-public class LeagueItemProcess implements ItemProcessor<List<LeagueEntryDto>, List<UserInfo>> {
+public class LeagueItemProcess implements ItemProcessor<List<LeagueEntryDto>, List<TempUserInfo>> {
 
     private final BatchService batchService;
     private final Bucket bucket;
 
     @Override
-    public List<UserInfo> process(List<LeagueEntryDto> item) throws FailedApiCallingException, InterruptedException {
+    public List<TempUserInfo> process(List<LeagueEntryDto> item) throws FailedApiCallingException, InterruptedException {
 
         log.info("batch process");
 
-        AsyncCall<LeagueEntryDto, UserInfo> asyncCall = new AsyncCall<>(item);
+        AsyncCall<LeagueEntryDto, TempUserInfo> asyncCall = new AsyncCall<>(item);
 
         return asyncCall.execute(10, this::getUserInfo);
     }
 
-    private UserInfo getUserInfo(LeagueEntryDto leagueEntryDto) throws FailedApiCallingException {
+    private TempUserInfo getUserInfo(LeagueEntryDto leagueEntryDto) throws FailedApiCallingException {
 
         try {
 
@@ -44,7 +45,7 @@ public class LeagueItemProcess implements ItemProcessor<List<LeagueEntryDto>, Li
 
             UserInfoDto userInfoDto = UserInfoDto.of(leagueEntryDto, summonerDto, account);
 
-            return UserInfo.from(userInfoDto);
+            return TempUserInfo.from(userInfoDto);
         } catch (Exception e) {
             throw new FailedApiCallingException(ExceptionProvider.RIOT_API_MODULE_USER_INFO_FAILED);
         }

@@ -22,6 +22,7 @@ import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.transaction.PlatformTransactionManager;
 import sejong.teemo.batch.dto.LeagueEntryDto;
+import sejong.teemo.batch.entity.TempUserInfo;
 import sejong.teemo.batch.entity.UserInfo;
 import sejong.teemo.batch.exception.FailedApiCallingException;
 import sejong.teemo.batch.exception.TooManyApiCallingException;
@@ -34,7 +35,6 @@ import sejong.teemo.batch.service.BatchService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TooManyListenersException;
 
 @Configuration
 @RequiredArgsConstructor
@@ -62,7 +62,7 @@ public class LeagueJob {
     @JobScope
     public Step leagueInfoStepOne(JobRepository jobRepository) {
         return new StepBuilder(TIER_JOB + STEP, jobRepository)
-                .<List<LeagueEntryDto>, List<UserInfo>>chunk(CHUNK_SIZE, tm)
+                .<List<LeagueEntryDto>, List<TempUserInfo>>chunk(CHUNK_SIZE, tm)
                 .reader(leagueInfoItemReader(null, null))
                 .processor(leagueInfoProcessor())
                 .writer(leagueInfoItemWriter())
@@ -84,13 +84,13 @@ public class LeagueJob {
 
     @Bean
     @StepScope
-    public ItemProcessor<List<LeagueEntryDto>, List<UserInfo>> leagueInfoProcessor() {
+    public ItemProcessor<List<LeagueEntryDto>, List<TempUserInfo>> leagueInfoProcessor() {
         return new LeagueItemProcess(batchService, bucket);
     }
 
     @Bean
     @StepScope
-    public ItemWriter<List<UserInfo>> leagueInfoItemWriter() {
+    public ItemWriter<List<TempUserInfo>> leagueInfoItemWriter() {
         return new LeagueItemWriter(jdbcRepository);
     }
 
