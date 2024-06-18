@@ -35,7 +35,7 @@ public class UserInfo {
     @Column(name = "tier", nullable = false, length = 20)
     private String tier;
 
-    @Column(name = "rank", nullable = false)
+    @Column(name = "`rank`", nullable = false)
     private String rank;
 
     @Column(name = "wins", nullable = false)
@@ -77,7 +77,7 @@ public class UserInfo {
         this.summonerLevel = summonerLevel;
     }
 
-    public static UserInfo of(String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionDate, long summonerLevel) {
+    public static UserInfo of(String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionData, long summonerLevel) {
         return UserInfo.builder()
                 .gameName(gameName)
                 .tagLine(tagLine)
@@ -91,7 +91,7 @@ public class UserInfo {
                 .leaguePoint(leaguePoint)
                 .accountId(accountId)
                 .profileIconId(profileIconId)
-                .revisionData(revisionDate)
+                .revisionData(revisionData)
                 .summonerLevel(summonerLevel)
                 .build();
     }
