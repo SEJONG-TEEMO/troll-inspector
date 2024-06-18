@@ -4,18 +4,22 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.jdbc.Sql;
 import sejong.teemo.batch.container.TestContainer;
+import sejong.teemo.batch.entity.TempUserInfo;
 import sejong.teemo.batch.entity.UserInfo;
+import sejong.teemo.batch.repository.mapper.TempUserInfoRowMapper;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
+@Sql("/data-test.sql")
 public class JdbcRepositoryTest extends TestContainer {
 
     @Autowired
-    private JdbcRepository jdbcRepository;
+    private BatchRepository batchRepository;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -44,7 +48,19 @@ public class JdbcRepositoryTest extends TestContainer {
         // when
 
         // then
-        assertThatCode(() -> jdbcRepository.bulkInsert(list))
+        assertThatCode(() -> batchRepository.bulkInsert(list))
                 .doesNotThrowAnyException();
+    }
+
+    @Test
+    void 벌크_인서트_후_FIND_ALL_하여_유저가_존재하는지_확인_테스트_컨테이너_데이터_무결성() {
+        // given
+
+        // when
+        List<TempUserInfo> list = jdbcTemplate.query("select * from tmp_user_info", new TempUserInfoRowMapper());
+
+        // then
+        System.out.println(list.getFirst().getGameName());
+        assertThat(list).hasSize(50);
     }
 }
