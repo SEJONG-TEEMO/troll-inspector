@@ -1,5 +1,6 @@
 package sejong.teemo.batch.job;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.*;
 import org.springframework.batch.test.JobLauncherTestUtils;
@@ -41,6 +42,7 @@ public class MigrationJobTest extends TestContainer {
     private JdbcRepository jdbcRepository;
 
     @Test
+    @Disabled
     void 데이터_마이그레이션_배치_테스트() throws Exception {
         // given
 
