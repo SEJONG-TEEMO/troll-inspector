@@ -1,6 +1,5 @@
 package sejong.teemo.batch.schedule;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -43,8 +42,18 @@ public class BatchSchedule {
         Arrays.stream(TierInfo.values()).forEach(this::executeDivisionJob);
     }
 
+    @Scheduled(cron = "0 0 0 * * SUN")
+    public void schedulingDataMigration() {
+        try {
+            jobLauncher.run(migrateDataJob, new JobParameters());
+        } catch (JobExecutionAlreadyRunningException | JobRestartException |
+                 JobInstanceAlreadyCompleteException | JobParametersInvalidException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void executeDivisionJob(TierInfo tierInfo) {
-        for (DivisionInfo division : DivisionInfo.values()) {
+        Arrays.stream(DivisionInfo.values()).forEach(division -> {
             JobParameters jobParameters = new JobParametersBuilder()
                     .addString(TIER, tierInfo.name())
                     .addString(DIVISION, division.name())
@@ -56,6 +65,6 @@ public class BatchSchedule {
                      JobInstanceAlreadyCompleteException | JobParametersInvalidException e) {
                 throw new RuntimeException(e);
             }
-        }
+        });
     }
 }
