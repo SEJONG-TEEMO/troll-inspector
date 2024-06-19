@@ -32,7 +32,7 @@ public class TestExtension {
 
     protected String getSpectator() {
         try {
-            return objectMapper.writeValueAsString(new Spectator("type", List.of()));
+            return objectMapper.writeValueAsString(new Spectator(1L, "", List.of()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
