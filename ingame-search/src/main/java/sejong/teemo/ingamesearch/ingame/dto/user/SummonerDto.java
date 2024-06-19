@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.ingame.dto;
+package sejong.teemo.ingamesearch.ingame.dto.user;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.ingame.dto;
+package sejong.teemo.ingamesearch.ingame.dto.champion;
 
 public record Champion(
         double kills,
