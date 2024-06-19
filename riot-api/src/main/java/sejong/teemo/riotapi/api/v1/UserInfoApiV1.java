@@ -15,7 +15,6 @@ public class UserInfoApiV1 {
 
     private final UserInfoFacade userInfoFacade;
 
-    @Deprecated
     @GetMapping("/user-info/{division}/{tier}/{queue}")
     public ResponseEntity<List<UserInfoDto>> callApiUserInfo(@PathVariable("division") String division,
                                                              @PathVariable("tier") String tier,
