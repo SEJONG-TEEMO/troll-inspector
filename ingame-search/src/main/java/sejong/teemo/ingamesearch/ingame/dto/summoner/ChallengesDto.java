@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.trollinspector.dto;
+package sejong.teemo.ingamesearch.ingame.dto.summoner;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
