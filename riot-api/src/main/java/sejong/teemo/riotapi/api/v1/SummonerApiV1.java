@@ -22,4 +22,9 @@ public class SummonerApiV1 {
     public ResponseEntity<SummonerDto> callRiotSummoner(@PathVariable String encryptedSummonerId) {
         return ResponseEntity.ok(userInfoFacade.callApiSummoner(encryptedSummonerId));
     }
+
+    @GetMapping("/summoner/by-puuid/{puuid}")
+    public ResponseEntity<SummonerDto> callRiotSummonerByPuuid(@PathVariable String puuid) {
+        return ResponseEntity.ok(userInfoFacade.callApiSummonerByPuuid(puuid));
+    }
 }
