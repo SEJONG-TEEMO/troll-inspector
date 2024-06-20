@@ -23,6 +23,7 @@ public record SummonerPerformance(
         int dragonTakedowns, // 드래곤을 처치한 횟 수
         int baronTakedowns, // 바론을 처치한 횟 수
         int teleportTakedowns, // 텔레포트 스펠을 활용한 횟수 -> 로밍을 다닌 횟수로 판단하려고 한다.
-        int totalMinionsKilled // 미니언을 얼마나 처치했는지에 대한 횟수
+        int totalMinionsKilled, // 미니언을 얼마나 처치했는지에 대한 횟수
+        boolean wins
 ) {
 }

@@ -24,7 +24,8 @@ public record SummonerPerformance(
         int dragonTakedowns,
         int baronTakedowns,
         int teleportTakedowns,
-        int totalMinionsKilled
+        int totalMinionsKilled,
+        boolean win
 ) {
 
     public static SummonerPerformance of(int targetIdx, ParticipantDto participantDto) {
@@ -49,6 +50,7 @@ public record SummonerPerformance(
                 .baronTakedowns(participantDto.challenges().baronTakedowns())
                 .teleportTakedowns(participantDto.teleportTakedowns())
                 .totalMinionsKilled(participantDto.totalMinionsKilled())
+                .win(participantDto.win())
                 .build();
     }
 }
