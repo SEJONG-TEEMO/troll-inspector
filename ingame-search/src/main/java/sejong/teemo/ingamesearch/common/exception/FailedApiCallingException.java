@@ -8,6 +8,7 @@ public class FailedApiCallingException extends RuntimeException {
     private final ExceptionProvider exceptionProvider;
 
     public FailedApiCallingException(ExceptionProvider exceptionProvider) {
+        super(exceptionProvider.getMessage());
         this.exceptionProvider = exceptionProvider;
     }
 
