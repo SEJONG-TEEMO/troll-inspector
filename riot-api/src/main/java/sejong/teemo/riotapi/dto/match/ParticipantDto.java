@@ -16,6 +16,7 @@ public record ParticipantDto(
         int damageDealtToBuildings,
         int teleportTakedowns,
         int totalMinionsKilled,
+        boolean win,
         ChallengesDto challenges
 ) {
 }
