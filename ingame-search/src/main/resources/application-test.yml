@@ -1,2 +1,22 @@
-riot:
-  api-key: ${API_KEY}
+spring:
+  datasource:
+    url: jdbc:tc:mysql:8.2.0:///test?TC_INITSCRIPT=file:src/test/resources/init.sql
+    username: test
+    password: test
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+        highlight_sql: true
+
+  integration:
+    jdbc:
+      initialize-schema: always
+
+logging:
+  level:
+    sql: debug
+    org.springframework.jdbc.core: debug
