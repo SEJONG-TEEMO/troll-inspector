@@ -1,10 +1,27 @@
 package sejong.teemo.ingamesearch.ingame.dto.champion;
 
+import lombok.Builder;
+
+@Builder
 public record Champion(
-        double kills,
-        double deaths,
-        double assists,
-        double rating,
-        int recentGameCount
+        int kills,
+        int deaths,
+        int assists,
+        int recentGameCount,
+        double kda,
+        int wins,
+        int losses
 ) {
+
+    public static Champion of(int kills, int deaths, int assists, int recentGameCount, double kda, int wins, int losses) {
+        return Champion.builder()
+                .kills(kills)
+                .deaths(deaths)
+                .assists(assists)
+                .recentGameCount(recentGameCount)
+                .kda(kda)
+                .wins(wins)
+                .losses(losses)
+                .build();
+    }
 }
