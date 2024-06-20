@@ -1,10 +1,11 @@
 package sejong.teemo.ingamesearch.ingame.dto;
 
 import lombok.Builder;
+import sejong.teemo.ingamesearch.ingame.dto.champion.Champion;
 
 @Builder
 public record InGameView(
-        Long championId,
+        byte[] championImage,
         String gameName,
         String tagLine,
         String tier,
@@ -16,7 +17,7 @@ public record InGameView(
         Champion champion
 ) {
 
-    public static InGameView of(Long championId,
+    public static InGameView of(byte[] championImage,
                                 String gameName,
                                 String tagLine,
                                 String tier,
@@ -28,7 +29,7 @@ public record InGameView(
                                 Champion champion) {
 
         return InGameView.builder()
-                .championId(championId)
+                .championImage(championImage)
                 .gameName(gameName)
                 .tagLine(tagLine)
                 .tier(tier)
