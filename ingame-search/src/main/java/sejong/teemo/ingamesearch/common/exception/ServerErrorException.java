@@ -1,5 +1,8 @@
 package sejong.teemo.ingamesearch.common.exception;
 
+import lombok.Getter;
+
+@Getter
 public class ServerErrorException extends RuntimeException {
 
     private final ExceptionProvider exceptionProvider;
