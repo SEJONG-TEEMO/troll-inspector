@@ -17,7 +17,7 @@ public class AccountApiV1 {
     private final AccountService accountService;
 
     @GetMapping("/account/{encryptedPuuid}")
-    public ResponseEntity<Account> callApiAccount(@PathVariable String encryptedPuuid) {
+    public ResponseEntity<Account> callApiAccount(@PathVariable("encryptedPuuid") String encryptedPuuid) {
 
         Account account = accountService.callRiotAccount(encryptedPuuid);
 

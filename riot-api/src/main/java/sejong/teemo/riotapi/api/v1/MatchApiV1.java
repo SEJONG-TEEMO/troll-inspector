@@ -42,7 +42,7 @@ public class MatchApiV1 {
     }
 
     @GetMapping("/match/{puuid}")
-    public ResponseEntity<List<MatchDataDto>> callApiMatch(@PathVariable String puuid) {
+    public ResponseEntity<List<MatchDataDto>> callApiMatch(@PathVariable("puuid") String puuid) {
         return ResponseEntity.ok(matchFacade.callRiotMatch(puuid));
     }
 }

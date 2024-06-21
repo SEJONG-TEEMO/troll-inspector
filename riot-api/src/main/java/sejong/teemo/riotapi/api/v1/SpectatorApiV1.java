@@ -17,7 +17,7 @@ public class SpectatorApiV1 {
     private final SpectatorFacade spectatorFacade;
 
     @GetMapping("/spectator/{puuid}")
-    public ResponseEntity<SpectatorDto> callApiSpectator(@PathVariable String puuid) {
+    public ResponseEntity<SpectatorDto> callApiSpectator(@PathVariable("puuid") String puuid) {
         return ResponseEntity.ok(spectatorFacade.callSpectator(puuid));
     }
 }

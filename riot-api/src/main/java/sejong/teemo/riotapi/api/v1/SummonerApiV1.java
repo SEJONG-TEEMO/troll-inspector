@@ -19,12 +19,12 @@ public class SummonerApiV1 {
     private final UserInfoFacade userInfoFacade;
 
     @GetMapping("/summoner/{encryptedSummonerId}")
-    public ResponseEntity<SummonerDto> callRiotSummoner(@PathVariable String encryptedSummonerId) {
+    public ResponseEntity<SummonerDto> callRiotSummoner(@PathVariable("encryptedSummonerId") String encryptedSummonerId) {
         return ResponseEntity.ok(userInfoFacade.callApiSummoner(encryptedSummonerId));
     }
 
     @GetMapping("/summoner/by-puuid/{puuid}")
-    public ResponseEntity<SummonerDto> callRiotSummonerByPuuid(@PathVariable String puuid) {
+    public ResponseEntity<SummonerDto> callRiotSummonerByPuuid(@PathVariable("puuid") String puuid) {
         return ResponseEntity.ok(userInfoFacade.callApiSummonerByPuuid(puuid));
     }
 }
