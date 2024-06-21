@@ -51,6 +51,10 @@ public class UserInfoFacade {
         return summonerService.callApiSummoner(encryptedSummonerId);
     }
 
+    public SummonerDto callApiSummonerByPuuid(String puuid) {
+        return summonerService.callApiSummonerByPuuid(puuid);
+    }
+
     public Account callApiAccount(String puuid) {
         return accountService.callRiotAccount(puuid);
     }
