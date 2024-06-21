@@ -2,17 +2,12 @@ package sejong.teemo.ingamesearch.champion.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.ByteArrayHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import sejong.teemo.ingamesearch.champion.util.ChampionUtil;
 import sejong.teemo.ingamesearch.common.generator.UriGenerator;
-
-import java.io.InputStream;
 
 @Service
 @RequiredArgsConstructor
