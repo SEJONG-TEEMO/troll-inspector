@@ -17,12 +17,9 @@ public class SpectatorFacade {
 
     private final SpectatorService spectatorService;
 
-    public SpectatorDto callSpectator(String gameName, String tag) {
+    public SpectatorDto callSpectator(String puuid) {
 
-        Account account = spectatorService.callRiotPUUID(gameName, tag);
-        log.info("account = {}", account);
-
-        Spectator spectator = spectatorService.callRiotSpectatorV5(account.puuid());
+        Spectator spectator = spectatorService.callRiotSpectatorV5(puuid);
         log.info("spectator = {}", spectator);
 
         return asyncCallChampionMastery(spectator);
