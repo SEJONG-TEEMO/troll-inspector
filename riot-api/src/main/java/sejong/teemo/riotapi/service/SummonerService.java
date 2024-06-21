@@ -41,4 +41,18 @@ public class SummonerService {
                 }))
                 .body(SummonerDto.class);
     }
+
+    public SummonerDto callApiSummonerByPuuid(String puuid) {
+        return restClient.get()
+                .uri(UriGenerator.RIOT_SUMMONER_PUUID.generateUri(puuid))
+                .accept(APPLICATION_JSON)
+                .header(API_KEY, riotApiProperties.apiKey())
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
+                    log.info("get uri = {}", request.getURI());
+                    log.error("summoner error status = {} message = {}", response.getStatusCode(), response.getStatusText());
+                    throw new FailedApiCallingException(ExceptionProvider.RIOT_SUMMONER_API_CALL_FAILED);
+                }))
+                .body(SummonerDto.class);
+    }
 }
