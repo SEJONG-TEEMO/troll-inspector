@@ -1,6 +1,7 @@
 package sejong.teemo.ingamesearch.ingame.dto;
 
 import lombok.Builder;
+import sejong.teemo.ingamesearch.ingame.dto.champion.ChampionMastery;
 
 import java.util.List;
 
