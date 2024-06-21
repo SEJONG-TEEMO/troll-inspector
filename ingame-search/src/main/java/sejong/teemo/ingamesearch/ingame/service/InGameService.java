@@ -3,6 +3,7 @@ package sejong.teemo.ingamesearch.ingame.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,8 @@ public class InGameService {
                 .accept(APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, RIOT_SPECTATOR_API_CALL_FAILED::handler)
-                .body(new ParameterizedTypeReference<>() {});
+                .onStatus(HttpStatusCode::is5xxServerError, RIOT_SPECTATOR_API_CALL_FAILED::handler)
+                .body(SpectatorDto.class);
     }
 
     public List<SummonerPerformance> callRiotSummonerPerformance(String puuid) {
@@ -43,6 +45,7 @@ public class InGameService {
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, RIOT_SUMMONER_PERFORMANCE_API_CALL_FAILED::handler)
+                .onStatus(HttpStatusCode::is5xxServerError, RIOT_SUMMONER_PERFORMANCE_API_CALL_FAILED::handler)
                 .body(new ParameterizedTypeReference<>() {});
     }
 
@@ -52,6 +55,7 @@ public class InGameService {
                 .accept(APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, RIOT_ACCOUNT_API_CALL_FAILED::handler)
+                .onStatus(HttpStatusCode::is5xxServerError, RIOT_ACCOUNT_API_CALL_FAILED::handler)
                 .body(Account.class);
     }
 
@@ -61,6 +65,7 @@ public class InGameService {
                 .accept(APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, RIOT_ACCOUNT_API_CALL_FAILED::handler)
+                .onStatus(HttpStatusCode::is5xxServerError, RIOT_ACCOUNT_API_CALL_FAILED::handler)
                 .body(Account.class);
     }
 
@@ -70,6 +75,7 @@ public class InGameService {
                 .accept(APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, RIOT_SUMMONER_API_CALL_FAILED::handler)
+                .onStatus(HttpStatusCode::is5xxServerError, RIOT_SUMMONER_API_CALL_FAILED::handler)
                 .body(SummonerDto.class);
     }
 
@@ -79,6 +85,7 @@ public class InGameService {
                 .accept(APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, RIOT_LEAGUE_ENTRY_API_CALL_FAILED::handler)
+                .onStatus(HttpStatusCode::is5xxServerError, RIOT_LEAGUE_ENTRY_API_CALL_FAILED::handler)
                 .body(LeagueEntryDto.class);
     }
 }
