@@ -16,7 +16,6 @@ import sejong.teemo.ingamesearch.common.exception.FailedApiCallingException;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(FailedApiCallingException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ErrorResponse handleFailedApiCallingException(FailedApiCallingException e) {
         return e.getExceptionProvider();
     }
