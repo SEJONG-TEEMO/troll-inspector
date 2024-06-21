@@ -9,7 +9,6 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.ErrorResponse;
 
-import javax.naming.ServiceUnavailableException;
 import java.io.IOException;
 
 import static org.springframework.http.HttpStatus.*;
@@ -28,9 +27,11 @@ public enum ExceptionProvider implements ErrorResponse {
     RIOT_LEAGUE_ENTRY_API_CALL_FAILED(NOT_FOUND, "LEAGUE_ENTRY_100", "LEAGUE_ENTRY API 호출에 실패하였습니다."),
     RIOT_SUMMONER_API_CALL_FAILED(NOT_FOUND, "SUMMONER_100", "SUMMONER API 호출에 실패하였습니다."),
     RIOT_CHAMPION_IMAGE(NOT_FOUND, "CHAMPION_IMAGE_100", "CHAMPION_IMAGE 를 찾을 수 없습니다."),
-    TOO_MANY_CALLING_FAILED(TOO_MANY_REQUESTS, "TOO_MANY_100", "riot api 에 과도하게 요청되었습니다."),
+    RIOT_TOO_MANY_CALLING_FAILED(TOO_MANY_REQUESTS, "TOO_MANY_100", "riot api 에 과도하게 요청되었습니다."),
+    RIOT_BAD_REQUEST_CALLING_FAILED(BAD_REQUEST, "BAD_REQUEST_100", "요청 값이 잘못되었습니다."),
 
     // 500
+    RIOT_BAD_GATEWAY_FAILED(BAD_GATEWAY, "BAD_GATEWAY_100", "서버가 유효하지 않습니다."),
     RIOT_INTERNAL_SERVER_ERROR_FAILED(INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_100", "내부 서버의 오류가 발생하였습니다."),
     RIOT_SERVICE_AVAILABLE_FAILED(SERVICE_UNAVAILABLE, "SERVICE_AVAILABLE_100", "서비스를 이용할 수 없습니다. (Critical!!)");
 
@@ -63,21 +64,23 @@ public enum ExceptionProvider implements ErrorResponse {
         switch (response.getStatusCode()) {
             case NOT_FOUND, FORBIDDEN -> throw new FailedApiCallingException(this);
             case TOO_MANY_REQUESTS -> throw new TooManyApiCallingException(this);
-            case BAD_REQUEST -> throw new IllegalArgumentException("riot api 모듈 요청에 실패하였습니다.");
-            case INTERNAL_SERVER_ERROR, SERVICE_UNAVAILABLE -> throw new RuntimeException(this.getMessage());
+            case BAD_REQUEST -> throw new RequestFailedException(RIOT_BAD_REQUEST_CALLING_FAILED);
+            case INTERNAL_SERVER_ERROR -> throw new ServerErrorException(RIOT_INTERNAL_SERVER_ERROR_FAILED);
+            case SERVICE_UNAVAILABLE -> throw new ServerErrorException(RIOT_SERVICE_AVAILABLE_FAILED);
+            case BAD_GATEWAY -> throw new ServerErrorException(RIOT_BAD_GATEWAY_FAILED);
             default -> throw new IllegalStateException("Unexpected value: " + response.getStatusCode());
         }
     }
 
     @Override
     public HttpStatusCode getStatusCode() {
-        return httpStatus;
+        return this.httpStatus;
     }
 
     @Override
     public ProblemDetail getBody() {
-        ProblemDetail pd = ProblemDetail.forStatusAndDetail(httpStatus, message);
-        pd.setTitle(code);
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(this.httpStatus, this.message);
+        pd.setTitle(this.code);
 
         return pd;
     }
