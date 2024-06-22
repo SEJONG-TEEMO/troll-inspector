@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sejong.teemo.ingamesearch.ingame.dto.user.UserInfoDto;
+
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -59,8 +60,14 @@ public class UserInfo {
     @Column(name = "summoner_level", nullable = false)
     private long summonerLevel;
 
+    @Column(name = "create_at")
+    private LocalDateTime createAt;
+
+    @Column(name = "update_at")
+    private LocalDateTime updateAt;
+
     @Builder
-    private UserInfo(String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionData, long summonerLevel) {
+    private UserInfo(String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionData, long summonerLevel, LocalDateTime createAt, LocalDateTime updateAt) {
         this.gameName = gameName;
         this.tagLine = tagLine;
         this.puuid = puuid;
@@ -75,9 +82,11 @@ public class UserInfo {
         this.profileIconId = profileIconId;
         this.revisionData = revisionData;
         this.summonerLevel = summonerLevel;
+        this.createAt = createAt;
+        this.updateAt = updateAt;
     }
 
-    public static UserInfo of(String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionData, long summonerLevel) {
+    public static UserInfo of(String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionData, long summonerLevel, LocalDateTime createAt, LocalDateTime updateAt) {
         return UserInfo.builder()
                 .gameName(gameName)
                 .tagLine(tagLine)
@@ -93,25 +102,8 @@ public class UserInfo {
                 .profileIconId(profileIconId)
                 .revisionData(revisionData)
                 .summonerLevel(summonerLevel)
-                .build();
-    }
-
-    public static UserInfo from(UserInfoDto userInfoDto) {
-        return UserInfo.builder()
-                .gameName(userInfoDto.gameName())
-                .tagLine(userInfoDto.tagLine())
-                .puuid(userInfoDto.puuid())
-                .summonerId(userInfoDto.summonerId())
-                .queueType(userInfoDto.queueType())
-                .tier(userInfoDto.tier())
-                .rank(userInfoDto.rank())
-                .wins(userInfoDto.wins())
-                .losses(userInfoDto.losses())
-                .leaguePoint(userInfoDto.leaguePoint())
-                .accountId(userInfoDto.accountId())
-                .profileIconId(userInfoDto.profileIconId())
-                .revisionData(userInfoDto.revisionData())
-                .summonerLevel(userInfoDto.summonerLevel())
+                .createAt(createAt)
+                .updateAt(updateAt)
                 .build();
     }
 }
