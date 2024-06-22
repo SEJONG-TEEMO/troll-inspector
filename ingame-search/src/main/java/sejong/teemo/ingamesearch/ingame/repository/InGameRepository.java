@@ -11,8 +11,10 @@ public interface InGameRepository extends JpaRepository<UserInfo, Long> {
 
     boolean existsByGameNameAndTagLine(String gameName, String tagLine);
 
+    Optional<UserInfo> findByGameNameAndTagLine(String gameName, String tagLine);
+
     @Query("select ui.puuid from UserInfo ui " +
             "where ui.gameName = :gameName and ui.tagLine = :tagLine")
-    Optional<String> findByGameNameAndTagLine(@Param("gameName") String gameName,
-                                              @Param("tagLine") String tagLine);
+    Optional<String> findPuuidByGameNameAndTagLine(@Param("gameName") String gameName,
+                                                   @Param("tagLine") String tagLine);
 }
