@@ -7,8 +7,6 @@ import sejong.teemo.riotapi.dto.match.ParticipantDto;
 public record SummonerPerformance(
         int championId,
         String puuid,
-        int targetIndex,
-        String lane,
         Double kda,
         Double killParticipation,
         int kills,
@@ -25,15 +23,16 @@ public record SummonerPerformance(
         int baronTakedowns,
         int teleportTakedowns,
         int totalMinionsKilled,
+        int pentaKills,
+        int quadraKills,
+        int tripleKills,
         boolean win
 ) {
 
-    public static SummonerPerformance of(int targetIdx, ParticipantDto participantDto) {
+    public static SummonerPerformance from(ParticipantDto participantDto) {
         return SummonerPerformance.builder()
                 .championId(participantDto.championId())
                 .puuid(participantDto.puuid())
-                .targetIndex(targetIdx)
-                .lane(participantDto.lane())
                 .kda(participantDto.challenges().kda())
                 .kills(participantDto.kills())
                 .deaths(participantDto.deaths())
@@ -50,6 +49,9 @@ public record SummonerPerformance(
                 .baronTakedowns(participantDto.challenges().baronTakedowns())
                 .teleportTakedowns(participantDto.teleportTakedowns())
                 .totalMinionsKilled(participantDto.totalMinionsKilled())
+                .pentaKills(participantDto.pentaKills())
+                .quadraKills(participantDto.quadraKills())
+                .tripleKills(participantDto.tripleKills())
                 .win(participantDto.win())
                 .build();
     }

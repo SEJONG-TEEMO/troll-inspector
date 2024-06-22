@@ -17,6 +17,9 @@ public record ParticipantDto(
         int teleportTakedowns,
         int totalMinionsKilled,
         boolean win,
+        int pentaKills,
+        int quadraKills,
+        int tripleKills,
         ChallengesDto challenges
 ) {
 }
