@@ -12,49 +12,52 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(name = "SummonerPerformanceInfo", indexes = {
+        @Index(name = "idx_summonerperformanceinfo", columnList = "champion_id")
+})
 public class SummonerPerformanceInfo {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "champion_id")
+    @Column(name = "champion_id", nullable = false)
     private int championId;
 
-    @Column(name = "champion_wins")
+    @Column(name = "champion_wins", nullable = false)
     private boolean championWins;
 
-    @Column(name = "kda")
+    @Column(name = "kda", nullable = false)
     private double kda;
 
-    @Column(name = "kill_participation")
+    @Column(name = "kill_participation", nullable = false)
     private double killParticipation;
 
-    @Column(name = "kills")
+    @Column(name = "kills", nullable = false)
     private int kills;
 
-    @Column(name = "deaths")
+    @Column(name = "deaths", nullable = false)
     private int deaths;
 
-    @Column(name = "assists")
+    @Column(name = "assists", nullable = false)
     private int assists;
 
-    @Column(name = "total_minion_kills")
+    @Column(name = "total_minion_kills", nullable = false)
     private int totalMinionKills;
 
     private MultiKills multiKills;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_info_id")
+    @JoinColumn(name = "user_info_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private UserInfo userInfo;
 
-    @Column(name = "create_at")
+    @Column(name = "create_at", nullable = false)
     private LocalDateTime createAt;
 
-    @Column(name = "update_at")
+    @Column(name = "update_at", nullable = false)
     private LocalDateTime updateAt;
 
     @Builder
-    private SummonerPerformanceInfo(Long id, int championId, boolean championWins, double kda, double killParticipation, int kills, int deaths, int assists, int totalMinionKills, MultiKills multiKills, UserInfo userInfo, LocalDateTime createAt, LocalDateTime updateAt) {
+    private SummonerPerformanceInfo(Long id, int championId, boolean championWins, double kda, double killParticipation, int kills, int deaths, int assists, int totalMinionKills, boolean win, MultiKills multiKills, UserInfo userInfo, LocalDateTime createAt, LocalDateTime updateAt) {
         this.id = id;
         this.championId = championId;
         this.championWins = championWins;
@@ -70,7 +73,7 @@ public class SummonerPerformanceInfo {
         this.updateAt = updateAt;
     }
 
-    public static SummonerPerformanceInfo of(int championId, boolean championWins, double kda, double killParticipation, int kills, int deaths, int assists, int totalMinionKills, MultiKills multiKills, UserInfo userInfo, LocalDateTime createAt, LocalDateTime updateAt) {
+    public static SummonerPerformanceInfo of(int championId, boolean championWins, double kda, double killParticipation, int kills, int deaths, int assists, int totalMinionKills, boolean win, MultiKills multiKills, UserInfo userInfo, LocalDateTime createAt, LocalDateTime updateAt) {
         return SummonerPerformanceInfo.builder()
                 .championId(championId)
                 .championWins(championWins)
@@ -80,6 +83,7 @@ public class SummonerPerformanceInfo {
                 .deaths(deaths)
                 .assists(assists)
                 .totalMinionKills(totalMinionKills)
+                .win(win)
                 .multiKills(multiKills)
                 .userInfo(userInfo)
                 .createAt(createAt)
@@ -90,13 +94,14 @@ public class SummonerPerformanceInfo {
     public static SummonerPerformanceInfo of(SummonerPerformance summonerPerformance, UserInfo userInfo) {
         return SummonerPerformanceInfo.of(
                 summonerPerformance.championId(),
-                summonerPerformance.wins(),
+                summonerPerformance.win(),
                 summonerPerformance.kda(),
                 summonerPerformance.killParticipation(),
                 summonerPerformance.kills(),
                 summonerPerformance.deaths(),
                 summonerPerformance.assists(),
                 summonerPerformance.totalMinionsKilled(),
+                summonerPerformance.win(),
                 MultiKills.builder()
                         .pentaKills(summonerPerformance.pentaKills())
                         .quadraKiils(summonerPerformance.quadraKills())
