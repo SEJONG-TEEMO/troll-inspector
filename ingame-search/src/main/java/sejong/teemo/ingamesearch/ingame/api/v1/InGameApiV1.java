@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import sejong.teemo.ingamesearch.ingame.dto.InGameView;
+import sejong.teemo.ingamesearch.ingame.dto.normal.NormalView;
 import sejong.teemo.ingamesearch.ingame.facade.InGameFacade;
 
 import java.util.List;
@@ -23,5 +24,12 @@ public class InGameApiV1 {
                                                       @RequestParam("tagLine") String tagLine) {
 
         return ResponseEntity.ok(inGameFacade.inGame(gameName, tagLine));
+    }
+
+    @GetMapping("/normal")
+    public ResponseEntity<List<NormalView>> normalApi(@RequestParam("gameName") String gameName,
+                                                      @RequestParam("tagLine") String tagLine) {
+
+        return ResponseEntity.ok(inGameFacade.normal(gameName, tagLine));
     }
 }
