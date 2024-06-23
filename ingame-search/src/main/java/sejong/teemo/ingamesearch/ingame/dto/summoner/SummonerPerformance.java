@@ -17,6 +17,6 @@ public record SummonerPerformance(
         int pentaKills,
         int quadraKills,
         int tripleKills,
-        boolean wins
+        boolean win
 ) {
 }
