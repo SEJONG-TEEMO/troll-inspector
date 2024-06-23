@@ -8,6 +8,7 @@ import sejong.teemo.crawling.webDriver.pool.WebDriverPool;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.BiFunction;
 import java.util.stream.IntStream;
 
@@ -19,9 +20,9 @@ public class AsyncCrawler<T> implements AutoCloseable {
     private int startPage = 0, endPage = 0;
 
     @Builder
-    public AsyncCrawler(WebDriverPool pool, ExecutorService executor) {
+    public AsyncCrawler(WebDriverPool pool, int count) {
         this.pool = pool;
-        this.executor = executor;
+        this.executor = Executors.newFixedThreadPool(count);
     }
 
     public AsyncCrawler<T> setPages(int startPage, int endPage) {
