@@ -18,7 +18,7 @@ import static org.springframework.http.HttpStatus.TOO_MANY_REQUESTS;
 @Slf4j
 public enum ExceptionProvider implements ErrorResponse {
 
-    // 400
+    // api 400
     RIOT_SPECTATOR_API_CALL_FAILED(NOT_FOUND, "SPECTATOR_100","SPECTATOR API 호출에 실패하였습니다."),
     RIOT_ACCOUNT_API_CALL_FAILED(NOT_FOUND, "ACCOUNT_100", "ACCOUNT API 호출에 실패하였습니다."),
     RIOT_CHAMPION_MASTERY_API_CALL_FAILED(NOT_FOUND, "CHAMPION_MASTERY_100", "CHAMPION_MASTERY API 호출에 실패하였습니다."),
@@ -30,7 +30,7 @@ public enum ExceptionProvider implements ErrorResponse {
     RIOT_TOO_MANY_CALLING_FAILED(TOO_MANY_REQUESTS, "TOO_MANY_100", "riot api 에 과도하게 요청되었습니다."),
     RIOT_BAD_REQUEST_CALLING_FAILED(BAD_REQUEST, "BAD_REQUEST_100", "요청 값이 잘못되었습니다."),
 
-    // 500
+    // api 500
     RIOT_BAD_GATEWAY_FAILED(BAD_GATEWAY, "BAD_GATEWAY_100", "서버가 유효하지 않습니다."),
     RIOT_INTERNAL_SERVER_ERROR_FAILED(INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_100", "내부 서버의 오류가 발생하였습니다."),
     RIOT_SERVICE_AVAILABLE_FAILED(SERVICE_UNAVAILABLE, "SERVICE_AVAILABLE_100", "서비스를 이용할 수 없습니다. (Critical!!)");
