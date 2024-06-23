@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sejong.teemo.ingamesearch.ingame.dto.user.UserInfoDto;
 
 import java.time.LocalDateTime;
 
@@ -96,5 +97,24 @@ public class UserInfo {
                 .revisionData(revisionData)
                 .summonerLevel(summonerLevel)
                 .build();
+    }
+
+    public static UserInfo from(UserInfoDto userInfoDto) {
+        return of(
+                userInfoDto.gameName(),
+                userInfoDto.tagLine(),
+                userInfoDto.puuid(),
+                userInfoDto.summonerId(),
+                userInfoDto.queueType(),
+                userInfoDto.tier(),
+                userInfoDto.rank(),
+                userInfoDto.wins(),
+                userInfoDto.losses(),
+                userInfoDto.leaguePoint(),
+                userInfoDto.accountId(),
+                userInfoDto.profileIconId(),
+                userInfoDto.revisionData(),
+                userInfoDto.summonerLevel()
+        );
     }
 }
