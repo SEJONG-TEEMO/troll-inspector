@@ -62,12 +62,12 @@ public enum ExceptionProvider implements ErrorResponse {
 
     private void exception(ClientHttpResponse response) throws IOException {
         switch (response.getStatusCode()) {
-            case NOT_FOUND, FORBIDDEN -> throw new FailedApiCallingException(this);
+            case NOT_FOUND -> throw new FailedApiCallingException(this);
             case TOO_MANY_REQUESTS -> throw new TooManyApiCallingException(this);
             case BAD_REQUEST -> throw new RequestFailedException(RIOT_BAD_REQUEST_CALLING_FAILED);
-            case INTERNAL_SERVER_ERROR -> throw new ServerErrorException(RIOT_INTERNAL_SERVER_ERROR_FAILED);
-            case SERVICE_UNAVAILABLE -> throw new ServerErrorException(RIOT_SERVICE_AVAILABLE_FAILED);
-            case BAD_GATEWAY -> throw new ServerErrorException(RIOT_BAD_GATEWAY_FAILED);
+            case INTERNAL_SERVER_ERROR, SERVICE_UNAVAILABLE, BAD_GATEWAY ->
+                    throw new ServerErrorException(RIOT_INTERNAL_SERVER_ERROR_FAILED);
+
             default -> throw new IllegalStateException("Unexpected value: " + response.getStatusCode());
         }
     }
