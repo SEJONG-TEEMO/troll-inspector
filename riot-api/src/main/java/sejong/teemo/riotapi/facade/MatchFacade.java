@@ -9,6 +9,7 @@ import sejong.teemo.riotapi.dto.SummonerPerformance;
 import sejong.teemo.riotapi.dto.match.MatchDataDto;
 import sejong.teemo.riotapi.dto.match.MatchDto;
 import sejong.teemo.riotapi.dto.match.ParticipantDto;
+import sejong.teemo.riotapi.dto.match.TeamDto;
 import sejong.teemo.riotapi.exception.ExceptionProvider;
 import sejong.teemo.riotapi.exception.NotFoundException;
 import sejong.teemo.riotapi.service.AccountService;
@@ -50,12 +51,18 @@ public class MatchFacade {
         return asyncCall.execute(10, matchId -> {
             MatchDataDto matchDataDto = matchService.callRiotApiMatchMatchId(matchId);
 
-            ParticipantDto searchParticipant = matchDataDto.info().participants().stream()
+            ParticipantDto searchParticipant = matchDataDto.info().participants()
+                    .stream()
                     .filter(participantDto -> Objects.equals(participantDto.puuid(), puuid))
                     .findFirst()
                     .orElseThrow(() -> new NotFoundException(ExceptionProvider.NOT_FOUND_SUMMONER));
 
-            return this.getSummonerPerformance(searchParticipant);
+            TeamDto teamDto = matchDataDto.info().teams().stream()
+                    .filter(team -> Objects.equals(team.teamId(), searchParticipant.teamId()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("teamId 가 다릅니다."));
+
+            return this.getSummonerPerformance(searchParticipant, teamDto);
         });
 
     }
@@ -99,10 +106,10 @@ public class MatchFacade {
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException(ExceptionProvider.NOT_FOUND_SUMMONER));
 
-        return this.getSummonerPerformance(participants.get(targetIdx));
+        return this.getSummonerPerformance(participants.get(targetIdx), null);
     }
 
-    private SummonerPerformance getSummonerPerformance(ParticipantDto participantDto) {
-        return SummonerPerformance.from(participantDto);
+    private SummonerPerformance getSummonerPerformance(ParticipantDto participantDto, TeamDto teamDto) {
+        return SummonerPerformance.of(participantDto, teamDto);
     }
 }
