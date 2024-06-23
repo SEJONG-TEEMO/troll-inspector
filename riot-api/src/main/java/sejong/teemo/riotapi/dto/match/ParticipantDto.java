@@ -20,6 +20,7 @@ public record ParticipantDto(
         int pentaKills,
         int quadraKills,
         int tripleKills,
+        int teamId,
         ChallengesDto challenges
 ) {
 }
