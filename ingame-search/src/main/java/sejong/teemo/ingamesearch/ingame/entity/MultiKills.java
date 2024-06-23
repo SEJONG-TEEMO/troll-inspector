@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MultiKills {
 
-    @Column(name = "penta_kills")
+    @Column(name = "penta_kills", nullable = false)
     private int pentaKills;
 
-    @Column(name = "quadra_kills")
+    @Column(name = "quadra_kills", nullable = false)
     private int quadraKiils;
 
-    @Column(name = "triple_kills")
+    @Column(name = "triple_kills", nullable = false)
     private int tripleKills;
 
     @Builder
