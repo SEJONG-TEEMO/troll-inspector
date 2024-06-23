@@ -2,6 +2,7 @@ package sejong.teemo.riotapi.dto;
 
 import lombok.Builder;
 import sejong.teemo.riotapi.dto.match.ParticipantDto;
+import sejong.teemo.riotapi.dto.match.TeamDto;
 
 @Builder
 public record SummonerPerformance(
@@ -53,6 +54,33 @@ public record SummonerPerformance(
                 .quadraKills(participantDto.quadraKills())
                 .tripleKills(participantDto.tripleKills())
                 .win(participantDto.win())
+                .build();
+    }
+
+    public static SummonerPerformance of(ParticipantDto participantDto, TeamDto teamDto) {
+        return SummonerPerformance.builder()
+                .championId(participantDto.championId())
+                .puuid(participantDto.puuid())
+                .kda(participantDto.challenges().kda())
+                .kills(participantDto.kills())
+                .deaths(participantDto.deaths())
+                .assists(participantDto.assists())
+                .killParticipation(participantDto.challenges().killParticipation())
+                .physicalDamageDealtToChampions(participantDto.physicalDamageDealtToChampions())
+                .magicDamageDealtToChampions(participantDto.magicDamageDealtToChampions())
+                .stealthWardsPlaced(participantDto.challenges().stealthWardsPlaced())
+                .wardTakedowns(participantDto.challenges().wardTakedowns())
+                .controlWardsPlaced(participantDto.challenges().controlWardsPlaced())
+                .detectorWardsPlaced(participantDto.detectorWardsPlaced())
+                .damageDealtToBuildings(participantDto.damageDealtToBuildings())
+                .dragonTakedowns(participantDto.challenges().dragonTakedowns())
+                .baronTakedowns(participantDto.challenges().baronTakedowns())
+                .teleportTakedowns(participantDto.teleportTakedowns())
+                .totalMinionsKilled(participantDto.totalMinionsKilled())
+                .pentaKills(participantDto.pentaKills())
+                .quadraKills(participantDto.quadraKills())
+                .tripleKills(participantDto.tripleKills())
+                .win(teamDto.win())
                 .build();
     }
 }
