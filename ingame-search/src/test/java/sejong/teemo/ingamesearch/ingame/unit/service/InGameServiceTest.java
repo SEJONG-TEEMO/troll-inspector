@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.ingame.service;
+package sejong.teemo.ingamesearch.ingame.unit.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
@@ -15,6 +15,7 @@ import sejong.teemo.ingamesearch.common.generator.UriGenerator;
 import sejong.teemo.ingamesearch.extension.TestExtension;
 import sejong.teemo.ingamesearch.ingame.dto.SpectatorDto;
 import sejong.teemo.ingamesearch.ingame.dto.user.Account;
+import sejong.teemo.ingamesearch.ingame.service.InGameService;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
