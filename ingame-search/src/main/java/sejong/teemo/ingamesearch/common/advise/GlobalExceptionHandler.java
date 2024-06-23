@@ -25,21 +25,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(FailedApiCallingException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ErrorResponse handleFailedApiCallingException(FailedApiCallingException e) {
         return e.getExceptionProvider();
     }
 
     @ExceptionHandler(RequestFailedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ErrorResponse handleRequestFailedException(RequestFailedException e) {
         return e.getExceptionProvider();
     }
 
     @ExceptionHandler(TooManyApiCallingException.class)
+    @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
     protected ErrorResponse handleTooManyApiCallingException(TooManyApiCallingException e) {
         return e.getExceptionProvider();
     }
 
     @ExceptionHandler(ServerErrorException.class)
+    @ResponseStatus
     protected ErrorResponse handleServerErrorException(ServerErrorException e) {
         return e.getExceptionProvider();
     }
