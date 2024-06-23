@@ -88,4 +88,16 @@ public class InGameService {
                 .onStatus(HttpStatusCode::is5xxServerError, RIOT_LEAGUE_ENTRY_API_CALL_FAILED::handler)
                 .body(LeagueEntryDto.class);
     }
+
+    public byte[] callApiUserProfileImage(long profileId) {
+        return restClient.get()
+                .uri(UriGenerator.USER_PROFILE_CDN.generate(profileId))
+                .accept(IMAGE_PNG)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
+                    log.info("user profile image url = {}", request.getURI());
+                    log.error("user profile image url = {}", response.getStatusText());
+                    throw new IllegalArgumentException("invalid profileId" + profileId);
+                }).body(byte[].class);
+    }
 }
