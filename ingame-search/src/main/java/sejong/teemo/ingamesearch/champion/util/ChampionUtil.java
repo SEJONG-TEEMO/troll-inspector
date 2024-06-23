@@ -55,7 +55,7 @@ public class ChampionUtil {
             case 126 -> "Jayce";
             case 202 -> "Jhin";
             case 222 -> "Jinx";
-            case 145 -> "Kai'Sa";
+            case 145 -> "Kaisa";
             case 429 -> "Kalista";
             case 43 -> "Karma";
             case 30 -> "Karthus";
@@ -64,7 +64,7 @@ public class ChampionUtil {
             case 10 -> "Kayle";
             case 141 -> "Kayn";
             case 85 -> "Kennen";
-            case 121 -> "Kha'Zix";
+            case 121 -> "Khazix";
             case 203 -> "Kindred";
             case 240 -> "Kled";
             case 96 -> "KogMaw";
@@ -101,7 +101,7 @@ public class ChampionUtil {
             case 133 -> "Quinn";
             case 497 -> "Rakan";
             case 33 -> "Rammus";
-            case 421 -> "Rek'Sai";
+            case 421 -> "RekSai";
             case 526 -> "Rell";
             case 888 -> "Renata";
             case 58 -> "Renekton";
