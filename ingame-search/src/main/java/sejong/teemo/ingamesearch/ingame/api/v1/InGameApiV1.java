@@ -24,10 +24,10 @@ public class InGameApiV1 {
     }
 
     @GetMapping("/normal")
-    public ResponseEntity<UserPerformanceDto> normalApi(@RequestParam("gameName") String gameName,
+    public ResponseEntity<UserPerformanceDto> performanceApi(@RequestParam("gameName") String gameName,
                                                         @RequestParam("tagLine") String tagLine) {
 
-        return ResponseEntity.ok(inGameFacade.normal(gameName, tagLine));
+        return ResponseEntity.ok(inGameFacade.viewUserGamePerformance(gameName, tagLine));
     }
 
     @PatchMapping("/in-game")
