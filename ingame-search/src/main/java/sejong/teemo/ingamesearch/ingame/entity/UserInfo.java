@@ -1,6 +1,7 @@
 package sejong.teemo.ingamesearch.ingame.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "user_info", indexes = {
         @Index(name = "game_name_and_tag_line_idx", columnList = "game_name, tag_line")
@@ -60,14 +61,8 @@ public class UserInfo {
     @Column(name = "summoner_level", nullable = false)
     private long summonerLevel;
 
-    @Column(name = "create_at")
-    private LocalDateTime createAt;
-
-    @Column(name = "update_at")
-    private LocalDateTime updateAt;
-
     @Builder
-    private UserInfo(String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionData, long summonerLevel, LocalDateTime createAt, LocalDateTime updateAt) {
+    private UserInfo(String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionData, long summonerLevel) {
         this.gameName = gameName;
         this.tagLine = tagLine;
         this.puuid = puuid;
@@ -82,11 +77,9 @@ public class UserInfo {
         this.profileIconId = profileIconId;
         this.revisionData = revisionData;
         this.summonerLevel = summonerLevel;
-        this.createAt = createAt;
-        this.updateAt = updateAt;
     }
 
-    public static UserInfo of(String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionData, long summonerLevel, LocalDateTime createAt, LocalDateTime updateAt) {
+    public static UserInfo of(String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionData, long summonerLevel) {
         return UserInfo.builder()
                 .gameName(gameName)
                 .tagLine(tagLine)
@@ -102,8 +95,6 @@ public class UserInfo {
                 .profileIconId(profileIconId)
                 .revisionData(revisionData)
                 .summonerLevel(summonerLevel)
-                .createAt(createAt)
-                .updateAt(updateAt)
                 .build();
     }
 }
