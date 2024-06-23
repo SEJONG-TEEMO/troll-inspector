@@ -25,11 +25,16 @@ public class MatchService {
 
     private static final String API_KEY = "X-Riot-Token";
 
+    private static final String START = "0";
+    private static final String COUNT = "40";
+    private static final String QUEUE = "420";
+
     public List<String> callRiotApiMatchPuuid(String puuid) {
         return restClient.get()
                 .uri(UriGenerator.RIOT_MATCH_PUUID.generateUri()
-                        .queryParam("start", String.valueOf(0))
-                        .queryParam("count", String.valueOf(20))
+                        .queryParam("start", START)
+                        .queryParam("count", COUNT)
+                        .queryParam("queue", QUEUE)
                         .build(puuid))
                 .accept(MediaType.APPLICATION_JSON)
                 .header(API_KEY, riotApiProperties.apiKey())
