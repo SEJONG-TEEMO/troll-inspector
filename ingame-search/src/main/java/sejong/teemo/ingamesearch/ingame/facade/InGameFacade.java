@@ -1,6 +1,7 @@
 package sejong.teemo.ingamesearch.ingame.facade;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import sejong.teemo.ingamesearch.champion.service.ChampionService;
@@ -11,10 +12,9 @@ import sejong.teemo.ingamesearch.ingame.dto.champion.Champion;
 import sejong.teemo.ingamesearch.ingame.dto.champion.ChampionMastery;
 import sejong.teemo.ingamesearch.ingame.dto.normal.NormalView;
 import sejong.teemo.ingamesearch.ingame.dto.summoner.SummonerPerformance;
-import sejong.teemo.ingamesearch.ingame.dto.user.Account;
-import sejong.teemo.ingamesearch.ingame.dto.user.LeagueEntryDto;
-import sejong.teemo.ingamesearch.ingame.dto.user.SummonerDto;
-import sejong.teemo.ingamesearch.ingame.dto.user.UserInfoDto;
+import sejong.teemo.ingamesearch.ingame.dto.user.*;
+import sejong.teemo.ingamesearch.ingame.dto.user.performance.UserChampionPerformanceDto;
+import sejong.teemo.ingamesearch.ingame.dto.user.performance.UserPerformanceDto;
 import sejong.teemo.ingamesearch.ingame.entity.SummonerPerformanceInfo;
 import sejong.teemo.ingamesearch.ingame.entity.UserInfo;
 import sejong.teemo.ingamesearch.ingame.repository.InGameRepository;
@@ -28,6 +28,7 @@ import java.util.Objects;
 @Component
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class InGameFacade {
 
     private final InGameService inGameService;
@@ -49,7 +50,7 @@ public class InGameFacade {
 
             byte[] championImage = championService.fetchChampionImage(championMastery.championId());
 
-            UserInfoDto userInfo = getUserInfo(puuid);
+            UserInfoDto userInfo = getUserInfoDto(puuid);
 
             Champion champion = getInGameView(puuid, championMastery.championId());
 
@@ -69,19 +70,51 @@ public class InGameFacade {
     }
 
     @Transactional
-    public List<NormalView> normal(String gameName, String tagLine) {
+    public long updateSummonerPerformance(String gameName, String tagLine) {
         UserInfo userInfo = getUserInfo(gameName, tagLine);
 
-        List<SummonerPerformanceInfo> summonerPerformanceInfos = inGameService.callRiotSummonerPerformance(userInfo.getPuuid())
+        List<SummonerPerformance> summonerPerformances = inGameService.callRiotSummonerPerformance(userInfo.getPuuid());
+
+        return summonerPerformances
                 .stream()
-                .map(summonerPerformance -> SummonerPerformanceInfo.of(summonerPerformance, userInfo))
-                .toList();
+                .mapToLong(summonerPerformance -> queryDslRepository.updateSummonerPerformanceInfo(summonerPerformance, userInfo.getId()))
+                .sum();
+    }
+
+    @Transactional
+    public UserPerformanceDto viewUserGamePerformance(String gameName, String tagLine) {
+        UserInfo userInfo = getUserInfo(gameName, tagLine);
 
         if(!summonerPerformanceInfoRepository.existsByUserInfoId(userInfo.getId())) {
+
+            List<SummonerPerformanceInfo> summonerPerformanceInfos = inGameService.callRiotSummonerPerformance(userInfo.getPuuid())
+                    .stream()
+                    .map(summonerPerformance -> SummonerPerformanceInfo.of(summonerPerformance, userInfo))
+                    .toList();
+
             summonerPerformanceInfoRepository.saveAll(summonerPerformanceInfos);
         }
 
-        return queryDslRepository.findRecentGamesByUserId(userInfo.getId());
+        List<NormalView> normalViews = queryDslRepository.findRecentGamesByUserId(userInfo.getId());
+
+        return UserPerformanceDto.of(getUserProfileDto(normalViews), getUserChampionPerformanceDtos(normalViews));
+    }
+
+    private UserProfileDto getUserProfileDto(List<NormalView> normalViews) {
+        return UserProfileDto.of(
+                inGameService.callApiUserProfileImage(normalViews.getFirst().userInfoView().profileIconId()),
+                normalViews.getFirst()
+        );
+    }
+
+    private List<UserChampionPerformanceDto> getUserChampionPerformanceDtos(List<NormalView> normalViews) {
+        AsyncCall<NormalView, UserChampionPerformanceDto> asyncCall = new AsyncCall<>(normalViews);
+
+        return asyncCall.execute(10, normalView -> {
+            byte[] championImage = championService.fetchChampionImage((long) normalView.championId());
+
+            return UserChampionPerformanceDto.of(championImage, normalView);
+        });
     }
 
     private String getPuuid(String gameName, String tagLine) {
@@ -91,11 +124,23 @@ public class InGameFacade {
 
     private UserInfo getUserInfo(String gameName, String tagLine) {
         return inGameRepository.findByGameNameAndTagLine(gameName, tagLine)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+                .orElseGet(() -> {
+                    UserInfoDto userInfoDto = getUserInfoDto(gameName, tagLine);
+
+                    return inGameRepository.save(UserInfo.from(userInfoDto));
+                });
     }
 
-    private UserInfoDto getUserInfo(String puuid) {
+    private UserInfoDto getUserInfoDto(String puuid) {
         Account account = inGameService.callApiAccount(puuid);
+        SummonerDto summonerDto = inGameService.callApiSummoner(account.puuid());
+        LeagueEntryDto leagueEntryDto = inGameService.callApiLeagueEntry(summonerDto.summonerId());
+
+        return UserInfoDto.of(leagueEntryDto, summonerDto, account);
+    }
+
+    private UserInfoDto getUserInfoDto(String gameName, String tagLine) {
+        Account account = inGameService.callApiAccount(gameName, tagLine);
         SummonerDto summonerDto = inGameService.callApiSummoner(account.puuid());
         LeagueEntryDto leagueEntryDto = inGameService.callApiLeagueEntry(summonerDto.summonerId());
 
@@ -116,8 +161,8 @@ public class InGameFacade {
         int assistSum = performances.stream().mapToInt(SummonerPerformance::assists).sum();
         int recentGameCount = performances.size();
         double kda = performances.stream().mapToDouble(SummonerPerformance::kda).sum();
-        int wins = (int) performances.stream().filter(SummonerPerformance::wins).count();
-        int losses = (int) performances.stream().filter(summonerPerformance -> !summonerPerformance.wins()).count();
+        int wins = (int) performances.stream().filter(SummonerPerformance::win).count();
+        int losses = (int) performances.stream().filter(summonerPerformance -> !summonerPerformance.win()).count();
 
         return Champion.of(killSum, deathSum, assistSum, recentGameCount, kda / recentGameCount, wins, losses);
     }
