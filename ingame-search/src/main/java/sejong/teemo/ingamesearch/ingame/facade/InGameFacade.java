@@ -70,15 +70,16 @@ public class InGameFacade {
     }
 
     @Transactional
-    public long updateSummonerPerformance(String gameName, String tagLine) {
+    public UserPerformanceDto updateSummonerPerformance(String gameName, String tagLine) {
         UserInfo userInfo = getUserInfo(gameName, tagLine);
 
         List<SummonerPerformance> summonerPerformances = inGameService.callRiotSummonerPerformance(userInfo.getPuuid());
 
-        return summonerPerformances
-                .stream()
-                .mapToLong(summonerPerformance -> queryDslRepository.updateSummonerPerformanceInfo(summonerPerformance, userInfo.getId()))
-                .sum();
+        summonerPerformances.forEach(summonerPerformance -> queryDslRepository.updateSummonerPerformanceInfo(summonerPerformance, userInfo.getId()));
+
+        List<NormalView> normalViews = queryDslRepository.findRecentGamesByUserId(userInfo.getId());
+
+        return UserPerformanceDto.of(getUserProfileDto(normalViews), getUserChampionPerformanceDtos(normalViews));
     }
 
     @Transactional
@@ -134,15 +135,18 @@ public class InGameFacade {
     private UserInfoDto getUserInfoDto(String puuid) {
         Account account = inGameService.callApiAccount(puuid);
         SummonerDto summonerDto = inGameService.callApiSummoner(account.puuid());
-        LeagueEntryDto leagueEntryDto = inGameService.callApiLeagueEntry(summonerDto.summonerId());
+        LeagueEntryDto leagueEntryDto = inGameService.callApiLeagueEntry(summonerDto.id());
 
         return UserInfoDto.of(leagueEntryDto, summonerDto, account);
     }
 
     private UserInfoDto getUserInfoDto(String gameName, String tagLine) {
         Account account = inGameService.callApiAccount(gameName, tagLine);
+        log.info("account {}", account.puuid());
         SummonerDto summonerDto = inGameService.callApiSummoner(account.puuid());
-        LeagueEntryDto leagueEntryDto = inGameService.callApiLeagueEntry(summonerDto.summonerId());
+        log.info("summoner {}", summonerDto.id());
+        LeagueEntryDto leagueEntryDto = inGameService.callApiLeagueEntry(summonerDto.id());
+        log.info("league {}", leagueEntryDto);
 
         return UserInfoDto.of(leagueEntryDto, summonerDto, account);
     }

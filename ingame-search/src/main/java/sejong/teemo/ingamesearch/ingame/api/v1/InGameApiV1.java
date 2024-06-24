@@ -25,13 +25,13 @@ public class InGameApiV1 {
 
     @GetMapping("/performance")
     public ResponseEntity<UserPerformanceDto> performanceApi(@RequestParam("gameName") String gameName,
-                                                        @RequestParam("tagLine") String tagLine) {
+                                                            @RequestParam("tagLine") String tagLine) {
 
         return ResponseEntity.ok(inGameFacade.viewUserGamePerformance(gameName, tagLine));
     }
 
     @PatchMapping("/performance")
-    public ResponseEntity<Long> updateInPerformance(@RequestParam("gameName") String gameName,
+    public ResponseEntity<UserPerformanceDto> updateInPerformance(@RequestParam("gameName") String gameName,
                                              @RequestParam("tagLine") String tagLine) {
 
         return ResponseEntity.ok(inGameFacade.updateSummonerPerformance(gameName, tagLine));
