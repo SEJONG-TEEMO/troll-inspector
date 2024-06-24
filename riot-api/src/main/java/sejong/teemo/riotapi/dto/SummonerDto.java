@@ -5,7 +5,7 @@ import lombok.Builder;
 
 @Builder
 public record SummonerDto(
-        @NotNull String summonerId,
+        @NotNull String id,
         @NotNull String accountId,
         int profileIconId,
         long revisionDate,
