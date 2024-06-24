@@ -12,7 +12,8 @@ public record UserProfileDto(
         String rank,
         int total,
         int wins,
-        int losses
+        int losses,
+        long summonerLevel
 ) {
 
     public static UserProfileDto of(byte[] profileImage, NormalView normalView) {
@@ -25,6 +26,7 @@ public record UserProfileDto(
                 .total(normalView.userInfoView().total())
                 .wins(normalView.userInfoView().wins())
                 .losses(normalView.userInfoView().losses())
+                .summonerLevel(normalView.userInfoView().summonerLevel())
                 .build();
     }
 }

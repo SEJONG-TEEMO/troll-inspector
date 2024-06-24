@@ -12,10 +12,11 @@ public record UserInfoView(
         int total,
         int wins,
         int losses,
-        int profileIconId) {
+        int profileIconId,
+        long summonerLevel) {
 
     @QueryProjection
-    public UserInfoView(String gameName, String tagLine, String tier, String rank, int total, int wins, int losses, int profileIconId) {
+    public UserInfoView(String gameName, String tagLine, String tier, String rank, int total, int wins, int losses, int profileIconId, long summonerLevel) {
         this.gameName = gameName;
         this.tagLine = tagLine;
         this.tier = tier;
@@ -24,5 +25,6 @@ public record UserInfoView(
         this.wins = wins;
         this.losses = losses;
         this.profileIconId = profileIconId;
+        this.summonerLevel = summonerLevel;
     }
 }
