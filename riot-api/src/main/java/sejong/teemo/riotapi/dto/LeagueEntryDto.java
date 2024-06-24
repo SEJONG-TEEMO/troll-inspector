@@ -18,6 +18,5 @@ public record LeagueEntryDto(
         boolean hotStreak,
         boolean veteran,
         boolean freshBlood,
-        boolean inactive,
-        @NotNull MiniSeriesDto miniSeriesDto) {
+        boolean inactive) {
 }
