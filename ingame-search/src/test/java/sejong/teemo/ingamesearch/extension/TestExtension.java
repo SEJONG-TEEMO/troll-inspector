@@ -57,7 +57,7 @@ public class TestExtension {
     protected String getSummoner() throws JsonProcessingException {
 
         SummonerDto summonerDto = SummonerDto.builder()
-                .summonerId("summoner123")
+                .id("summoner123")
                 .summonerLevel(100L)
                 .accountId("account123")
                 .profileIconId(1)

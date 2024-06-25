@@ -60,7 +60,6 @@ public class TestExtension {
                 .veteran(false)
                 .freshBlood(true)
                 .inactive(false)
-                .miniSeriesDto(miniSeries)
                 .build();
 
         List<LeagueEntryDto> leagueEntryDtos = List.of(leagueEntry);
@@ -75,7 +74,7 @@ public class TestExtension {
     protected String getSummoner() {
 
         SummonerDto summoner = SummonerDto.builder()
-                .summonerId("summoner789")
+                .id("summoner789")
                 .accountId("account123")
                 .profileIconId(1234)
                 .revisionDate(System.currentTimeMillis())
