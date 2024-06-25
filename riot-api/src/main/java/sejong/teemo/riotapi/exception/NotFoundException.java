@@ -8,6 +8,7 @@ public class NotFoundException extends RuntimeException {
     private final ExceptionProvider exceptionProvider;
 
     public NotFoundException(ExceptionProvider exceptionProvider) {
+        super(exceptionProvider.getMessage());
         this.exceptionProvider = exceptionProvider;
     }
 
