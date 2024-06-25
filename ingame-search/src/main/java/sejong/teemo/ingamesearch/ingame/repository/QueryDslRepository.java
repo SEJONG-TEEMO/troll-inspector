@@ -1,5 +1,6 @@
 package sejong.teemo.ingamesearch.ingame.repository;
 
+import com.querydsl.core.types.dsl.MathExpressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -34,16 +35,17 @@ public class QueryDslRepository {
                                         .add(summonerPerformanceInfo.userInfo.losses),
                                 summonerPerformanceInfo.userInfo.wins,
                                 summonerPerformanceInfo.userInfo.losses,
-                                summonerPerformanceInfo.userInfo.profileIconId
+                                summonerPerformanceInfo.userInfo.profileIconId,
+                                summonerPerformanceInfo.userInfo.summonerLevel
                         ),
                         summonerPerformanceInfo.championId,
                         summonerPerformanceInfo.championId.count().intValue(),
-                        getWinRate(),
-                        summonerPerformanceInfo.kda.avg(),
-                        summonerPerformanceInfo.kills.avg(),
-                        summonerPerformanceInfo.deaths.avg(),
-                        summonerPerformanceInfo.assists.avg(),
-                        summonerPerformanceInfo.totalMinionKills.avg(),
+                        MathExpressions.round(getWinRate(), 2),
+                        MathExpressions.round(summonerPerformanceInfo.kda.avg(), 2),
+                        MathExpressions.round(summonerPerformanceInfo.kills.avg(), 2),
+                        MathExpressions.round(summonerPerformanceInfo.deaths.avg(), 2),
+                        MathExpressions.round(summonerPerformanceInfo.assists.avg(), 2),
+                        MathExpressions.round(summonerPerformanceInfo.totalMinionKills.avg(), 2),
                         summonerPerformanceInfo.multiKills.pentaKills.sum(),
                         summonerPerformanceInfo.multiKills.quadraKiils.sum(),
                         summonerPerformanceInfo.multiKills.tripleKills.sum(),
@@ -53,6 +55,7 @@ public class QueryDslRepository {
                 .where(summonerPerformanceInfo.userInfo.id.eq(userId))
                 .groupBy(summonerPerformanceInfo.championId)
                 .orderBy(summonerPerformanceInfo.championId.count().desc())
+                .limit(5)
                 .fetch();
 
     }
