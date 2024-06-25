@@ -9,10 +9,16 @@ import org.springframework.web.client.RestClient;
 import sejong.teemo.riotapi.dto.LeagueEntryDto;
 import sejong.teemo.riotapi.exception.ExceptionProvider;
 import sejong.teemo.riotapi.exception.FailedApiCallingException;
+import sejong.teemo.riotapi.exception.NotFoundException;
 import sejong.teemo.riotapi.generator.UriGenerator;
 import sejong.teemo.riotapi.properties.RiotApiProperties;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.springframework.http.MediaType.*;
 
@@ -25,6 +31,7 @@ public class LeagueService {
     private final RiotApiProperties riotApiProperties;
 
     private static final String API_KEY = "X-Riot-Token";
+    private static final String QUEUE = "RANKED_SOLO_5x5";
 
     public List<LeagueEntryDto> callRiotLeague(String division, String tier, String queue, int page) {
 
@@ -43,7 +50,7 @@ public class LeagueService {
 
     public LeagueEntryDto callRiotLeague(String summonerId) {
 
-        return restClient.get()
+       Set<LeagueEntryDto> leagueEntryDtoSet = restClient.get()
                 .uri(UriGenerator.RIOT_LEAGUE_SUMMONER_ID.generateUri(summonerId))
                 .accept(APPLICATION_JSON)
                 .header(API_KEY, riotApiProperties.apiKey())
@@ -51,7 +58,14 @@ public class LeagueService {
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
                     log.info("get uri = {}", request.getURI());
                     log.error("league error status = {} message = {}", response.getStatusCode(), response.getStatusText());
-                    throw new FailedApiCallingException(ExceptionProvider.RIOT_SPECTATOR_API_CALL_FAILED);
-                })).body(LeagueEntryDto.class);
+                    throw new FailedApiCallingException(ExceptionProvider.RIOT_LEAGUE_API_CALL_FAILED);
+                })).body(new ParameterizedTypeReference<>() {});
+
+       // null safe
+        return Optional.ofNullable(leagueEntryDtoSet)
+                .flatMap(set -> set.stream()
+                        .filter(leagueEntryDto -> Objects.equals(leagueEntryDto.queueType(), QUEUE))
+                        .findFirst())
+                .orElseThrow(() -> new NotFoundException(ExceptionProvider.RIOT_LEAGUE_API_CALL_FAILED));
     }
 }
