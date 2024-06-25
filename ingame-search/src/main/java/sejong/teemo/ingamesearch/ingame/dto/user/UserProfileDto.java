@@ -5,7 +5,7 @@ import sejong.teemo.ingamesearch.ingame.dto.normal.NormalView;
 
 @Builder
 public record UserProfileDto(
-        byte[] profileImage,
+        long profileIconId,
         String gameName,
         String tagLine,
         String tier,
@@ -16,9 +16,9 @@ public record UserProfileDto(
         long summonerLevel
 ) {
 
-    public static UserProfileDto of(byte[] profileImage, NormalView normalView) {
+    public static UserProfileDto from(NormalView normalView) {
         return UserProfileDto.builder()
-                .profileImage(profileImage)
+                .profileIconId(normalView.userInfoView().profileIconId())
                 .gameName(normalView.userInfoView().gameName())
                 .tagLine(normalView.userInfoView().tagLine())
                 .tier(normalView.userInfoView().tier())
