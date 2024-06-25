@@ -1,7 +1,10 @@
 package sejong.teemo.ingamesearch.ingame.facade;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import io.github.bucket4j.Bucket;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import sejong.teemo.ingamesearch.champion.service.ChampionService;
@@ -23,7 +26,9 @@ import sejong.teemo.ingamesearch.ingame.repository.SummonerPerformanceInfoReposi
 import sejong.teemo.ingamesearch.ingame.service.InGameService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -36,6 +41,8 @@ public class InGameFacade {
     private final InGameRepository inGameRepository;
     private final SummonerPerformanceInfoRepository summonerPerformanceInfoRepository;
     private final QueryDslRepository queryDslRepository;
+    private final Map<Integer, String> mapToChampions;
+    private final Cache<String, Boolean> cacheGameNameAndTagLine;
 
     public List<InGameView> inGame(String gameName, String tagLine) {
 
@@ -71,6 +78,13 @@ public class InGameFacade {
 
     @Transactional
     public UserPerformanceDto updateSummonerPerformance(String gameName, String tagLine) {
+
+        if(cacheGameNameAndTagLine.getIfPresent(gameName + "#" + tagLine) != null) {
+            throw new IllegalArgumentException("업데이트를 진행할 수 없습니다. (2분 뒤에 다시 진행해주세요.)");
+        }
+        
+        cacheGameNameAndTagLine.put(gameName + "#" + tagLine, true);
+
         UserInfo userInfo = getUserInfo(gameName, tagLine);
 
         List<SummonerPerformance> summonerPerformances = inGameService.callRiotSummonerPerformance(userInfo.getPuuid());
@@ -102,20 +116,14 @@ public class InGameFacade {
     }
 
     private UserProfileDto getUserProfileDto(List<NormalView> normalViews) {
-        return UserProfileDto.of(
-                inGameService.callApiUserProfileImage(normalViews.getFirst().userInfoView().profileIconId()),
-                normalViews.getFirst()
-        );
+        return UserProfileDto.from(normalViews.getFirst());
     }
 
     private List<UserChampionPerformanceDto> getUserChampionPerformanceDtos(List<NormalView> normalViews) {
-        AsyncCall<NormalView, UserChampionPerformanceDto> asyncCall = new AsyncCall<>(normalViews);
-
-        return asyncCall.execute(10, normalView -> {
-            byte[] championImage = championService.fetchChampionImage((long) normalView.championId());
-
-            return UserChampionPerformanceDto.of(championImage, normalView);
-        });
+        return normalViews
+                .parallelStream()
+                .map(normalView -> UserChampionPerformanceDto.of(mapToChampions.get(normalView.championId()), normalView))
+                .toList();
     }
 
     private String getPuuid(String gameName, String tagLine) {
