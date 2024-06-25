@@ -5,7 +5,7 @@ import sejong.teemo.ingamesearch.ingame.dto.normal.NormalView;
 
 @Builder
 public record UserChampionPerformanceDto(
-        byte[] championImage,
+        String championName,
         int recentGameCount,
         double winRate,
         double kda,
@@ -20,9 +20,9 @@ public record UserChampionPerformanceDto(
         int losses
 ) {
 
-    public static UserChampionPerformanceDto of(byte[] championImage, NormalView normalView) {
+    public static UserChampionPerformanceDto of(String championName, NormalView normalView) {
         return UserChampionPerformanceDto.builder()
-                .championImage(championImage)
+                .championName(championName)
                 .recentGameCount(normalView.recentGameCount())
                 .winRate(normalView.winRate())
                 .kda(normalView.kda())
