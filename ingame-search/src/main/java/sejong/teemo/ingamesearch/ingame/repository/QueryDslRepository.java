@@ -61,8 +61,8 @@ public class QueryDslRepository {
     }
 
     @Transactional
-    public long updateSummonerPerformanceInfo(SummonerPerformance performances, Long userInfoId) {
-        return queryFactory.update(summonerPerformanceInfo)
+    public void updateSummonerPerformanceInfo(SummonerPerformance performances, Long userInfoId, Long performanceId) {
+        queryFactory.update(summonerPerformanceInfo)
                 .set(summonerPerformanceInfo.championId, performances.championId())
                 .set(summonerPerformanceInfo.kda, performances.kda())
                 .set(summonerPerformanceInfo.killParticipation, performances.killParticipation())
@@ -75,7 +75,7 @@ public class QueryDslRepository {
                 .set(summonerPerformanceInfo.multiKills.tripleKills, performances.tripleKills())
                 .set(summonerPerformanceInfo.championWins, performances.win())
                 .set(summonerPerformanceInfo.updateAt, LocalDateTime.now())
-                .where(summonerPerformanceInfo.userInfo.id.eq(userInfoId))
+                .where(summonerPerformanceInfo.userInfo.id.eq(userInfoId).and(summonerPerformanceInfo.id.eq(performanceId)))
                 .execute();
     }
 

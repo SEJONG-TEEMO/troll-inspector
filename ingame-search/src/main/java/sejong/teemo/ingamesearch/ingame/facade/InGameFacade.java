@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 @Component
 @RequiredArgsConstructor
@@ -89,7 +90,9 @@ public class InGameFacade {
 
         List<SummonerPerformance> summonerPerformances = inGameService.callRiotSummonerPerformance(userInfo.getPuuid());
 
-        summonerPerformances.forEach(summonerPerformance -> queryDslRepository.updateSummonerPerformanceInfo(summonerPerformance, userInfo.getId()));
+        List<SummonerPerformanceInfo> performanceInfos = summonerPerformanceInfoRepository.findByUserInfoId(userInfo.getId());
+
+        update(summonerPerformances, userInfo, performanceInfos);
 
         List<NormalView> normalViews = queryDslRepository.findRecentGamesByUserId(userInfo.getId());
 
@@ -113,6 +116,15 @@ public class InGameFacade {
         List<NormalView> normalViews = queryDslRepository.findRecentGamesByUserId(userInfo.getId());
 
         return UserPerformanceDto.of(getUserProfileDto(normalViews), getUserChampionPerformanceDtos(normalViews));
+    }
+
+    private void update(List<SummonerPerformance> summonerPerformances, UserInfo userInfo, List<SummonerPerformanceInfo> performanceInfos) {
+        IntStream.rangeClosed(0, summonerPerformances.size() - 1)
+                .forEach(idx -> queryDslRepository.updateSummonerPerformanceInfo(
+                        summonerPerformances.get(idx),
+                        userInfo.getId(),
+                        performanceInfos.get(idx).getId())
+                );
     }
 
     private UserProfileDto getUserProfileDto(List<NormalView> normalViews) {
