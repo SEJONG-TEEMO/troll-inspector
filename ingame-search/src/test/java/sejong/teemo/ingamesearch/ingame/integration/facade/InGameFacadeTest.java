@@ -12,6 +12,8 @@ import sejong.teemo.ingamesearch.ingame.repository.InGameRepository;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.*;
+
 @SpringBootTest
 class InGameFacadeTest extends TestContainer {
 
@@ -61,5 +63,22 @@ class InGameFacadeTest extends TestContainer {
 
         // then
         System.out.println(normal);
+    }
+
+    @Test
+    void 유저_퍼포먼스_업데이트를_시도_하고_2분_안에_재시도_하면_예외_테스트() {
+        // given
+        String gameName = "a1h";
+        String tag = "KR1";
+
+        inGameFacade.viewUserGamePerformance(gameName, tag);
+
+        inGameFacade.updateSummonerPerformance(gameName, tag);
+
+        // when
+
+        // then
+        assertThatThrownBy(() -> inGameFacade.updateSummonerPerformance(gameName, tag))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }
