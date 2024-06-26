@@ -53,7 +53,12 @@ public class BatchSchedule {
     }
 
     private void executeDivisionJob(TierInfo tierInfo) {
-        Arrays.stream(DivisionInfo.values()).forEach(division -> {
+        for (DivisionInfo division : DivisionInfo.values()) {
+
+            if(tierInfo.equals(CHALLENGER) && !division.equals(I)) continue;
+            if(tierInfo.equals(GRANDMASTER) && !division.equals(I)) continue;
+            if(tierInfo.equals(MASTER) && !division.equals(I)) continue;
+
             JobParameters jobParameters = new JobParametersBuilder()
                     .addString(TIER, tierInfo.name())
                     .addString(DIVISION, division.name())
@@ -65,6 +70,6 @@ public class BatchSchedule {
                      JobInstanceAlreadyCompleteException | JobParametersInvalidException e) {
                 throw new RuntimeException(e);
             }
-        });
+        }
     }
 }
