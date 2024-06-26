@@ -1,6 +1,8 @@
 package sejong.teemo.ingamesearch.ingame.api.v1;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sejong.teemo.ingamesearch.ingame.dto.InGameView;
@@ -25,14 +27,14 @@ public class InGameApiV1 {
 
     @GetMapping("/performance")
     public ResponseEntity<UserPerformanceDto> performanceApi(@RequestParam("gameName") String gameName,
-                                                            @RequestParam("tagLine") String tagLine) {
+                                                             @RequestParam("tagLine") String tagLine) {
 
         return ResponseEntity.ok(inGameFacade.viewUserGamePerformance(gameName, tagLine));
     }
 
     @PatchMapping("/performance")
     public ResponseEntity<UserPerformanceDto> updateInPerformance(@RequestParam("gameName") String gameName,
-                                             @RequestParam("tagLine") String tagLine) {
+                                                                  @RequestParam("tagLine") String tagLine) {
 
         return ResponseEntity.ok(inGameFacade.updateSummonerPerformance(gameName, tagLine));
     }
