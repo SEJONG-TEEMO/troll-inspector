@@ -40,13 +40,14 @@ export async function inGameNameAndTag(search) {
 
 export async function updateUserPerformance(updateData) {
 
+    console.log(updateData);
     if(updateData.includes("#")) {
         const split = updateData.split("#");
         const name = split[0].trim();
         const tag = split[1].trim();
 
         console.log(name, tag);
-        return await axios.patch(baseUrl + searchUrl, {params: {gameName: name, tagLine: tag}});
+        return await axios.patch(baseUrl + searchUrl, null, {params: {gameName: name, tagLine: tag}});
     } else {
         alert("잘못된 입력입니다.")
     }
