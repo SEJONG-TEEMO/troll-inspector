@@ -77,7 +77,8 @@ public class InGameFacadeTest {
                 200,
                 100,
                 100,
-                1
+                1,
+                100L
         );
 
         NormalView normalView = new NormalView(

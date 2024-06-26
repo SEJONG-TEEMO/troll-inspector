@@ -71,10 +71,8 @@ class InGameApiV1Test extends TestExtension {
         String gameName = "a1h";
         String tagLine = "KR1";
 
-        Long count = 40L;
-
         given(inGameFacade.updateSummonerPerformance(gameName, tagLine))
-                .willReturn(count);
+                .willReturn(UserPerformanceDto.builder().build());
 
         // when
         ResultActions resultActions = mockMvc.perform(patch("/api/v1/performance")
