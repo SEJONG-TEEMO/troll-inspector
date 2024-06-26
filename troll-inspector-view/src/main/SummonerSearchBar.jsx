@@ -1,48 +1,30 @@
 import React, {useState} from "react";
-import {Button, Input, Spinner} from "@nextui-org/react";
+import {Button, Input} from "@nextui-org/react";
 import {SearchIcon} from "./SearchIcon.jsx";
-import searchNameAndTag from "../axios/search.js";
 import ResultModal from "./ResultModal.jsx";
 
 export function SummonerSearchBar() {
 
     const [search, setSearch] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [searchResult, setSearchResult] = useState({});
-    const [isLoading, setIsLoading] = useState(false);
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            handleSearch(event.target.value);
-            setSearch('');
+            setSearch(event.target.value)
+            setIsModalOpen(true);
         }
     };
 
-    const handleSearch = (search) => {
-        setIsLoading(true);
-        const res = searchNameAndTag(search);
-        res.then(response => {
-            setSearchResult(response.data)
-            setIsModalOpen(true);
-        }).catch(error => {
-            alert("데이터를 가져오지 못했습니다.")
-            console.error(error)
-        }).finally(() => {
-            setIsLoading(false);
-        });
-    }
-
-    const handleSearchClick = () => {
-        handleSearch(search);
-        setSearch('');
+    const handleSearchClick = (event) => {
+        setSearch(event.target.value)
+        setIsModalOpen(true)
     }
 
     return (
         <div className="w-screen h-screen p-8 flex items-center justify-center">
             <Input
                 className="max-w-2xl"
-                type="search"
                 label="소환사 검색"
                 isClearable
                 radius="lg"
@@ -51,23 +33,15 @@ export function SummonerSearchBar() {
                     <SearchIcon
                         className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0"/>
                 }
-                value={search}
-                onChange={(e) => {
-                    setSearch(e.target.value);
-                }}
                 onKeyDown={handleKeyDown}
             />
-            {
-                isLoading === false ?
-                    <Button type="button" isIconOnly size={"lg"} onPress={handleSearchClick} color={"primary"}>
-                        <SearchIcon/>
-                    </Button>
-                    : <Spinner className={"ml-2"} color="primary" />
-            }
+            <Button type="button" isIconOnly size={"lg"} onPress={handleSearchClick} color={"primary"}>
+                <SearchIcon/>
+            </Button>
             <ResultModal
                 isOpen={isModalOpen}
                 onOpenChange={setIsModalOpen}
-                searchResult={searchResult}
+                search={search}
             />
         </div>
     )
