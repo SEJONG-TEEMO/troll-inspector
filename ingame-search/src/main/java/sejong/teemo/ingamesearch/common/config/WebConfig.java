@@ -20,7 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:5173")
-                .allowedMethods("GET", "POST", "PUT") // 허용할 HTTP 메서드
+                .allowedMethods("GET", "POST", "PUT", "PATCH") // 허용할 HTTP 메서드
                 .allowedHeaders("*");
     }
 
