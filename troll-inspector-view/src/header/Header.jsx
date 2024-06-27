@@ -7,7 +7,7 @@ import {
     NavbarBrand,
     Dropdown,
     DropdownMenu,
-    DropdownTrigger, DropdownItem, Tooltip
+    DropdownTrigger, DropdownItem
 } from "@nextui-org/react";
 import {AcmeLogo} from "./AcmeLogo.jsx";
 import {useNavigate} from "react-router-dom";
@@ -99,7 +99,7 @@ export function Header() {
                     <Link href="#">Login</Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Button as={Link} color="primary" href="#" variant="flat">
+                    <Button isDisabled as={Link} color="primary" href="#" variant="flat">
                         로그인
                     </Button>
                 </NavbarItem>

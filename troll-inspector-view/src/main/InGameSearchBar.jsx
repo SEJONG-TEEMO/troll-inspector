@@ -36,7 +36,7 @@ export function InGameSearchBar() {
                 label="인게임 검색"
                 isClearable
                 radius="lg"
-                placeholder="자신의 소환사 이름 + #태그를 입력해주세요. (솔랭 기준)"
+                placeholder="자신의 소환사 이름 + #태그를 입력해주세요. (솔랭 기준) 현재 인게임은 지원하지 않습니다."
                 startContent={
                     <SearchIcon
                         className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0"/>
@@ -45,9 +45,8 @@ export function InGameSearchBar() {
                 onChange={(e) => {
                     setSearch(e.target.value);
                 }}
-                onKeyDown={handleKeyDown}
             />
-            <Button type="submit" isIconOnly size={"lg"} onClick={inGameNameAndTag}>
+            <Button type="submit" isIconOnly size={"lg"}>
                 <SearchIcon/>
             </Button>
         </div>
