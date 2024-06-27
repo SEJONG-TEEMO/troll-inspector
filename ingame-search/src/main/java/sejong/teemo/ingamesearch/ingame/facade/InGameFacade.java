@@ -133,7 +133,7 @@ public class InGameFacade {
 
     private List<UserChampionPerformanceDto> getUserChampionPerformanceDtos(List<NormalView> normalViews) {
         return normalViews
-                .parallelStream()
+                .stream()
                 .map(normalView -> UserChampionPerformanceDto.of(mapToChampions.get(normalView.championId()), normalView))
                 .toList();
     }
