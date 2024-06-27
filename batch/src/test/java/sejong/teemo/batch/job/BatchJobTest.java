@@ -6,22 +6,23 @@ import org.springframework.batch.core.*;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
 import sejong.teemo.batch.container.TestContainer;
 import sejong.teemo.batch.job.info.DivisionInfo;
 import sejong.teemo.batch.job.info.TierInfo;
 
 import static org.assertj.core.api.Assertions.*;
 
-@SpringBatchTest
 @SpringBootTest
-@Sql("/init.sql")
+@SpringBatchTest
 public class BatchJobTest extends TestContainer {
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
 
+    @Autowired
+    private Job leagueInfoJob;
 
     @Test
     @Disabled
