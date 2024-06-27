@@ -39,7 +39,7 @@ public enum ExceptionProvider implements ErrorResponse {
     public void handler(HttpRequest request, ClientHttpResponse response) {
         try {
             log.info("get uri = {}", request.getURI());
-            log.error("account error status = {} message = {} header = {}",
+            log.error("status = {} message = {} header = {}",
                     response.getStatusCode(),
                     response.getStatusText(),
                     response.getHeaders());
@@ -53,7 +53,7 @@ public enum ExceptionProvider implements ErrorResponse {
 
     private void exception(ClientHttpResponse response) throws IOException {
         switch (response.getStatusCode()) {
-            case NOT_FOUND, FORBIDDEN -> throw new FailedApiCallingException(this);
+            case NOT_FOUND, UNAUTHORIZED, FORBIDDEN -> throw new FailedApiCallingException(this);
             case BAD_REQUEST -> throw new IllegalArgumentException("riot api 모듈 요청에 실패하였습니다.");
             case TOO_MANY_REQUESTS -> throw new TooManyApiCallingException(ExceptionProvider.TOO_MANY_CALLING_FAILED);
             default -> throw new IllegalStateException("Unexpected value: " + response.getStatusCode());
