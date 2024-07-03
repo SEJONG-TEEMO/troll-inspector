@@ -2,18 +2,14 @@ package sejong.teemo.riotapi.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import sejong.teemo.riotapi.dto.SummonerDto;
-import sejong.teemo.riotapi.exception.ExceptionProvider;
-import sejong.teemo.riotapi.exception.FailedApiCallingException;
-import sejong.teemo.riotapi.generator.UriGenerator;
-import sejong.teemo.riotapi.properties.RiotApiProperties;
-
-import java.util.List;
+import sejong.teemo.riotapi.common.exception.ExceptionProvider;
+import sejong.teemo.riotapi.common.exception.FailedApiCallingException;
+import sejong.teemo.riotapi.common.generator.UriGenerator;
+import sejong.teemo.riotapi.common.properties.RiotApiProperties;
 
 import static org.springframework.http.MediaType.*;
 

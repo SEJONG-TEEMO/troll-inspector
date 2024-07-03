@@ -6,9 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import sejong.teemo.crawling.crawler.Crawler;
 import sejong.teemo.crawling.dto.InGameDto;
-import sejong.teemo.crawling.exception.CrawlingException;
-import sejong.teemo.crawling.mapper.CrawlerMapperInGame;
-import sejong.teemo.crawling.webDriver.generator.UrlGenerator;
+import sejong.teemo.crawling.common.exception.CrawlingException;
+import sejong.teemo.crawling.common.mapper.CrawlerMapperInGame;
+import sejong.teemo.crawling.common.generator.UrlGenerator;
 
 import java.time.Duration;
 import java.util.List;

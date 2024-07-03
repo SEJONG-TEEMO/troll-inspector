@@ -3,9 +3,8 @@ package sejong.teemo.riotapi.facade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import sejong.teemo.riotapi.async.AsyncCall;
+import sejong.teemo.riotapi.common.async.AsyncCall;
 import sejong.teemo.riotapi.dto.*;
-import sejong.teemo.riotapi.facade.annotation.Facade;
 import sejong.teemo.riotapi.service.SpectatorService;
 
 import java.util.List;

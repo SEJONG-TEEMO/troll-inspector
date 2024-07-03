@@ -9,16 +9,16 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import sejong.teemo.crawling.dto.InGameDto;
 import sejong.teemo.crawling.dto.MatchDataDto;
-import sejong.teemo.crawling.exception.CrawlingException;
-import sejong.teemo.crawling.mapper.CrawlerMapperInGame;
-import sejong.teemo.crawling.mapper.CrawlerMapperMatchData;
+import sejong.teemo.crawling.common.exception.CrawlingException;
+import sejong.teemo.crawling.common.mapper.CrawlerMapperInGame;
+import sejong.teemo.crawling.common.mapper.CrawlerMapperMatchData;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.*;
-import static sejong.teemo.crawling.webDriver.generator.UrlGenerator.*;
+import static sejong.teemo.crawling.common.generator.UrlGenerator.*;
 
 class CrawlerTest {
 

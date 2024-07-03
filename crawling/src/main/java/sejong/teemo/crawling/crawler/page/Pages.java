@@ -1,6 +1,6 @@
 package sejong.teemo.crawling.crawler.page;
 
-import sejong.teemo.crawling.webDriver.generator.UrlGenerator;
+import sejong.teemo.crawling.common.generator.UrlGenerator;
 import sejong.teemo.crawling.webDriver.pool.WebDriverPool;
 
 import java.util.List;

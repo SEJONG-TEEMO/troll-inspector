@@ -9,13 +9,10 @@ import sejong.teemo.riotapi.dto.Account;
 import sejong.teemo.riotapi.dto.LeagueEntryDto;
 import sejong.teemo.riotapi.dto.Spectator;
 import sejong.teemo.riotapi.dto.SummonerDto;
-import sejong.teemo.riotapi.exception.FailedApiCallingException;
-import sejong.teemo.riotapi.generator.UriGenerator;
+import sejong.teemo.riotapi.common.exception.FailedApiCallingException;
+import sejong.teemo.riotapi.common.generator.UriGenerator;
 import sejong.teemo.riotapi.extension.TestExtension;
-import sejong.teemo.riotapi.properties.RiotApiProperties;
-import sejong.teemo.riotapi.service.LeagueService;
-import sejong.teemo.riotapi.service.SpectatorService;
-import sejong.teemo.riotapi.service.SummonerService;
+import sejong.teemo.riotapi.common.properties.RiotApiProperties;
 
 import java.util.List;
 

@@ -8,10 +8,10 @@ import org.springframework.web.client.RestClient;
 import sejong.teemo.riotapi.dto.Account;
 import sejong.teemo.riotapi.dto.ChampionMastery;
 import sejong.teemo.riotapi.dto.Spectator;
-import sejong.teemo.riotapi.exception.ExceptionProvider;
-import sejong.teemo.riotapi.exception.FailedApiCallingException;
-import sejong.teemo.riotapi.generator.UriGenerator;
-import sejong.teemo.riotapi.properties.RiotApiProperties;
+import sejong.teemo.riotapi.common.exception.ExceptionProvider;
+import sejong.teemo.riotapi.common.exception.FailedApiCallingException;
+import sejong.teemo.riotapi.common.generator.UriGenerator;
+import sejong.teemo.riotapi.common.properties.RiotApiProperties;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 

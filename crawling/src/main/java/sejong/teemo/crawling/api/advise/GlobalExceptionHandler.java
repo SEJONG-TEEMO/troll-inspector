@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import sejong.teemo.crawling.dto.ExceptionResult;
-import sejong.teemo.crawling.exception.CrawlingException;
-import sejong.teemo.crawling.exception.ExceptionProvider;
+import sejong.teemo.crawling.common.exception.CrawlingException;
+import sejong.teemo.crawling.common.exception.ExceptionProvider;
 
 @Slf4j
 @RestControllerAdvice(annotations = RestController.class)

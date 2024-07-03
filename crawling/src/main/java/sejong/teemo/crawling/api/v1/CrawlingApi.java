@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sejong.teemo.crawling.dto.InGameDto;
 import sejong.teemo.crawling.dto.MatchDataDto;
-import sejong.teemo.crawling.property.CrawlingProperties;
+import sejong.teemo.crawling.common.property.CrawlingProperties;
 import sejong.teemo.crawling.service.CrawlerService;
-import sejong.teemo.crawling.webDriver.generator.UrlGenerator;
+import sejong.teemo.crawling.common.generator.UrlGenerator;
 
 import java.util.List;
 

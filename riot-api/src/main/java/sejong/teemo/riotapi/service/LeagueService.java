@@ -7,18 +7,16 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import sejong.teemo.riotapi.dto.LeagueEntryDto;
-import sejong.teemo.riotapi.exception.ExceptionProvider;
-import sejong.teemo.riotapi.exception.FailedApiCallingException;
-import sejong.teemo.riotapi.exception.NotFoundException;
-import sejong.teemo.riotapi.generator.UriGenerator;
-import sejong.teemo.riotapi.properties.RiotApiProperties;
+import sejong.teemo.riotapi.common.exception.ExceptionProvider;
+import sejong.teemo.riotapi.common.exception.FailedApiCallingException;
+import sejong.teemo.riotapi.common.exception.NotFoundException;
+import sejong.teemo.riotapi.common.generator.UriGenerator;
+import sejong.teemo.riotapi.common.properties.RiotApiProperties;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.springframework.http.MediaType.*;
 

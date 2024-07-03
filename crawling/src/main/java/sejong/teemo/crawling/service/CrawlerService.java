@@ -10,14 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import sejong.teemo.crawling.crawler.page.*;
 import sejong.teemo.crawling.dto.InGameDto;
 import sejong.teemo.crawling.dto.MatchDataDto;
-import sejong.teemo.crawling.exception.CrawlingException;
-import sejong.teemo.crawling.webDriver.generator.UrlGenerator;
-import sejong.teemo.crawling.property.CrawlingProperties;
+import sejong.teemo.crawling.common.exception.CrawlingException;
+import sejong.teemo.crawling.common.generator.UrlGenerator;
+import sejong.teemo.crawling.common.property.CrawlingProperties;
 
 import java.net.URI;
 import java.util.List;
-
-import static sejong.teemo.crawling.webDriver.generator.UrlGenerator.RIOT_LEADER_BOARD;
 
 @Service
 @Slf4j

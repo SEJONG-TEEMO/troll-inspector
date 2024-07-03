@@ -5,7 +5,7 @@ import sejong.teemo.ingamesearch.ingame.dto.champion.Champion;
 
 @Builder
 public record InGameView(
-        byte[] championImage,
+        long championId,
         String gameName,
         String tagLine,
         String tier,
@@ -17,7 +17,7 @@ public record InGameView(
         Champion champion
 ) {
 
-    public static InGameView of(byte[] championImage,
+    public static InGameView of(long championId,
                                 String gameName,
                                 String tagLine,
                                 String tier,
@@ -29,7 +29,7 @@ public record InGameView(
                                 Champion champion) {
 
         return InGameView.builder()
-                .championImage(championImage)
+                .championId(championId)
                 .gameName(gameName)
                 .tagLine(tagLine)
                 .tier(tier)

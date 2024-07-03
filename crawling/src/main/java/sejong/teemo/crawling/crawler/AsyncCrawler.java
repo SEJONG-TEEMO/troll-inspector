@@ -2,7 +2,7 @@ package sejong.teemo.crawling.crawler;
 
 import lombok.Builder;
 import org.openqa.selenium.WebDriver;
-import sejong.teemo.crawling.exception.CrawlingException;
+import sejong.teemo.crawling.common.exception.CrawlingException;
 import sejong.teemo.crawling.webDriver.pool.WebDriverPool;
 
 import java.util.List;

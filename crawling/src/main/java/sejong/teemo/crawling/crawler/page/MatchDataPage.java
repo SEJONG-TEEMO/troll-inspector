@@ -6,8 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import sejong.teemo.crawling.crawler.Crawler;
 import sejong.teemo.crawling.dto.MatchDataDto;
-import sejong.teemo.crawling.mapper.CrawlerMapperMatchData;
-import sejong.teemo.crawling.webDriver.generator.UrlGenerator;
+import sejong.teemo.crawling.common.mapper.CrawlerMapperMatchData;
+import sejong.teemo.crawling.common.generator.UrlGenerator;
 
 import java.time.Duration;
 import java.util.List;
