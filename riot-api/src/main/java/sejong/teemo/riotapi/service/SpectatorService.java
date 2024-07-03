@@ -2,76 +2,36 @@ package sejong.teemo.riotapi.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
-import sejong.teemo.riotapi.dto.Account;
-import sejong.teemo.riotapi.dto.ChampionMastery;
-import sejong.teemo.riotapi.dto.Spectator;
-import sejong.teemo.riotapi.common.exception.ExceptionProvider;
-import sejong.teemo.riotapi.common.exception.FailedApiCallingException;
-import sejong.teemo.riotapi.common.generator.UriGenerator;
-import sejong.teemo.riotapi.common.properties.RiotApiProperties;
+import org.springframework.stereotype.Component;
+import sejong.teemo.riotapi.common.async.AsyncCall;
+import sejong.teemo.riotapi.dto.*;
+import sejong.teemo.riotapi.api.external.SpectatorExternalApi;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON;
+import java.util.List;
 
-@Service
-@RequiredArgsConstructor
+@Component
 @Slf4j
+@RequiredArgsConstructor
 public class SpectatorService {
 
-    private final RestClient restClient;
-    private final RiotApiProperties riotApiProperties;
+    private final SpectatorExternalApi spectatorExternalApi;
 
-    private static final String API_KEY = "X-Riot-Token";
+    public SpectatorDto callSpectator(String puuid) {
 
-    public Spectator callRiotSpectatorV5(String puuid) {
+        Spectator spectator = spectatorExternalApi.callRiotSpectatorV5(puuid);
+        log.info("spectator = {}", spectator);
 
-        log.info("[callRiotSpectatorV5]");
-        log.info("puuid = {}", puuid);
-
-        return restClient.get()
-                .uri(UriGenerator.RIOT_SPECTATOR.generateUri(puuid))
-                .accept(APPLICATION_JSON)
-                .header(API_KEY, riotApiProperties.apiKey())
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.info("get uri = {}", request.getURI());
-                    log.error("spectator error status = {} message = {}", response.getStatusCode(), response.getStatusText());
-                    throw new FailedApiCallingException(ExceptionProvider.RIOT_SPECTATOR_API_CALL_FAILED);
-                }))
-                .body(Spectator.class);
+        return asyncCallChampionMastery(spectator);
     }
 
-    public Account callRiotPUUID(String gameName, String tag) {
+    private SpectatorDto asyncCallChampionMastery(Spectator spectator) {
 
-        log.info("api key = {}", riotApiProperties.apiKey());
+        AsyncCall<CurrentGameParticipant, ChampionMastery> asyncCall = new AsyncCall<>(spectator.participants());
 
-        return restClient.get()
-                .uri(UriGenerator.RIOT_ACCOUNT.generateUri(gameName, tag))
-                .accept(APPLICATION_JSON)
-                .header(API_KEY, riotApiProperties.apiKey())
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.error("account error status = {}, message = {}", response.getStatusCode(), response.getStatusText());
-                    throw new FailedApiCallingException(ExceptionProvider.RIOT_ACCOUNT_API_CALL_FAILED);
-                }))
-                .body(Account.class);
-    }
+        List<ChampionMastery> championMasteries = asyncCall.execute(10, participant ->
+                spectatorExternalApi.callRiotChampionMastery(participant.puuid(), participant.championId())
+        );
 
-    public ChampionMastery callRiotChampionMastery(String puuid, Long championId) {
-
-        log.info("puuid = {}, championId = {}", puuid, championId);
-
-        return restClient.get()
-                .uri(UriGenerator.RIOT_CHAMPION_MASTERY.generateUri(puuid, championId))
-                .accept(APPLICATION_JSON)
-                .header(API_KEY, riotApiProperties.apiKey())
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.error("champion mastery error status = {}, message = {}", response.getStatusCode(), response.getStatusText());
-                    throw new FailedApiCallingException(ExceptionProvider.RIOT_ACCOUNT_API_CALL_FAILED);
-                }))
-                .body(ChampionMastery.class);
+        return SpectatorDto.of(spectator.gameId(), spectator.gameType(), championMasteries);
     }
 }

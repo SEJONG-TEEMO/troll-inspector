@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import sejong.teemo.riotapi.facade.MatchFacade;
+import sejong.teemo.riotapi.service.MatchService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -26,7 +26,7 @@ public class MatchApiV1Test {
     private MockMvc mockMvc;
 
     @Autowired
-    private MatchFacade matchFacade;
+    private MatchService matchService;
 
     @Test
     void 유저의_이름과_태그를_입력하여_매치_데이터를_응답_받는다() throws Exception {

@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import sejong.teemo.riotapi.facade.UserInfoFacade;
+import sejong.teemo.riotapi.service.UserInfoService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -24,7 +24,7 @@ class LeagueApiV1Test {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserInfoFacade userInfoFacade;
+    private UserInfoService userInfoService;
 
     @Test
     void 리그_소환사_API_응답_테스트() throws Exception {

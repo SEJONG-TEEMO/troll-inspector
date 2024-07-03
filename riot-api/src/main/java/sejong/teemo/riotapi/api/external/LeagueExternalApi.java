@@ -1,4 +1,4 @@
-package sejong.teemo.riotapi.service;
+package sejong.teemo.riotapi.api.external;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ import static org.springframework.http.MediaType.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class LeagueService {
+public class LeagueExternalApi {
 
     private final RestClient restClient;
     private final RiotApiProperties riotApiProperties;

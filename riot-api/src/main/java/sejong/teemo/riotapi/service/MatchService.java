@@ -2,62 +2,114 @@ package sejong.teemo.riotapi.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
+import org.springframework.stereotype.Component;
+import sejong.teemo.riotapi.common.async.AsyncCall;
+import sejong.teemo.riotapi.dto.Account;
+import sejong.teemo.riotapi.dto.SummonerPerformance;
 import sejong.teemo.riotapi.dto.match.MatchDataDto;
+import sejong.teemo.riotapi.dto.match.MatchDto;
+import sejong.teemo.riotapi.dto.match.ParticipantDto;
+import sejong.teemo.riotapi.dto.match.TeamDto;
 import sejong.teemo.riotapi.common.exception.ExceptionProvider;
-import sejong.teemo.riotapi.common.exception.FailedApiCallingException;
-import sejong.teemo.riotapi.common.generator.UriGenerator;
-import sejong.teemo.riotapi.common.properties.RiotApiProperties;
+import sejong.teemo.riotapi.common.exception.NotFoundException;
+import sejong.teemo.riotapi.api.external.AccountExternalApi;
+import sejong.teemo.riotapi.api.external.MatchExternalApi;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.IntStream;
 
-@Service
+@Component
 @RequiredArgsConstructor
 @Slf4j
 public class MatchService {
 
-    private final RestClient restClient;
-    private final RiotApiProperties riotApiProperties;
+    private final MatchExternalApi matchExternalApi;
+    private final AccountExternalApi accountExternalApi;
 
-    private static final String API_KEY = "X-Riot-Token";
+    public List<MatchDto> callRiotMatch(String gameName, String tagLine) {
 
-    private static final String START = "0";
-    private static final String COUNT = "40";
-    private static final String QUEUE = "420";
+        Account account = accountExternalApi.callRiotAccount(gameName, tagLine);
 
-    public List<String> callRiotApiMatchPuuid(String puuid) {
+        log.info("account = {}", account);
 
-        log.info("api-key = {}", riotApiProperties.apiKey());
-        return restClient.get()
-                .uri(UriGenerator.RIOT_MATCH_PUUID.generateUri()
-                        .queryParam("start", START)
-                        .queryParam("count", COUNT)
-                        .queryParam("queue", QUEUE)
-                        .build(puuid))
-                .accept(MediaType.APPLICATION_JSON)
-                .header(API_KEY, riotApiProperties.apiKey())
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.info("match = {}", request.getURI());
-                    log.error("match riot puuid error = {}", response.getStatusText());
-                    throw new FailedApiCallingException(ExceptionProvider.RIOT_MATCH_API_CALL_FAILED);
-                })).body(new ParameterizedTypeReference<>() {});
+        List<String> matchDtos = matchExternalApi.callRiotApiMatchPuuid(account.puuid());
+
+        log.info("matchDtos = {}", matchDtos);
+        AsyncCall<String, MatchDto> asyncCall = new AsyncCall<>(matchDtos);
+
+        return asyncCall.execute(10, matchId ->
+                MatchDto.of(gameName, tagLine, matchExternalApi.callRiotApiMatchMatchId(matchId))
+        );
     }
 
-    public MatchDataDto callRiotApiMatchMatchId(String matchId) {
-        return restClient.get()
-                .uri(UriGenerator.RIOT_MATCH.generateUri(matchId))
-                .accept(MediaType.APPLICATION_JSON)
-                .header(API_KEY, riotApiProperties.apiKey())
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.info("match = {}", request.getURI());
-                    log.error("match riot match error = {}", response.getStatusText());
-                    throw new FailedApiCallingException(ExceptionProvider.RIOT_MATCH_API_CALL_FAILED);
-                })).body(MatchDataDto.class);
+    public List<SummonerPerformance> callRiotSummonerPerformance(String puuid) {
+        List<String> matchDtos = matchExternalApi.callRiotApiMatchPuuid(puuid);
+
+        AsyncCall<String, SummonerPerformance> asyncCall = new AsyncCall<>(matchDtos);
+
+        return asyncCall.execute(10, matchId -> {
+            MatchDataDto matchDataDto = matchExternalApi.callRiotApiMatchMatchId(matchId);
+
+            ParticipantDto searchParticipant = matchDataDto.info().participants()
+                    .stream()
+                    .filter(participantDto -> Objects.equals(participantDto.puuid(), puuid))
+                    .findFirst()
+                    .orElseThrow(() -> new NotFoundException(ExceptionProvider.NOT_FOUND_SUMMONER));
+
+            TeamDto teamDto = matchDataDto.info().teams().stream()
+                    .filter(team -> Objects.equals(team.teamId(), searchParticipant.teamId()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("teamId 가 다릅니다."));
+
+            return this.getSummonerPerformance(searchParticipant, teamDto);
+        });
+
+    }
+
+    @Deprecated
+    public List<SummonerPerformance> callRiotSummonerPerformance(String gameName, String tagLine) {
+        Account account = accountExternalApi.callRiotAccount(gameName, tagLine);
+
+        List<String> matchDtos = matchExternalApi.callRiotApiMatchPuuid(account.puuid());
+
+        AsyncCall<String, MatchDto> asyncCall = new AsyncCall<>(matchDtos);
+
+        List<MatchDto> matchDtoList = asyncCall.execute(10, matchId ->
+                MatchDto.of(gameName, tagLine, matchExternalApi.callRiotApiMatchMatchId(matchId))
+        );
+
+        return IntStream.rangeClosed(0, matchDtoList.size() - 1)
+                .parallel()
+                .mapToObj(index-> returnSummonerPerformanceTrackingTargetIdx(index, matchDtoList, account))
+                .toList();
+    }
+
+    public List<MatchDataDto> callRiotMatch(String puuid) {
+
+        List<String> matchDtos = matchExternalApi.callRiotApiMatchPuuid(puuid);
+
+        AsyncCall<String, MatchDataDto> asyncCall = new AsyncCall<>(matchDtos);
+
+        return asyncCall.execute(10, matchExternalApi::callRiotApiMatchMatchId);
+    }
+
+    @Deprecated
+    private SummonerPerformance returnSummonerPerformanceTrackingTargetIdx(int index, List<MatchDto> matchDtoList, Account account) {
+        List<ParticipantDto> participants = matchDtoList.get(index)
+                .matchDataDto()
+                .info()
+                .participants();
+
+        int targetIdx = IntStream.rangeClosed(0, participants.size() - 1)
+                .filter(idx -> Objects.equals(participants.get(idx).puuid(), account.puuid()))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(ExceptionProvider.NOT_FOUND_SUMMONER));
+
+        return this.getSummonerPerformance(participants.get(targetIdx), null);
+    }
+
+    private SummonerPerformance getSummonerPerformance(ParticipantDto participantDto, TeamDto teamDto) {
+        return SummonerPerformance.of(participantDto, teamDto);
     }
 }

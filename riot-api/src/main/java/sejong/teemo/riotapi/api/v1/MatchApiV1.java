@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import sejong.teemo.riotapi.dto.SummonerPerformance;
 import sejong.teemo.riotapi.dto.match.MatchDataDto;
 import sejong.teemo.riotapi.dto.match.MatchDto;
-import sejong.teemo.riotapi.facade.MatchFacade;
+import sejong.teemo.riotapi.service.MatchService;
 
 import java.util.List;
 
@@ -20,29 +20,29 @@ import java.util.List;
 @RequestMapping("/teemo.gg/api/v1")
 public class MatchApiV1 {
 
-    private final MatchFacade matchFacade;
+    private final MatchService matchService;
 
     @GetMapping("/match/{gameName}/{tagLine}")
     public ResponseEntity<List<MatchDto>> callApiMatch(@PathVariable("gameName") String gameName,
                                                        @PathVariable("tagLine") String tagLine) {
 
-        return ResponseEntity.ok(matchFacade.callRiotMatch(gameName, tagLine));
+        return ResponseEntity.ok(matchService.callRiotMatch(gameName, tagLine));
     }
 
     @GetMapping("/match/summoner-performance/{gameName}/{tagLine}")
     public ResponseEntity<List<SummonerPerformance>> callApiMatchSummonerPerformance(@PathVariable("gameName") String gameName,
                                                                                      @PathVariable("tagLine") String tagLine) {
 
-        return ResponseEntity.ok(matchFacade.callRiotSummonerPerformance(gameName, tagLine));
+        return ResponseEntity.ok(matchService.callRiotSummonerPerformance(gameName, tagLine));
     }
 
     @GetMapping("/match/summoner-performance/{puuid}")
     public ResponseEntity<List<SummonerPerformance>> callApiMatchSummonerPerformance(@PathVariable("puuid") String puuid) {
-        return ResponseEntity.ok(matchFacade.callRiotSummonerPerformance(puuid));
+        return ResponseEntity.ok(matchService.callRiotSummonerPerformance(puuid));
     }
 
     @GetMapping("/match/{puuid}")
     public ResponseEntity<List<MatchDataDto>> callApiMatch(@PathVariable("puuid") String puuid) {
-        return ResponseEntity.ok(matchFacade.callRiotMatch(puuid));
+        return ResponseEntity.ok(matchService.callRiotMatch(puuid));
     }
 }

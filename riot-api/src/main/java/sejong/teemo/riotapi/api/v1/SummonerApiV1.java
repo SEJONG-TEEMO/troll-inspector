@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sejong.teemo.riotapi.dto.SummonerDto;
-import sejong.teemo.riotapi.facade.UserInfoFacade;
+import sejong.teemo.riotapi.service.UserInfoService;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,15 +16,15 @@ import sejong.teemo.riotapi.facade.UserInfoFacade;
 @RequestMapping("/teemo.gg/api/v1")
 public class SummonerApiV1 {
 
-    private final UserInfoFacade userInfoFacade;
+    private final UserInfoService userInfoService;
 
     @GetMapping("/summoner/{encryptedSummonerId}")
     public ResponseEntity<SummonerDto> callRiotSummoner(@PathVariable("encryptedSummonerId") String encryptedSummonerId) {
-        return ResponseEntity.ok(userInfoFacade.callApiSummoner(encryptedSummonerId));
+        return ResponseEntity.ok(userInfoService.callApiSummoner(encryptedSummonerId));
     }
 
     @GetMapping("/summoner/by-puuid/{puuid}")
     public ResponseEntity<SummonerDto> callRiotSummonerByPuuid(@PathVariable("puuid") String puuid) {
-        return ResponseEntity.ok(userInfoFacade.callApiSummonerByPuuid(puuid));
+        return ResponseEntity.ok(userInfoService.callApiSummonerByPuuid(puuid));
     }
 }

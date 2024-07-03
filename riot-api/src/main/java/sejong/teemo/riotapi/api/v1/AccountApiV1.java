@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sejong.teemo.riotapi.dto.Account;
-import sejong.teemo.riotapi.service.AccountService;
+import sejong.teemo.riotapi.api.external.AccountExternalApi;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/teemo.gg/api/v1")
 public class AccountApiV1 {
 
-    private final AccountService accountService;
+    private final AccountExternalApi accountExternalApi;
 
     @GetMapping("/account/{encryptedPuuid}")
     public ResponseEntity<Account> callApiAccount(@PathVariable("encryptedPuuid") String encryptedPuuid) {
 
-        Account account = accountService.callRiotAccount(encryptedPuuid);
+        Account account = accountExternalApi.callRiotAccount(encryptedPuuid);
 
         return ResponseEntity.ok(account);
     }
@@ -28,6 +28,6 @@ public class AccountApiV1 {
     public ResponseEntity<Account> callApiAccount(@PathVariable("gameName") String gameName,
                                                   @PathVariable("tagLine") String tagLine) {
 
-        return ResponseEntity.ok(accountService.callRiotAccount(gameName, tagLine));
+        return ResponseEntity.ok(accountExternalApi.callRiotAccount(gameName, tagLine));
     }
 }

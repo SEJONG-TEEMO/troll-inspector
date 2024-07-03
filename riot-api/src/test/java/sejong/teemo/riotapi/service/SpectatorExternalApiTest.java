@@ -13,6 +13,9 @@ import sejong.teemo.riotapi.common.exception.FailedApiCallingException;
 import sejong.teemo.riotapi.common.generator.UriGenerator;
 import sejong.teemo.riotapi.extension.TestExtension;
 import sejong.teemo.riotapi.common.properties.RiotApiProperties;
+import sejong.teemo.riotapi.api.external.LeagueExternalApi;
+import sejong.teemo.riotapi.api.external.SpectatorExternalApi;
+import sejong.teemo.riotapi.api.external.SummonerExternalApi;
 
 import java.util.List;
 
@@ -22,20 +25,20 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withResourceNotFound;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-class SpectatorServiceTest extends TestExtension {
+class SpectatorExternalApiTest extends TestExtension {
 
     private final MockRestServiceServer mockServer;
-    private final SpectatorService spectatorService;
-    private final LeagueService leagueService;
-    private final SummonerService summonerService;
+    private final SpectatorExternalApi spectatorExternalApi;
+    private final LeagueExternalApi leagueExternalApi;
+    private final SummonerExternalApi summonerExternalApi;
 
-    public SpectatorServiceTest(@Autowired RestClient.Builder restClientBuilder,
-                                @Autowired RiotApiProperties riotApiProperties) {
+    public SpectatorExternalApiTest(@Autowired RestClient.Builder restClientBuilder,
+                                    @Autowired RiotApiProperties riotApiProperties) {
 
         this.mockServer = MockRestServiceServer.bindTo(restClientBuilder).build();
-        this.spectatorService = new SpectatorService(restClientBuilder.build(), riotApiProperties);
-        this.leagueService = new LeagueService(restClientBuilder.build(), riotApiProperties);
-        this.summonerService = new SummonerService(restClientBuilder.build(), riotApiProperties);
+        this.spectatorExternalApi = new SpectatorExternalApi(restClientBuilder.build(), riotApiProperties);
+        this.leagueExternalApi = new LeagueExternalApi(restClientBuilder.build(), riotApiProperties);
+        this.summonerExternalApi = new SummonerExternalApi(restClientBuilder.build(), riotApiProperties);
     }
 
     @Test
@@ -48,7 +51,7 @@ class SpectatorServiceTest extends TestExtension {
                 .andRespond(withSuccess(getAccount(), MediaType.APPLICATION_JSON));
 
         // when
-        Account account = spectatorService.callRiotPUUID(gameName, tag);
+        Account account = spectatorExternalApi.callRiotPUUID(gameName, tag);
 
         // then
         assertThat(account.puuid()).isEqualTo("PUUID");
@@ -65,7 +68,7 @@ class SpectatorServiceTest extends TestExtension {
                 .andRespond(withSuccess(getSpectator(), MediaType.APPLICATION_JSON));
 
         // when
-        Spectator spectator = spectatorService.callRiotSpectatorV5(puuid);
+        Spectator spectator = spectatorExternalApi.callRiotSpectatorV5(puuid);
 
         // then
         assertThat(spectator.gameType()).isEqualTo("");
@@ -81,7 +84,7 @@ class SpectatorServiceTest extends TestExtension {
                 .andRespond(withResourceNotFound());
 
         // when && then
-        assertThatThrownBy(() -> spectatorService.callRiotSpectatorV5(malPuuid))
+        assertThatThrownBy(() -> spectatorExternalApi.callRiotSpectatorV5(malPuuid))
                 .isInstanceOf(FailedApiCallingException.class);
     }
 
@@ -98,7 +101,7 @@ class SpectatorServiceTest extends TestExtension {
                 .andRespond(withSuccess(getLeague(), MediaType.APPLICATION_JSON));
 
         // when
-        List<LeagueEntryDto> leagueEntryDtos = leagueService.callRiotLeague(division, tier, queue, page);
+        List<LeagueEntryDto> leagueEntryDtos = leagueExternalApi.callRiotLeague(division, tier, queue, page);
 
         // then
         assertThat(leagueEntryDtos).hasSize(1);
@@ -113,7 +116,7 @@ class SpectatorServiceTest extends TestExtension {
                 .andRespond(withSuccess(getSummoner(), MediaType.APPLICATION_JSON));
 
         // when
-        SummonerDto summonerDto = summonerService.callApiSummoner(encryptedPuuid);
+        SummonerDto summonerDto = summonerExternalApi.callApiSummoner(encryptedPuuid);
 
         // then
         assertThat(summonerDto.puuid()).isEqualTo(encryptedPuuid);
