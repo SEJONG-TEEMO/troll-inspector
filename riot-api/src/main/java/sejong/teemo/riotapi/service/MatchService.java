@@ -30,6 +30,8 @@ public class MatchService {
     private static final String QUEUE = "420";
 
     public List<String> callRiotApiMatchPuuid(String puuid) {
+
+        log.info("api-key = {}", riotApiProperties.apiKey());
         return restClient.get()
                 .uri(UriGenerator.RIOT_MATCH_PUUID.generateUri()
                         .queryParam("start", START)
