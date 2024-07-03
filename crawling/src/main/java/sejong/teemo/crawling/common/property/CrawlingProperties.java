@@ -1,4 +1,4 @@
-package sejong.teemo.crawling.property;
+package sejong.teemo.crawling.common.property;
 
 import java.util.List;
 

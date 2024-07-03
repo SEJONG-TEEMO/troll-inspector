@@ -7,18 +7,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import sejong.teemo.ingamesearch.champion.service.ChampionService;
 import sejong.teemo.ingamesearch.ingame.dto.normal.NormalView;
 import sejong.teemo.ingamesearch.ingame.dto.summoner.SummonerPerformance;
 import sejong.teemo.ingamesearch.ingame.dto.user.Account;
 import sejong.teemo.ingamesearch.ingame.dto.user.UserInfoView;
 import sejong.teemo.ingamesearch.ingame.dto.user.performance.UserPerformanceDto;
 import sejong.teemo.ingamesearch.ingame.entity.UserInfo;
-import sejong.teemo.ingamesearch.ingame.facade.InGameFacade;
+import sejong.teemo.ingamesearch.ingame.service.InGameService;
 import sejong.teemo.ingamesearch.ingame.repository.InGameRepository;
 import sejong.teemo.ingamesearch.ingame.repository.QueryDslRepository;
 import sejong.teemo.ingamesearch.ingame.repository.SummonerPerformanceInfoRepository;
-import sejong.teemo.ingamesearch.ingame.service.InGameService;
+import sejong.teemo.ingamesearch.ingame.api.external.InGameExternalApi;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,16 +27,13 @@ import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class InGameFacadeTest {
+public class InGameServiceTest {
 
     @InjectMocks
-    private InGameFacade inGameFacade;
-
-    @Mock
     private InGameService inGameService;
 
     @Mock
-    private ChampionService championService;
+    private InGameExternalApi inGameExternalApi;
 
     @Mock
     private InGameRepository inGameRepository;
@@ -60,7 +56,7 @@ public class InGameFacadeTest {
         given(queryDslRepository.findRecentGamesByUserId(userInfoData().getId())).willReturn(viewUserGamePerformanceData());
 
         // when
-        UserPerformanceDto performanceDto = inGameFacade.viewUserGamePerformance(anyString(), anyString());
+        UserPerformanceDto performanceDto = inGameService.viewUserGamePerformance(anyString(), anyString());
 
         // then
         assertThat(performanceDto.userChampionPerformances()).hasSize(1);

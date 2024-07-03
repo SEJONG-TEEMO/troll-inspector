@@ -1,4 +1,4 @@
-package sejong.teemo.riotapi.async;
+package sejong.teemo.riotapi.common.async;
 
 import sejong.teemo.riotapi.dto.LeagueEntryDto;
 

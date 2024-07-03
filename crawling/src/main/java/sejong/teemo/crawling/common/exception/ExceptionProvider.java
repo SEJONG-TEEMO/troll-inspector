@@ -1,4 +1,4 @@
-package sejong.teemo.crawling.exception;
+package sejong.teemo.crawling.common.exception;
 
 import lombok.Getter;
 

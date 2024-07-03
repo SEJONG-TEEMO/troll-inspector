@@ -7,7 +7,7 @@ import sejong.teemo.ingamesearch.container.TestContainer;
 import sejong.teemo.ingamesearch.ingame.dto.InGameView;
 import sejong.teemo.ingamesearch.ingame.dto.user.performance.UserPerformanceDto;
 import sejong.teemo.ingamesearch.ingame.entity.UserInfo;
-import sejong.teemo.ingamesearch.ingame.facade.InGameFacade;
+import sejong.teemo.ingamesearch.ingame.service.InGameService;
 import sejong.teemo.ingamesearch.ingame.repository.InGameRepository;
 
 import java.util.List;
@@ -15,10 +15,10 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-class InGameFacadeTest extends TestContainer {
+class InGameServiceTest extends TestContainer {
 
     @Autowired
-    private InGameFacade inGameFacade;
+    private InGameService inGameService;
 
     @Autowired
     private InGameRepository inGameRepository;
@@ -30,7 +30,7 @@ class InGameFacadeTest extends TestContainer {
         String tag = "KR1";
 
         // when
-        List<InGameView> inGameViews = inGameFacade.inGame(gameName, tag);
+        List<InGameView> inGameViews = inGameService.inGame(gameName, tag);
 
         // then
         System.out.println(inGameViews);
@@ -59,7 +59,7 @@ class InGameFacadeTest extends TestContainer {
                 30L));
 
         // when
-        UserPerformanceDto normal = inGameFacade.viewUserGamePerformance(gameName, tag);
+        UserPerformanceDto normal = inGameService.viewUserGamePerformance(gameName, tag);
 
         // then
         System.out.println(normal);
@@ -71,14 +71,14 @@ class InGameFacadeTest extends TestContainer {
         String gameName = "a1h";
         String tag = "KR1";
 
-        inGameFacade.viewUserGamePerformance(gameName, tag);
+        inGameService.viewUserGamePerformance(gameName, tag);
 
-        inGameFacade.updateSummonerPerformance(gameName, tag);
+        inGameService.updateSummonerPerformance(gameName, tag);
 
         // when
 
         // then
-        assertThatThrownBy(() -> inGameFacade.updateSummonerPerformance(gameName, tag))
+        assertThatThrownBy(() -> inGameService.updateSummonerPerformance(gameName, tag))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

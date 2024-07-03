@@ -1,4 +1,4 @@
-package sejong.teemo.riotapi.generator;
+package sejong.teemo.riotapi.common.generator;
 
 import lombok.Getter;
 import org.springframework.web.util.UriComponentsBuilder;

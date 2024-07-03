@@ -15,21 +15,21 @@ import sejong.teemo.ingamesearch.common.generator.UriGenerator;
 import sejong.teemo.ingamesearch.extension.TestExtension;
 import sejong.teemo.ingamesearch.ingame.dto.SpectatorDto;
 import sejong.teemo.ingamesearch.ingame.dto.user.Account;
-import sejong.teemo.ingamesearch.ingame.service.InGameService;
+import sejong.teemo.ingamesearch.ingame.api.external.InGameExternalApi;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
 
 @RestClientTest
-class InGameServiceTest extends TestExtension {
+class InGameExternalApiTest extends TestExtension {
 
     private final MockRestServiceServer mockServer;
-    private final InGameService inGameService;
+    private final InGameExternalApi inGameExternalApi;
 
-    public InGameServiceTest(@Autowired RestClient.Builder builder) {
+    public InGameExternalApiTest(@Autowired RestClient.Builder builder) {
         this.mockServer = MockRestServiceServer.bindTo(builder).build();
-        this.inGameService = new InGameService(builder.build());
+        this.inGameExternalApi = new InGameExternalApi(builder.build());
     }
 
     @Test
@@ -41,7 +41,7 @@ class InGameServiceTest extends TestExtension {
                 .andRespond(withSuccess(getSpectator(), MediaType.APPLICATION_JSON));
 
         // when
-        SpectatorDto spectatorDto = inGameService.callApiSpectator(puuid);
+        SpectatorDto spectatorDto = inGameExternalApi.callApiSpectator(puuid);
 
         // then
         assertThat(spectatorDto.gameId()).isEqualTo(1L);
@@ -57,7 +57,7 @@ class InGameServiceTest extends TestExtension {
                 .andRespond(withSuccess(getAccount(), MediaType.APPLICATION_JSON));
 
         // when
-        Account account = inGameService.callApiAccount(puuid);
+        Account account = inGameExternalApi.callApiAccount(puuid);
 
         // then
         assertThat(account.gameName()).isEqualTo("qwer1234");
@@ -76,7 +76,7 @@ class InGameServiceTest extends TestExtension {
         // when
 
         // then
-        assertThatThrownBy(() -> inGameService.callApiAccount(puuid))
+        assertThatThrownBy(() -> inGameExternalApi.callApiAccount(puuid))
                 .isInstanceOf(RequestFailedException.class)
                 .hasMessage(ExceptionProvider.RIOT_BAD_REQUEST_CALLING_FAILED.getMessage());
     }
@@ -92,7 +92,7 @@ class InGameServiceTest extends TestExtension {
         // when
 
         // then
-        assertThatThrownBy(() -> inGameService.callApiAccount(puuid))
+        assertThatThrownBy(() -> inGameExternalApi.callApiAccount(puuid))
                 .isInstanceOf(FailedApiCallingException.class)
                 .hasMessage(ExceptionProvider.RIOT_ACCOUNT_API_CALL_FAILED.getMessage());
     }
@@ -108,7 +108,7 @@ class InGameServiceTest extends TestExtension {
         // when
 
         // then
-        assertThatThrownBy(() -> inGameService.callApiAccount(puuid))
+        assertThatThrownBy(() -> inGameExternalApi.callApiAccount(puuid))
                 .isInstanceOf(FailedApiCallingException.class)
                 .hasMessage(ExceptionProvider.RIOT_ACCOUNT_API_CALL_FAILED.getMessage());
     }
@@ -124,7 +124,7 @@ class InGameServiceTest extends TestExtension {
         // when
 
         // then
-        assertThatThrownBy(() -> inGameService.callApiAccount(puuid))
+        assertThatThrownBy(() -> inGameExternalApi.callApiAccount(puuid))
                 .isInstanceOf(ServerErrorException.class)
                 .hasMessage(ExceptionProvider.RIOT_BAD_GATEWAY_FAILED.getMessage());
     }
@@ -140,7 +140,7 @@ class InGameServiceTest extends TestExtension {
         // when
 
         // then
-        assertThatThrownBy(() -> inGameService.callApiAccount(puuid))
+        assertThatThrownBy(() -> inGameExternalApi.callApiAccount(puuid))
                 .isInstanceOf(ServerErrorException.class)
                 .hasMessage(ExceptionProvider.RIOT_INTERNAL_SERVER_ERROR_FAILED.getMessage());
     }
@@ -156,7 +156,7 @@ class InGameServiceTest extends TestExtension {
         // when
 
         // then
-        assertThatThrownBy(() -> inGameService.callApiAccount(puuid))
+        assertThatThrownBy(() -> inGameExternalApi.callApiAccount(puuid))
                 .isInstanceOf(ServerErrorException.class)
                 .hasMessage(ExceptionProvider.RIOT_SERVICE_AVAILABLE_FAILED.getMessage());
     }

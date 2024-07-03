@@ -1,4 +1,4 @@
-package sejong.teemo.crawling.webDriver.generator;
+package sejong.teemo.crawling.common.generator;
 
 public enum UrlGenerator {
 

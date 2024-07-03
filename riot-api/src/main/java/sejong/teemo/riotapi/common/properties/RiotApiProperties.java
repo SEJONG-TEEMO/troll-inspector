@@ -1,4 +1,4 @@
-package sejong.teemo.riotapi.properties;
+package sejong.teemo.riotapi.common.properties;
 
 import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;

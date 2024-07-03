@@ -1,8 +1,6 @@
-package sejong.teemo.riotapi.async;
+package sejong.teemo.riotapi.common.async;
 
 import lombok.extern.slf4j.Slf4j;
-import sejong.teemo.riotapi.exception.ExceptionProvider;
-import sejong.teemo.riotapi.exception.FailedApiCallingException;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

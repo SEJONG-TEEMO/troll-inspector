@@ -1,4 +1,4 @@
-package sejong.teemo.riotapi.exception;
+package sejong.teemo.riotapi.common.exception;
 
 import lombok.Getter;
 

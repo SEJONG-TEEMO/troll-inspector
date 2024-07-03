@@ -1,4 +1,4 @@
-package sejong.teemo.crawling.mapper;
+package sejong.teemo.crawling.common.mapper;
 
 public interface CrawlerMapper<T> {
 
