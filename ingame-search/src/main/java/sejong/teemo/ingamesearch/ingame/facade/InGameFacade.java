@@ -171,6 +171,7 @@ public class InGameFacade {
         return UserInfoDto.of(leagueEntryDto, summonerDto, account);
     }
 
+    @Deprecated
     private Champion getInGameView(String puuid, Long championId) {
 
         List<SummonerPerformance> performances = inGameService
