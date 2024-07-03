@@ -55,6 +55,7 @@ public class ChampionConfig {
         championMap.put(887, "Gwen");
         championMap.put(120, "Hecarim");
         championMap.put(74, "Heimerdinger");
+        championMap.put(910, "Hwei");
         championMap.put(420, "Illaoi");
         championMap.put(39, "Irelia");
         championMap.put(427, "Ivern");
@@ -77,6 +78,7 @@ public class ChampionConfig {
         championMap.put(203, "Kindred");
         championMap.put(240, "Kled");
         championMap.put(96, "KogMaw");
+        championMap.put(879, "KSante");
         championMap.put(7, "Leblanc");
         championMap.put(64, "LeeSin");
         championMap.put(89, "Leona");
@@ -135,6 +137,7 @@ public class ChampionConfig {
         championMap.put(50, "Swain");
         championMap.put(517, "Sylas");
         championMap.put(134, "Syndra");
+        championMap.put(901, "Smolder");
         championMap.put(223, "TahmKench");
         championMap.put(163, "Taliyah");
         championMap.put(91, "Talon");
