@@ -6,6 +6,13 @@
 [프로젝트 링크 - 7월 8일 경 서버를 종료할 예정.](https://teemo.kr)
 ---
 
+## 기술 스택
+
+- BE: java21, spring, spring boot, spring batch, caffeine cache, mysql, selenium, apache-commons-pool, spring data jpa,
+  bucket4j
+- FE: react.js, next UI
+- Cloud: GCP cloud run
+
 ## Architecture
 
 ![teemo gg](https://github.com/SEJONG-TEEMO/troll-inspector/assets/37898720/7877e60e-2288-440b-ae53-5ec8b5ccefef)
