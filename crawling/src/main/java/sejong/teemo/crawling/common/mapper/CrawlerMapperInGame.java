@@ -1,6 +1,6 @@
 package sejong.teemo.crawling.common.mapper;
 
-import sejong.teemo.crawling.dto.InGameDto;
+import sejong.teemo.crawling.presentation.dto.InGameDto;
 
 public class CrawlerMapperInGame implements CrawlerMapper<InGameDto> {
 

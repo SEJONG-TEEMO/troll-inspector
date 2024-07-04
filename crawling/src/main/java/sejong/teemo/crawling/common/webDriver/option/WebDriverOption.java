@@ -1,4 +1,4 @@
-package sejong.teemo.crawling.webDriver.option;
+package sejong.teemo.crawling.common.webDriver.option;
 
 public enum WebDriverOption {
     REMOTE("remote"),

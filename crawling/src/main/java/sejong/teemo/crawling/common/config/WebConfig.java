@@ -1,4 +1,4 @@
-package sejong.teemo.crawling.config;
+package sejong.teemo.crawling.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

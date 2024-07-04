@@ -1,4 +1,4 @@
-package sejong.teemo.crawling.webDriver.wait;
+package sejong.teemo.crawling.common.webDriver.wait;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;

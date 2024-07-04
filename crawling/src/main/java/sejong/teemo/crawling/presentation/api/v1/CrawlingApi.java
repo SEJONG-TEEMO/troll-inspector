@@ -1,4 +1,4 @@
-package sejong.teemo.crawling.api.v1;
+package sejong.teemo.crawling.presentation.api.v1;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sejong.teemo.crawling.dto.InGameDto;
-import sejong.teemo.crawling.dto.MatchDataDto;
+import sejong.teemo.crawling.presentation.dto.InGameDto;
+import sejong.teemo.crawling.presentation.dto.MatchDataDto;
 import sejong.teemo.crawling.common.property.CrawlingProperties;
-import sejong.teemo.crawling.service.CrawlerService;
+import sejong.teemo.crawling.application.service.CrawlerService;
 import sejong.teemo.crawling.common.generator.UrlGenerator;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package sejong.teemo.crawling.dto;
+package sejong.teemo.crawling.presentation.dto;
 
 import lombok.Builder;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package sejong.teemo.crawling.service;
+package sejong.teemo.crawling.application.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,9 +7,11 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sejong.teemo.crawling.crawler.page.*;
-import sejong.teemo.crawling.dto.InGameDto;
-import sejong.teemo.crawling.dto.MatchDataDto;
+import sejong.teemo.crawling.application.crawler.page.InGamePage;
+import sejong.teemo.crawling.application.crawler.page.MatchDataPage;
+import sejong.teemo.crawling.application.crawler.page.Page;
+import sejong.teemo.crawling.presentation.dto.InGameDto;
+import sejong.teemo.crawling.presentation.dto.MatchDataDto;
 import sejong.teemo.crawling.common.exception.CrawlingException;
 import sejong.teemo.crawling.common.generator.UrlGenerator;
 import sejong.teemo.crawling.common.property.CrawlingProperties;

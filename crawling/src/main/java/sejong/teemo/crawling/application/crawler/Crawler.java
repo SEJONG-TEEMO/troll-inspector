@@ -1,4 +1,4 @@
-package sejong.teemo.crawling.crawler;
+package sejong.teemo.crawling.application.crawler;
 
 import lombok.Builder;
 import org.openqa.selenium.By;

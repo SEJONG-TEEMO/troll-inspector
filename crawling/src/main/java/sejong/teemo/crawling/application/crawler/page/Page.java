@@ -1,4 +1,4 @@
-package sejong.teemo.crawling.crawler.page;
+package sejong.teemo.crawling.application.crawler.page;
 
 import org.openqa.selenium.WebDriver;
 import sejong.teemo.crawling.common.generator.UrlGenerator;

@@ -1,4 +1,4 @@
-package sejong.teemo.crawling.webDriver.pool;
+package sejong.teemo.crawling.common.webDriver.pool;
 
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.DestroyMode;

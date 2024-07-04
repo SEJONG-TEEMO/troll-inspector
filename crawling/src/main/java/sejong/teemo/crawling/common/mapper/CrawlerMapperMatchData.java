@@ -1,7 +1,7 @@
 package sejong.teemo.crawling.common.mapper;
 
 import lombok.extern.slf4j.Slf4j;
-import sejong.teemo.crawling.dto.MatchDataDto;
+import sejong.teemo.crawling.presentation.dto.MatchDataDto;
 
 @Slf4j
 public class CrawlerMapperMatchData implements CrawlerMapper<MatchDataDto> {

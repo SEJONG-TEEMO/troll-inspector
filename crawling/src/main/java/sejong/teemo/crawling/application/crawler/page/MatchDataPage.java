@@ -1,11 +1,11 @@
-package sejong.teemo.crawling.crawler.page;
+package sejong.teemo.crawling.application.crawler.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import sejong.teemo.crawling.crawler.Crawler;
-import sejong.teemo.crawling.dto.MatchDataDto;
+import sejong.teemo.crawling.application.crawler.Crawler;
+import sejong.teemo.crawling.presentation.dto.MatchDataDto;
 import sejong.teemo.crawling.common.mapper.CrawlerMapperMatchData;
 import sejong.teemo.crawling.common.generator.UrlGenerator;
 

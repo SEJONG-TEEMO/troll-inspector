@@ -1,9 +1,9 @@
-package sejong.teemo.crawling.crawler;
+package sejong.teemo.crawling.application.crawler;
 
 import lombok.Builder;
 import org.openqa.selenium.WebDriver;
 import sejong.teemo.crawling.common.exception.CrawlingException;
-import sejong.teemo.crawling.webDriver.pool.WebDriverPool;
+import sejong.teemo.crawling.common.webDriver.pool.WebDriverPool;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
