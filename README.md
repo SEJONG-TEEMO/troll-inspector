@@ -1,4 +1,4 @@
-## TEEMO.GG
+## ![favicon-16x16](https://github.com/SEJONG-TEEMO/troll-inspector/assets/37898720/8cabd591-6f93-4cd2-b53f-09090963ffa9) TEEMO.GG
 
 - 리그 오브 레전드 최근 40게임 전적 조회 사이트
 - 유저의 솔로 랭크를 조회하여, 게임 플레이를 할 때에 전적을 조회하여 유저들의 게임의 흥미를 돋구도록 기대하며 제작했습니다.
