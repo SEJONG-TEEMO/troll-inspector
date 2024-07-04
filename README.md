@@ -8,7 +8,7 @@
 
 ## 기술 스택
 
-- BE: java21, spring, spring boot, spring batch, caffeine cache, mysql, selenium, apache-commons-pool, spring data jpa,
+- BE: java, spring, spring boot, spring batch, caffeine cache, mysql, selenium, apache-commons-pool, spring data jpa,
   bucket4j
 - FE: react.js, next UI
 - Cloud: GCP cloud run
