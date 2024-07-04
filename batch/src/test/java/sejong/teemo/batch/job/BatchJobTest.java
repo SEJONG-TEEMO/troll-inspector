@@ -6,11 +6,10 @@ import org.springframework.batch.core.*;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import sejong.teemo.batch.container.TestContainer;
-import sejong.teemo.batch.job.info.DivisionInfo;
-import sejong.teemo.batch.job.info.TierInfo;
+import sejong.teemo.batch.application.job.info.DivisionInfo;
+import sejong.teemo.batch.application.job.info.TierInfo;
 
 import static org.assertj.core.api.Assertions.*;
 

@@ -12,21 +12,22 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
-import sejong.teemo.batch.dto.LeagueEntryDto;
-import sejong.teemo.batch.dto.UserInfoDto;
-import sejong.teemo.batch.exception.ExceptionProvider;
-import sejong.teemo.batch.exception.FailedApiCallingException;
-import sejong.teemo.batch.exception.TooManyApiCallingException;
-import sejong.teemo.batch.job.info.DivisionInfo;
-import sejong.teemo.batch.job.info.TierInfo;
-import sejong.teemo.batch.property.RiotApiProperties;
+import sejong.teemo.batch.application.service.BatchService;
+import sejong.teemo.batch.presentation.dto.LeagueEntryDto;
+import sejong.teemo.batch.presentation.dto.UserInfoDto;
+import sejong.teemo.batch.common.exception.ExceptionProvider;
+import sejong.teemo.batch.common.exception.FailedApiCallingException;
+import sejong.teemo.batch.common.exception.TooManyApiCallingException;
+import sejong.teemo.batch.application.job.info.DivisionInfo;
+import sejong.teemo.batch.application.job.info.TierInfo;
+import sejong.teemo.batch.common.property.RiotApiProperties;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
-import static sejong.teemo.batch.generator.UriGenerator.*;
+import static sejong.teemo.batch.common.generator.UriGenerator.*;
 
 @RestClientTest
 @ActiveProfiles("test")

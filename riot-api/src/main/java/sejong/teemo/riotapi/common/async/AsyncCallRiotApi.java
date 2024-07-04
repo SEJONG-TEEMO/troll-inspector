@@ -1,13 +1,10 @@
 package sejong.teemo.riotapi.common.async;
 
-import sejong.teemo.riotapi.dto.LeagueEntryDto;
-
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 public class AsyncCallRiotApi<T> {

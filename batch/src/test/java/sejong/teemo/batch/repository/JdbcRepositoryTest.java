@@ -6,9 +6,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import sejong.teemo.batch.container.TestContainer;
-import sejong.teemo.batch.entity.TempUserInfo;
-import sejong.teemo.batch.entity.UserInfo;
-import sejong.teemo.batch.repository.mapper.TempUserInfoRowMapper;
+import sejong.teemo.batch.domain.entity.TempUserInfo;
+import sejong.teemo.batch.domain.entity.UserInfo;
+import sejong.teemo.batch.domain.repository.BatchRepository;
+import sejong.teemo.batch.domain.repository.mapper.TempUserInfoRowMapper;
 
 import java.util.List;
 

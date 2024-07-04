@@ -10,15 +10,14 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import sejong.teemo.batch.TestBatchConfig;
-import sejong.teemo.batch.config.RestClientConfig;
+import sejong.teemo.batch.application.job.MigrationJob;
+import sejong.teemo.batch.common.config.RestClientConfig;
 import sejong.teemo.batch.container.TestContainer;
-import sejong.teemo.batch.property.RiotApiProperties;
-import sejong.teemo.batch.repository.JdbcRepository;
-import sejong.teemo.batch.service.BatchService;
+import sejong.teemo.batch.common.property.RiotApiProperties;
+import sejong.teemo.batch.domain.repository.JdbcRepository;
+import sejong.teemo.batch.application.service.BatchService;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static sejong.teemo.batch.job.info.DivisionInfo.*;
-import static sejong.teemo.batch.job.info.TierInfo.*;
 
 @SpringBootTest(classes = {
         MigrationJob.class,

@@ -7,7 +7,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import sejong.teemo.batch.entity.UserInfo;
+import sejong.teemo.batch.domain.entity.UserInfo;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;

@@ -5,17 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
-import sejong.teemo.riotapi.dto.Account;
-import sejong.teemo.riotapi.dto.LeagueEntryDto;
-import sejong.teemo.riotapi.dto.Spectator;
-import sejong.teemo.riotapi.dto.SummonerDto;
+import sejong.teemo.riotapi.presentation.dto.Account;
+import sejong.teemo.riotapi.presentation.dto.LeagueEntryDto;
+import sejong.teemo.riotapi.presentation.dto.Spectator;
+import sejong.teemo.riotapi.presentation.dto.SummonerDto;
 import sejong.teemo.riotapi.common.exception.FailedApiCallingException;
 import sejong.teemo.riotapi.common.generator.UriGenerator;
 import sejong.teemo.riotapi.extension.TestExtension;
 import sejong.teemo.riotapi.common.properties.RiotApiProperties;
-import sejong.teemo.riotapi.api.external.LeagueExternalApi;
-import sejong.teemo.riotapi.api.external.SpectatorExternalApi;
-import sejong.teemo.riotapi.api.external.SummonerExternalApi;
+import sejong.teemo.riotapi.presentation.api.external.LeagueExternalApi;
+import sejong.teemo.riotapi.presentation.api.external.SpectatorExternalApi;
+import sejong.teemo.riotapi.presentation.api.external.SummonerExternalApi;
 
 import java.util.List;
 

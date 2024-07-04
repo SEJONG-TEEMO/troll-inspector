@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.test.context.ActiveProfiles;
 import sejong.teemo.riotapi.dto.*;
 import sejong.teemo.riotapi.common.properties.RiotApiProperties;
+import sejong.teemo.riotapi.presentation.dto.*;
 
 import java.util.List;
 
