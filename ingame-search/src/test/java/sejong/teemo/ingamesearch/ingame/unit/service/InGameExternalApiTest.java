@@ -13,9 +13,9 @@ import sejong.teemo.ingamesearch.common.exception.RequestFailedException;
 import sejong.teemo.ingamesearch.common.exception.ServerErrorException;
 import sejong.teemo.ingamesearch.common.generator.UriGenerator;
 import sejong.teemo.ingamesearch.extension.TestExtension;
-import sejong.teemo.ingamesearch.ingame.dto.SpectatorDto;
-import sejong.teemo.ingamesearch.ingame.dto.user.Account;
-import sejong.teemo.ingamesearch.ingame.api.external.InGameExternalApi;
+import sejong.teemo.ingamesearch.presentation.dto.SpectatorDto;
+import sejong.teemo.ingamesearch.presentation.dto.user.Account;
+import sejong.teemo.ingamesearch.presentation.api.external.InGameExternalApi;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;

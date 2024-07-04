@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.springframework.test.context.ActiveProfiles;
-import sejong.teemo.ingamesearch.ingame.dto.SpectatorDto;
-import sejong.teemo.ingamesearch.ingame.dto.user.Account;
-import sejong.teemo.ingamesearch.ingame.dto.user.LeagueEntryDto;
-import sejong.teemo.ingamesearch.ingame.dto.user.SummonerDto;
+import sejong.teemo.ingamesearch.presentation.dto.SpectatorDto;
+import sejong.teemo.ingamesearch.presentation.dto.user.Account;
+import sejong.teemo.ingamesearch.presentation.dto.user.LeagueEntryDto;
+import sejong.teemo.ingamesearch.presentation.dto.user.SummonerDto;
 
 import java.util.List;
 

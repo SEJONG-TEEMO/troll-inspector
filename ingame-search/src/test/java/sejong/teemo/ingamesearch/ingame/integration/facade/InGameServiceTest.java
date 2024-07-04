@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import sejong.teemo.ingamesearch.container.TestContainer;
-import sejong.teemo.ingamesearch.ingame.dto.InGameView;
-import sejong.teemo.ingamesearch.ingame.dto.user.performance.UserPerformanceDto;
-import sejong.teemo.ingamesearch.ingame.entity.UserInfo;
-import sejong.teemo.ingamesearch.ingame.service.InGameService;
-import sejong.teemo.ingamesearch.ingame.repository.InGameRepository;
+import sejong.teemo.ingamesearch.presentation.dto.InGameView;
+import sejong.teemo.ingamesearch.presentation.dto.user.performance.UserPerformanceDto;
+import sejong.teemo.ingamesearch.domain.entity.UserInfo;
+import sejong.teemo.ingamesearch.application.service.InGameService;
+import sejong.teemo.ingamesearch.domain.repository.InGameRepository;
 
 import java.util.List;
 
