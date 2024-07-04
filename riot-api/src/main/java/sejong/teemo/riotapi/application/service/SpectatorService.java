@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import sejong.teemo.riotapi.common.async.AsyncCall;
-import sejong.teemo.riotapi.dto.*;
 import sejong.teemo.riotapi.presentation.api.external.SpectatorExternalApi;
 import sejong.teemo.riotapi.presentation.dto.ChampionMastery;
 import sejong.teemo.riotapi.presentation.dto.CurrentGameParticipant;
