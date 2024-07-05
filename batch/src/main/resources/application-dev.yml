@@ -14,5 +14,14 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
 
+  sql:
+    init:
+      mode: always
+
 riot:
   api-key: ${API_KEY}
+
+logging:
+  level:
+    sql: debug
+    org.springframework.jdbc.core: debug
