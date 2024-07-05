@@ -3,7 +3,7 @@ package sejong.teemo.riotapi.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import sejong.teemo.riotapi.presentation.api.external.MatchExternalApi;
+import sejong.teemo.riotapi.application.external.MatchExternalApi;
 
 @SpringBootTest
 class MatchExternalApiTest {
@@ -14,6 +14,7 @@ class MatchExternalApiTest {
     @Test
     void 매치_테스트() {
 
-        matchExternalApi.callRiotApiMatchPuuid("GwKWTBNed920B3CvgGC45kzIplxjIdStCnz2Usy4iw_96FH7MlwLVigmIu_nQx_CeRgl7zu5RJp-pQ");
+        matchExternalApi.callRiotApiMatchPuuid(
+                "GwKWTBNed920B3CvgGC45kzIplxjIdStCnz2Usy4iw_96FH7MlwLVigmIu_nQx_CeRgl7zu5RJp-pQ");
     }
 }

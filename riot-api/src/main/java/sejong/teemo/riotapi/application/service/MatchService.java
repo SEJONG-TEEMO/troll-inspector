@@ -1,23 +1,22 @@
 package sejong.teemo.riotapi.application.service;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import sejong.teemo.riotapi.application.external.AccountExternalApi;
+import sejong.teemo.riotapi.application.external.MatchExternalApi;
 import sejong.teemo.riotapi.common.async.AsyncCall;
+import sejong.teemo.riotapi.common.exception.ExceptionProvider;
+import sejong.teemo.riotapi.common.exception.NotFoundException;
 import sejong.teemo.riotapi.presentation.dto.Account;
 import sejong.teemo.riotapi.presentation.dto.SummonerPerformance;
 import sejong.teemo.riotapi.presentation.dto.match.MatchDataDto;
 import sejong.teemo.riotapi.presentation.dto.match.MatchDto;
 import sejong.teemo.riotapi.presentation.dto.match.ParticipantDto;
 import sejong.teemo.riotapi.presentation.dto.match.TeamDto;
-import sejong.teemo.riotapi.common.exception.ExceptionProvider;
-import sejong.teemo.riotapi.common.exception.NotFoundException;
-import sejong.teemo.riotapi.presentation.api.external.AccountExternalApi;
-import sejong.teemo.riotapi.presentation.api.external.MatchExternalApi;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.IntStream;
 
 @Component
 @RequiredArgsConstructor
@@ -81,7 +80,7 @@ public class MatchService {
 
         return IntStream.rangeClosed(0, matchDtoList.size() - 1)
                 .parallel()
-                .mapToObj(index-> returnSummonerPerformanceTrackingTargetIdx(index, matchDtoList, account))
+                .mapToObj(index -> returnSummonerPerformanceTrackingTargetIdx(index, matchDtoList, account))
                 .toList();
     }
 
@@ -95,7 +94,8 @@ public class MatchService {
     }
 
     @Deprecated
-    private SummonerPerformance returnSummonerPerformanceTrackingTargetIdx(int index, List<MatchDto> matchDtoList, Account account) {
+    private SummonerPerformance returnSummonerPerformanceTrackingTargetIdx(int index, List<MatchDto> matchDtoList,
+                                                                           Account account) {
         List<ParticipantDto> participants = matchDtoList.get(index)
                 .matchDataDto()
                 .info()

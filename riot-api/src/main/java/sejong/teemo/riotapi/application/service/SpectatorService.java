@@ -1,16 +1,15 @@
 package sejong.teemo.riotapi.application.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import sejong.teemo.riotapi.application.external.SpectatorExternalApi;
 import sejong.teemo.riotapi.common.async.AsyncCall;
-import sejong.teemo.riotapi.presentation.api.external.SpectatorExternalApi;
 import sejong.teemo.riotapi.presentation.dto.ChampionMastery;
 import sejong.teemo.riotapi.presentation.dto.CurrentGameParticipant;
 import sejong.teemo.riotapi.presentation.dto.Spectator;
 import sejong.teemo.riotapi.presentation.dto.SpectatorDto;
-
-import java.util.List;
 
 @Component
 @Slf4j

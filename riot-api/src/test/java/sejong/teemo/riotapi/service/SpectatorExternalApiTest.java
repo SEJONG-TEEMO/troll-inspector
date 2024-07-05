@@ -1,29 +1,28 @@
 package sejong.teemo.riotapi.service;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.web.client.RestClient;
-import sejong.teemo.riotapi.presentation.dto.Account;
-import sejong.teemo.riotapi.presentation.dto.LeagueEntryDto;
-import sejong.teemo.riotapi.presentation.dto.Spectator;
-import sejong.teemo.riotapi.presentation.dto.SummonerDto;
-import sejong.teemo.riotapi.common.exception.FailedApiCallingException;
-import sejong.teemo.riotapi.common.generator.UriGenerator;
-import sejong.teemo.riotapi.extension.TestExtension;
-import sejong.teemo.riotapi.common.properties.RiotApiProperties;
-import sejong.teemo.riotapi.presentation.api.external.LeagueExternalApi;
-import sejong.teemo.riotapi.presentation.api.external.SpectatorExternalApi;
-import sejong.teemo.riotapi.presentation.api.external.SummonerExternalApi;
-
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withResourceNotFound;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.web.client.RestClient;
+import sejong.teemo.riotapi.application.external.LeagueExternalApi;
+import sejong.teemo.riotapi.application.external.SpectatorExternalApi;
+import sejong.teemo.riotapi.application.external.SummonerExternalApi;
+import sejong.teemo.riotapi.common.exception.FailedApiCallingException;
+import sejong.teemo.riotapi.common.generator.UriGenerator;
+import sejong.teemo.riotapi.common.properties.RiotApiProperties;
+import sejong.teemo.riotapi.extension.TestExtension;
+import sejong.teemo.riotapi.presentation.dto.Account;
+import sejong.teemo.riotapi.presentation.dto.LeagueEntryDto;
+import sejong.teemo.riotapi.presentation.dto.Spectator;
+import sejong.teemo.riotapi.presentation.dto.SummonerDto;
 
 class SpectatorExternalApiTest extends TestExtension {
 
@@ -97,7 +96,8 @@ class SpectatorExternalApiTest extends TestExtension {
 
         int page = 1;
 
-        mockServer.expect(requestTo(UriGenerator.RIOT_LEAGUE.generateUri().queryParam("page", page).build(queue,tier, division)))
+        mockServer.expect(
+                        requestTo(UriGenerator.RIOT_LEAGUE.generateUri().queryParam("page", page).build(queue, tier, division)))
                 .andRespond(withSuccess(getLeague(), MediaType.APPLICATION_JSON));
 
         // when

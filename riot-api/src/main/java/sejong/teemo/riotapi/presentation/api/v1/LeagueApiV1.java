@@ -1,13 +1,16 @@
 package sejong.teemo.riotapi.presentation.api.v1;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import sejong.teemo.riotapi.presentation.dto.LeagueEntryDto;
-import sejong.teemo.riotapi.presentation.api.external.LeagueExternalApi;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import sejong.teemo.riotapi.application.external.LeagueExternalApi;
 import sejong.teemo.riotapi.application.service.UserInfoService;
-
-import java.util.List;
+import sejong.teemo.riotapi.presentation.dto.LeagueEntryDto;
 
 @RestController
 @RequiredArgsConstructor

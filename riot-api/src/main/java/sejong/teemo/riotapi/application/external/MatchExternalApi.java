@@ -1,5 +1,6 @@
-package sejong.teemo.riotapi.presentation.api.external;
+package sejong.teemo.riotapi.application.external;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -7,13 +8,11 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import sejong.teemo.riotapi.presentation.dto.match.MatchDataDto;
 import sejong.teemo.riotapi.common.exception.ExceptionProvider;
 import sejong.teemo.riotapi.common.exception.FailedApiCallingException;
 import sejong.teemo.riotapi.common.generator.UriGenerator;
 import sejong.teemo.riotapi.common.properties.RiotApiProperties;
-
-import java.util.List;
+import sejong.teemo.riotapi.presentation.dto.match.MatchDataDto;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +44,8 @@ public class MatchExternalApi {
                     log.info("match = {}", request.getURI());
                     log.error("match riot puuid error = {}", response.getStatusText());
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_MATCH_API_CALL_FAILED);
-                })).body(new ParameterizedTypeReference<>() {});
+                })).body(new ParameterizedTypeReference<>() {
+                });
     }
 
     public MatchDataDto callRiotApiMatchMatchId(String matchId) {

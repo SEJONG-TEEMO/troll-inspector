@@ -1,4 +1,4 @@
-package sejong.teemo.riotapi.presentation.api.external;
+package sejong.teemo.riotapi.application.external;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,11 +6,11 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import sejong.teemo.riotapi.presentation.dto.Account;
 import sejong.teemo.riotapi.common.exception.ExceptionProvider;
 import sejong.teemo.riotapi.common.exception.FailedApiCallingException;
 import sejong.teemo.riotapi.common.generator.UriGenerator;
 import sejong.teemo.riotapi.common.properties.RiotApiProperties;
+import sejong.teemo.riotapi.presentation.dto.Account;
 
 @Service
 @RequiredArgsConstructor
@@ -31,13 +31,14 @@ public class AccountExternalApi {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
                     log.info("get uri = {}", request.getURI());
-                    log.error("league error status = {} message = {}", response.getStatusCode(), response.getStatusText());
+                    log.error("league error status = {} message = {}", response.getStatusCode(),
+                            response.getStatusText());
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_ACCOUNT_API_CALL_FAILED);
                 }))
                 .body(Account.class);
     }
 
-    public Account callRiotAccount(String gameName, String  tagLine) {
+    public Account callRiotAccount(String gameName, String tagLine) {
 
         return restClient.get()
                 .uri(UriGenerator.RIOT_ACCOUNT_GAME_NAME_TAG_LINE.generateUri(gameName, tagLine))
@@ -46,7 +47,8 @@ public class AccountExternalApi {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
                     log.info("get uri = {}", request.getURI());
-                    log.error("account error status = {} message = {}", response.getStatusCode(), response.getStatusText());
+                    log.error("account error status = {} message = {}", response.getStatusCode(),
+                            response.getStatusText());
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_ACCOUNT_API_CALL_FAILED);
                 }))
                 .body(Account.class);

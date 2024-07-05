@@ -1,17 +1,17 @@
-package sejong.teemo.riotapi.presentation.api.external;
+package sejong.teemo.riotapi.application.external;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import sejong.teemo.riotapi.presentation.dto.SummonerDto;
 import sejong.teemo.riotapi.common.exception.ExceptionProvider;
 import sejong.teemo.riotapi.common.exception.FailedApiCallingException;
 import sejong.teemo.riotapi.common.generator.UriGenerator;
 import sejong.teemo.riotapi.common.properties.RiotApiProperties;
-
-import static org.springframework.http.MediaType.*;
+import sejong.teemo.riotapi.presentation.dto.SummonerDto;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +32,8 @@ public class SummonerExternalApi {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
                     log.info("get uri = {}", request.getURI());
-                    log.error("summoner error status = {} message = {}", response.getStatusCode(), response.getStatusText());
+                    log.error("summoner error status = {} message = {}", response.getStatusCode(),
+                            response.getStatusText());
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_SUMMONER_API_CALL_FAILED);
                 }))
                 .body(SummonerDto.class);
@@ -46,7 +47,8 @@ public class SummonerExternalApi {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
                     log.info("get uri = {}", request.getURI());
-                    log.error("summoner error status = {} message = {}", response.getStatusCode(), response.getStatusText());
+                    log.error("summoner error status = {} message = {}", response.getStatusCode(),
+                            response.getStatusText());
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_SUMMONER_API_CALL_FAILED);
                 }))
                 .body(SummonerDto.class);

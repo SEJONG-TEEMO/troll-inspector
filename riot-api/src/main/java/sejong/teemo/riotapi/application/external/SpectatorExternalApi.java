@@ -1,19 +1,19 @@
-package sejong.teemo.riotapi.presentation.api.external;
+package sejong.teemo.riotapi.application.external;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import sejong.teemo.riotapi.presentation.dto.Account;
-import sejong.teemo.riotapi.presentation.dto.ChampionMastery;
-import sejong.teemo.riotapi.presentation.dto.Spectator;
 import sejong.teemo.riotapi.common.exception.ExceptionProvider;
 import sejong.teemo.riotapi.common.exception.FailedApiCallingException;
 import sejong.teemo.riotapi.common.generator.UriGenerator;
 import sejong.teemo.riotapi.common.properties.RiotApiProperties;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON;
+import sejong.teemo.riotapi.presentation.dto.Account;
+import sejong.teemo.riotapi.presentation.dto.ChampionMastery;
+import sejong.teemo.riotapi.presentation.dto.Spectator;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +37,8 @@ public class SpectatorExternalApi {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
                     log.info("get uri = {}", request.getURI());
-                    log.error("spectator error status = {} message = {}", response.getStatusCode(), response.getStatusText());
+                    log.error("spectator error status = {} message = {}", response.getStatusCode(),
+                            response.getStatusText());
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_SPECTATOR_API_CALL_FAILED);
                 }))
                 .body(Spectator.class);
@@ -53,7 +54,8 @@ public class SpectatorExternalApi {
                 .header(API_KEY, riotApiProperties.apiKey())
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.error("account error status = {}, message = {}", response.getStatusCode(), response.getStatusText());
+                    log.error("account error status = {}, message = {}", response.getStatusCode(),
+                            response.getStatusText());
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_ACCOUNT_API_CALL_FAILED);
                 }))
                 .body(Account.class);
@@ -69,7 +71,8 @@ public class SpectatorExternalApi {
                 .header(API_KEY, riotApiProperties.apiKey())
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    log.error("champion mastery error status = {}, message = {}", response.getStatusCode(), response.getStatusText());
+                    log.error("champion mastery error status = {}, message = {}", response.getStatusCode(),
+                            response.getStatusText());
                     throw new FailedApiCallingException(ExceptionProvider.RIOT_ACCOUNT_API_CALL_FAILED);
                 }))
                 .body(ChampionMastery.class);

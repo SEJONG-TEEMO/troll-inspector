@@ -1,25 +1,24 @@
 package sejong.teemo.riotapi.application.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import sejong.teemo.riotapi.application.external.AccountExternalApi;
+import sejong.teemo.riotapi.application.external.LeagueExternalApi;
+import sejong.teemo.riotapi.application.external.SummonerExternalApi;
 import sejong.teemo.riotapi.common.async.AsyncCall;
 import sejong.teemo.riotapi.common.async.AsyncCallRiotApi;
 import sejong.teemo.riotapi.presentation.dto.Account;
 import sejong.teemo.riotapi.presentation.dto.LeagueEntryDto;
 import sejong.teemo.riotapi.presentation.dto.SummonerDto;
 import sejong.teemo.riotapi.presentation.dto.UserInfoDto;
-import sejong.teemo.riotapi.presentation.api.external.AccountExternalApi;
-import sejong.teemo.riotapi.presentation.api.external.LeagueExternalApi;
-import sejong.teemo.riotapi.presentation.api.external.SummonerExternalApi;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class UserInfoService {
-    
+
     private final LeagueExternalApi leagueExternalApi;
     private final SummonerExternalApi summonerExternalApi;
     private final AccountExternalApi accountExternalApi;
@@ -37,7 +36,8 @@ public class UserInfoService {
         });
     }
 
-    public List<List<LeagueEntryDto>> callApiLeague(String division, String tier, String queue, int startPage, int endPage) {
+    public List<List<LeagueEntryDto>> callApiLeague(String division, String tier, String queue, int startPage,
+                                                    int endPage) {
         AsyncCallRiotApi<LeagueEntryDto> callRiotApi = new AsyncCallRiotApi<>(startPage, endPage);
 
         return callRiotApi.execute(10, page -> leagueExternalApi.callRiotLeague(division, tier, queue, page));
