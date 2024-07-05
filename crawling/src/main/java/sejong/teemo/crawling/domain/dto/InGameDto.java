@@ -1,4 +1,4 @@
-package sejong.teemo.crawling.presentation.dto;
+package sejong.teemo.crawling.domain.dto;
 
 import lombok.Builder;
 

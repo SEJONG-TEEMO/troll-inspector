@@ -5,10 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 import sejong.teemo.batch.common.async.AsyncCall;
-import sejong.teemo.batch.presentation.dto.Account;
-import sejong.teemo.batch.presentation.dto.LeagueEntryDto;
-import sejong.teemo.batch.presentation.dto.SummonerDto;
-import sejong.teemo.batch.presentation.dto.UserInfoDto;
+import sejong.teemo.batch.domain.dto.Account;
+import sejong.teemo.batch.domain.dto.LeagueEntryDto;
+import sejong.teemo.batch.domain.dto.SummonerDto;
+import sejong.teemo.batch.domain.dto.UserInfoDto;
 import sejong.teemo.batch.domain.entity.TempUserInfo;
 import sejong.teemo.batch.common.exception.ExceptionProvider;
 import sejong.teemo.batch.common.exception.FailedApiCallingException;
@@ -24,7 +24,8 @@ public class LeagueItemProcess implements ItemProcessor<List<LeagueEntryDto>, Li
     private final Bucket bucket;
 
     @Override
-    public List<TempUserInfo> process(List<LeagueEntryDto> item) throws FailedApiCallingException, InterruptedException {
+    public List<TempUserInfo> process(List<LeagueEntryDto> item)
+            throws FailedApiCallingException, InterruptedException {
 
         log.info("batch process");
 

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import sejong.teemo.crawling.presentation.dto.ExceptionResult;
+import sejong.teemo.crawling.domain.dto.ExceptionResult;
 import sejong.teemo.crawling.common.exception.CrawlingException;
 import sejong.teemo.crawling.common.exception.ExceptionProvider;
 
@@ -22,6 +22,7 @@ public class GlobalExceptionHandler {
         log.error("crawling exception = {} ", e.getMessage());
 
         return ResponseEntity.internalServerError()
-                .body(new ExceptionResult(HttpStatus.INTERNAL_SERVER_ERROR, ExceptionProvider.CRAWLER_FAILED.getMessage()));
+                .body(new ExceptionResult(HttpStatus.INTERNAL_SERVER_ERROR,
+                        ExceptionProvider.CRAWLER_FAILED.getMessage()));
     }
 }

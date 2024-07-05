@@ -21,7 +21,7 @@ import org.springframework.retry.backoff.BackOffPolicy;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.transaction.PlatformTransactionManager;
-import sejong.teemo.batch.presentation.dto.LeagueEntryDto;
+import sejong.teemo.batch.domain.dto.LeagueEntryDto;
 import sejong.teemo.batch.domain.entity.TempUserInfo;
 import sejong.teemo.batch.common.exception.FailedApiCallingException;
 import sejong.teemo.batch.common.exception.TooManyApiCallingException;

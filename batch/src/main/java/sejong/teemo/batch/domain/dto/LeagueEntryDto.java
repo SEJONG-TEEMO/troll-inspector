@@ -1,9 +1,10 @@
-package sejong.teemo.batch.presentation.dto;
+package sejong.teemo.batch.domain.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 /**
+ *
  */
 @Builder
 public record LeagueEntryDto(

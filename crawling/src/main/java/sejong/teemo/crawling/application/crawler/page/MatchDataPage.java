@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import sejong.teemo.crawling.application.crawler.Crawler;
-import sejong.teemo.crawling.presentation.dto.MatchDataDto;
+import sejong.teemo.crawling.domain.dto.MatchDataDto;
 import sejong.teemo.crawling.common.mapper.CrawlerMapperMatchData;
 import sejong.teemo.crawling.common.generator.UrlGenerator;
 

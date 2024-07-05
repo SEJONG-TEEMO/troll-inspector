@@ -1,7 +1,7 @@
 package sejong.teemo.crawling.common.mapper;
 
 import lombok.extern.slf4j.Slf4j;
-import sejong.teemo.crawling.presentation.dto.MatchDataDto;
+import sejong.teemo.crawling.domain.dto.MatchDataDto;
 
 @Slf4j
 public class CrawlerMapperMatchData implements CrawlerMapper<MatchDataDto> {
@@ -25,7 +25,9 @@ public class CrawlerMapperMatchData implements CrawlerMapper<MatchDataDto> {
         return isMappingMatchData(killDeathAssist, ratings, killParticipation, controlWards, totalMinionsKilled);
     }
 
-    private static MatchDataDto isMappingMatchData(String[] killDeathAssist, String[] ratings, String[] killParticipation, String[] controlWards, String[] totalMinionsKilled) {
+    private static MatchDataDto isMappingMatchData(String[] killDeathAssist, String[] ratings,
+                                                   String[] killParticipation, String[] controlWards,
+                                                   String[] totalMinionsKilled) {
 
         String kills = killDeathAssist[0].trim();
         String deaths = killDeathAssist[1].trim();

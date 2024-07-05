@@ -2,7 +2,7 @@ package sejong.teemo.batch.application.item.reader;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemReader;
-import sejong.teemo.batch.presentation.dto.LeagueEntryDto;
+import sejong.teemo.batch.domain.dto.LeagueEntryDto;
 import sejong.teemo.batch.application.service.BatchService;
 
 import java.util.List;

@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sejong.teemo.crawling.presentation.dto.InGameDto;
-import sejong.teemo.crawling.presentation.dto.MatchDataDto;
+import sejong.teemo.crawling.domain.dto.InGameDto;
+import sejong.teemo.crawling.domain.dto.MatchDataDto;
 import sejong.teemo.crawling.common.property.CrawlingProperties;
 import sejong.teemo.crawling.application.service.CrawlerService;
 import sejong.teemo.crawling.common.generator.UrlGenerator;
@@ -31,7 +31,8 @@ public class CrawlingApi {
     ResponseEntity<List<MatchDataDto>> apiCrawlMatchData(@PathVariable("summoner-name") String summonerName,
                                                          @PathVariable("tag") String tag) {
 
-        List<MatchDataDto> matchDataDtos = crawlerService.crawlingMatchData(UrlGenerator.RIOT_SUMMONERS, crawlingProperties, summonerName, tag);
+        List<MatchDataDto> matchDataDtos = crawlerService.crawlingMatchData(UrlGenerator.RIOT_SUMMONERS,
+                crawlingProperties, summonerName, tag);
 
         return ResponseEntity.ok(matchDataDtos);
     }
@@ -40,7 +41,8 @@ public class CrawlingApi {
     ResponseEntity<List<InGameDto>> apiCrawlingInGame(@PathVariable("summoner-name") String summonerName,
                                                       @PathVariable("tag") String tag) {
 
-        List<InGameDto> inGameDtos = crawlerService.crawlingInGame(UrlGenerator.RIOT_IN_GAME, crawlingProperties, summonerName, tag);
+        List<InGameDto> inGameDtos = crawlerService.crawlingInGame(UrlGenerator.RIOT_IN_GAME, crawlingProperties,
+                summonerName, tag);
 
         return ResponseEntity.ok(inGameDtos);
     }

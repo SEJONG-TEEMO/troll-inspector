@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sejong.teemo.crawling.application.crawler.page.InGamePage;
 import sejong.teemo.crawling.application.crawler.page.MatchDataPage;
 import sejong.teemo.crawling.application.crawler.page.Page;
-import sejong.teemo.crawling.presentation.dto.InGameDto;
-import sejong.teemo.crawling.presentation.dto.MatchDataDto;
+import sejong.teemo.crawling.domain.dto.InGameDto;
+import sejong.teemo.crawling.domain.dto.MatchDataDto;
 import sejong.teemo.crawling.common.exception.CrawlingException;
 import sejong.teemo.crawling.common.generator.UrlGenerator;
 import sejong.teemo.crawling.common.property.CrawlingProperties;
@@ -25,7 +25,8 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class CrawlerService {
 
-    public List<MatchDataDto> crawlingMatchData(UrlGenerator url, CrawlingProperties properties, String name, String tag) {
+    public List<MatchDataDto> crawlingMatchData(UrlGenerator url, CrawlingProperties properties, String name,
+                                                String tag) {
 
         try {
             WebDriver webDriver = new RemoteWebDriver(new URI(properties.remoteIp()).toURL(), new FirefoxOptions());
@@ -43,7 +44,8 @@ public class CrawlerService {
     public List<InGameDto> crawlingInGame(UrlGenerator url, CrawlingProperties properties, String name, String tag) {
 
         try {
-            Page<InGameDto> page = new InGamePage(new RemoteWebDriver(new URI(properties.remoteIp()).toURL(), new FirefoxOptions()), url);
+            Page<InGameDto> page = new InGamePage(
+                    new RemoteWebDriver(new URI(properties.remoteIp()).toURL(), new FirefoxOptions()), url);
 
             return page.crawler(name, tag);
         } catch (Exception e) {

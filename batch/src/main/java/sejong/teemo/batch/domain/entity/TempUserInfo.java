@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sejong.teemo.batch.presentation.dto.UserInfoDto;
+import sejong.teemo.batch.domain.dto.UserInfoDto;
 
 @Entity
 @NoArgsConstructor
@@ -14,7 +14,8 @@ import sejong.teemo.batch.presentation.dto.UserInfoDto;
 })
 public class TempUserInfo {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "game_name", nullable = false)
@@ -60,7 +61,9 @@ public class TempUserInfo {
     private long summonerLevel;
 
     @Builder
-    private TempUserInfo(Long id, String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionData, long summonerLevel) {
+    private TempUserInfo(Long id, String gameName, String tagLine, String puuid, String summonerId, String queueType,
+                         String tier, String rank, int wins, int losses, int leaguePoint, String accountId,
+                         int profileIconId, long revisionData, long summonerLevel) {
         this.id = id;
         this.gameName = gameName;
         this.tagLine = tagLine;
@@ -78,7 +81,9 @@ public class TempUserInfo {
         this.summonerLevel = summonerLevel;
     }
 
-    public static TempUserInfo of(String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionData, long summonerLevel) {
+    public static TempUserInfo of(String gameName, String tagLine, String puuid, String summonerId, String queueType,
+                                  String tier, String rank, int wins, int losses, int leaguePoint, String accountId,
+                                  int profileIconId, long revisionData, long summonerLevel) {
         return TempUserInfo.builder()
                 .gameName(gameName)
                 .tagLine(tagLine)
@@ -97,7 +102,9 @@ public class TempUserInfo {
                 .build();
     }
 
-    public static TempUserInfo of(Long id, String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionData, long summonerLevel) {
+    public static TempUserInfo of(Long id, String gameName, String tagLine, String puuid, String summonerId,
+                                  String queueType, String tier, String rank, int wins, int losses, int leaguePoint,
+                                  String accountId, int profileIconId, long revisionData, long summonerLevel) {
         return TempUserInfo.builder()
                 .id(id)
                 .gameName(gameName)

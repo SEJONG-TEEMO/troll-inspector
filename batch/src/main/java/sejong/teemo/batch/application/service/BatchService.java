@@ -10,10 +10,10 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import sejong.teemo.batch.common.async.AsyncCall;
-import sejong.teemo.batch.presentation.dto.Account;
-import sejong.teemo.batch.presentation.dto.LeagueEntryDto;
-import sejong.teemo.batch.presentation.dto.SummonerDto;
-import sejong.teemo.batch.presentation.dto.UserInfoDto;
+import sejong.teemo.batch.domain.dto.Account;
+import sejong.teemo.batch.domain.dto.LeagueEntryDto;
+import sejong.teemo.batch.domain.dto.SummonerDto;
+import sejong.teemo.batch.domain.dto.UserInfoDto;
 import sejong.teemo.batch.common.exception.FailedApiCallingException;
 import sejong.teemo.batch.common.generator.UriGenerator;
 import sejong.teemo.batch.common.property.RiotApiProperties;
@@ -67,7 +67,8 @@ public class BatchService {
                 .header(API_KEY, riotApiProperties.apiKey())
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, (RIOT_API_MODULE_LEAGUE_SUMMONER_FAILED::handler))
-                .body(new ParameterizedTypeReference<>() {});
+                .body(new ParameterizedTypeReference<>() {
+                });
     }
 
     public Account callRiotAccount(String encryptedPuuid) {

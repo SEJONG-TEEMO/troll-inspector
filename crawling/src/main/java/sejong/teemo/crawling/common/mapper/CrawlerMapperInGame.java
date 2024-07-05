@@ -1,6 +1,6 @@
 package sejong.teemo.crawling.common.mapper;
 
-import sejong.teemo.crawling.presentation.dto.InGameDto;
+import sejong.teemo.crawling.domain.dto.InGameDto;
 
 public class CrawlerMapperInGame implements CrawlerMapper<InGameDto> {
 
@@ -15,7 +15,7 @@ public class CrawlerMapperInGame implements CrawlerMapper<InGameDto> {
                 .tier(split[2])
                 .rateOfWin(split[3]);
 
-        if(split.length == 9) {
+        if (split.length == 9) {
             inGameDtoBuilder
                     .rateOfChampionWin(split[4])
                     .countChampion(Integer.parseInt(split[5].replaceAll("[()]", "").split(" ")[0]))

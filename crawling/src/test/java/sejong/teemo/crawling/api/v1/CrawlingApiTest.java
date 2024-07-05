@@ -10,7 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import sejong.teemo.crawling.presentation.api.v1.CrawlingApi;
-import sejong.teemo.crawling.presentation.dto.MatchDataDto;
+import sejong.teemo.crawling.domain.dto.MatchDataDto;
 import sejong.teemo.crawling.common.exception.CrawlingException;
 import sejong.teemo.crawling.common.exception.ExceptionProvider;
 import sejong.teemo.crawling.application.service.CrawlerService;

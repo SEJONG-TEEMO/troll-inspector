@@ -1,9 +1,10 @@
-package sejong.teemo.crawling.presentation.dto;
+package sejong.teemo.crawling.domain.dto;
 
 import lombok.Builder;
 
 @Builder
-public record MatchDataDto(int kills, int deaths, int assists, double rating, int totalMinionKilled, int controlWardsPlaced, double killParticipation) {
+public record MatchDataDto(int kills, int deaths, int assists, double rating, int totalMinionKilled,
+                           int controlWardsPlaced, double killParticipation) {
 
     @Override
     public String toString() {

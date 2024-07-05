@@ -8,8 +8,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import sejong.teemo.crawling.application.crawler.Crawler;
-import sejong.teemo.crawling.presentation.dto.InGameDto;
-import sejong.teemo.crawling.presentation.dto.MatchDataDto;
+import sejong.teemo.crawling.domain.dto.InGameDto;
+import sejong.teemo.crawling.domain.dto.MatchDataDto;
 import sejong.teemo.crawling.common.exception.CrawlingException;
 import sejong.teemo.crawling.common.mapper.CrawlerMapperInGame;
 import sejong.teemo.crawling.common.mapper.CrawlerMapperMatchData;
@@ -62,9 +62,11 @@ class CrawlerTest {
         WebDriver webDriver = new FirefoxDriver();
 
         // when
-        try (Crawler<InGameDto> crawler = new Crawler<>(webDriver, new WebDriverWait(webDriver, Duration.ofSeconds(10)), RIOT_IN_GAME)) {
+        try (Crawler<InGameDto> crawler = new Crawler<>(webDriver, new WebDriverWait(webDriver, Duration.ofSeconds(10)),
+                RIOT_IN_GAME)) {
 
-            List<InGameDto> inGameDtos = crawler.urlGenerate(urlGenerator -> urlGenerator.generateUrl(gameName, tagLine))
+            List<InGameDto> inGameDtos = crawler.urlGenerate(
+                            urlGenerator -> urlGenerator.generateUrl(gameName, tagLine))
                     .isWaitingUntilLoadedPage(By.cssSelector(".css-1m2ho5a"))
                     .actionFromElement(element -> element.findElements(By.cssSelector("table tbody tr"))
                             .parallelStream()

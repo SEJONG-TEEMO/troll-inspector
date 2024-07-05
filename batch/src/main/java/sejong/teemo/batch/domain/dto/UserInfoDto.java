@@ -1,4 +1,4 @@
-package sejong.teemo.batch.presentation.dto;
+package sejong.teemo.batch.domain.dto;
 
 import lombok.Builder;
 
