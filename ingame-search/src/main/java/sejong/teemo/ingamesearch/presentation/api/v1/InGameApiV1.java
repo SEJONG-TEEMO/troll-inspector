@@ -3,8 +3,8 @@ package sejong.teemo.ingamesearch.presentation.api.v1;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sejong.teemo.ingamesearch.presentation.dto.InGameView;
-import sejong.teemo.ingamesearch.presentation.dto.user.performance.UserPerformanceDto;
+import sejong.teemo.ingamesearch.domain.dto.InGameView;
+import sejong.teemo.ingamesearch.domain.dto.user.performance.UserPerformanceDto;
 import sejong.teemo.ingamesearch.application.service.InGameService;
 
 import java.util.List;

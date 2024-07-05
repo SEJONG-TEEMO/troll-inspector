@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.presentation.dto.user;
+package sejong.teemo.ingamesearch.domain.dto.user;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
@@ -16,7 +16,8 @@ public record UserInfoView(
         long summonerLevel) {
 
     @QueryProjection
-    public UserInfoView(String gameName, String tagLine, String tier, String rank, int total, int wins, int losses, int profileIconId, long summonerLevel) {
+    public UserInfoView(String gameName, String tagLine, String tier, String rank, int total, int wins, int losses,
+                        int profileIconId, long summonerLevel) {
         this.gameName = gameName;
         this.tagLine = tagLine;
         this.tier = tier;

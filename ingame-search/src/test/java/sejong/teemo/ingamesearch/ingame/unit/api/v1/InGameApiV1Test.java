@@ -11,7 +11,7 @@ import sejong.teemo.ingamesearch.common.exception.ServerErrorException;
 import sejong.teemo.ingamesearch.common.exception.TooManyApiCallingException;
 import sejong.teemo.ingamesearch.extension.TestExtension;
 import sejong.teemo.ingamesearch.presentation.api.v1.InGameApiV1;
-import sejong.teemo.ingamesearch.presentation.dto.user.performance.UserPerformanceDto;
+import sejong.teemo.ingamesearch.domain.dto.user.performance.UserPerformanceDto;
 import sejong.teemo.ingamesearch.application.service.InGameService;
 
 import java.util.List;

@@ -1,8 +1,8 @@
-package sejong.teemo.ingamesearch.presentation.dto.normal;
+package sejong.teemo.ingamesearch.domain.dto.normal;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
-import sejong.teemo.ingamesearch.presentation.dto.user.UserInfoView;
+import sejong.teemo.ingamesearch.domain.dto.user.UserInfoView;
 
 @Builder
 public record NormalView(
@@ -23,7 +23,9 @@ public record NormalView(
 ) {
 
     @QueryProjection
-    public NormalView(UserInfoView userInfoView, int championId, int recentGameCount, double winRate, double kda, double kills, double deaths, double assists, double cs, int pentaKill, int quadraKill, int tripleKill, int wins, int losses) {
+    public NormalView(UserInfoView userInfoView, int championId, int recentGameCount, double winRate, double kda,
+                      double kills, double deaths, double assists, double cs, int pentaKill, int quadraKill,
+                      int tripleKill, int wins, int losses) {
         this.userInfoView = userInfoView;
         this.championId = championId;
         this.recentGameCount = recentGameCount;

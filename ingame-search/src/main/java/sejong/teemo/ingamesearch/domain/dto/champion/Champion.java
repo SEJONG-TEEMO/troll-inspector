@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.presentation.dto.champion;
+package sejong.teemo.ingamesearch.domain.dto.champion;
 
 import lombok.Builder;
 
@@ -13,7 +13,8 @@ public record Champion(
         int losses
 ) {
 
-    public static Champion of(int kills, int deaths, int assists, int recentGameCount, double kda, int wins, int losses) {
+    public static Champion of(int kills, int deaths, int assists, int recentGameCount, double kda, int wins,
+                              int losses) {
         return Champion.builder()
                 .kills(kills)
                 .deaths(deaths)

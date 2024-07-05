@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.presentation.dto.user;
+package sejong.teemo.ingamesearch.domain.dto.user;
 
 import lombok.Builder;
 

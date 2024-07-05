@@ -1,31 +1,34 @@
 package sejong.teemo.ingamesearch.application.service;
 
 import com.github.benmanes.caffeine.cache.Cache;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import sejong.teemo.ingamesearch.common.async.AsyncCall;
-import sejong.teemo.ingamesearch.presentation.dto.InGameView;
-import sejong.teemo.ingamesearch.presentation.dto.SpectatorDto;
-import sejong.teemo.ingamesearch.presentation.dto.champion.Champion;
-import sejong.teemo.ingamesearch.presentation.dto.champion.ChampionMastery;
-import sejong.teemo.ingamesearch.presentation.dto.normal.NormalView;
-import sejong.teemo.ingamesearch.presentation.dto.summoner.SummonerPerformance;
-import sejong.teemo.ingamesearch.presentation.dto.user.*;
-import sejong.teemo.ingamesearch.presentation.dto.user.performance.UserChampionPerformanceDto;
-import sejong.teemo.ingamesearch.presentation.dto.user.performance.UserPerformanceDto;
 import sejong.teemo.ingamesearch.domain.entity.SummonerPerformanceInfo;
 import sejong.teemo.ingamesearch.domain.entity.UserInfo;
 import sejong.teemo.ingamesearch.domain.repository.InGameRepository;
 import sejong.teemo.ingamesearch.domain.repository.QueryDslRepository;
 import sejong.teemo.ingamesearch.domain.repository.SummonerPerformanceInfoRepository;
-import sejong.teemo.ingamesearch.presentation.api.external.InGameExternalApi;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.IntStream;
+import sejong.teemo.ingamesearch.infrastructure.external.InGameExternalApi;
+import sejong.teemo.ingamesearch.domain.dto.InGameView;
+import sejong.teemo.ingamesearch.domain.dto.SpectatorDto;
+import sejong.teemo.ingamesearch.domain.dto.champion.Champion;
+import sejong.teemo.ingamesearch.domain.dto.champion.ChampionMastery;
+import sejong.teemo.ingamesearch.domain.dto.normal.NormalView;
+import sejong.teemo.ingamesearch.domain.dto.summoner.SummonerPerformance;
+import sejong.teemo.ingamesearch.domain.dto.user.Account;
+import sejong.teemo.ingamesearch.domain.dto.user.LeagueEntryDto;
+import sejong.teemo.ingamesearch.domain.dto.user.SummonerDto;
+import sejong.teemo.ingamesearch.domain.dto.user.UserInfoDto;
+import sejong.teemo.ingamesearch.domain.dto.user.UserProfileDto;
+import sejong.teemo.ingamesearch.domain.dto.user.performance.UserChampionPerformanceDto;
+import sejong.teemo.ingamesearch.domain.dto.user.performance.UserPerformanceDto;
 
 @Component
 @RequiredArgsConstructor
@@ -73,7 +76,7 @@ public class InGameService {
     @Transactional
     public UserPerformanceDto updateSummonerPerformance(String gameName, String tagLine) {
 
-        if(cacheGameNameAndTagLine.getIfPresent(gameName + "#" + tagLine) != null) {
+        if (cacheGameNameAndTagLine.getIfPresent(gameName + "#" + tagLine) != null) {
             throw new IllegalArgumentException("업데이트를 진행할 수 없습니다. (2분 뒤에 다시 진행해주세요.)");
         }
 
@@ -81,9 +84,11 @@ public class InGameService {
 
         UserInfo userInfo = getUserInfo(gameName, tagLine);
 
-        List<SummonerPerformance> summonerPerformances = inGameExternalApi.callRiotSummonerPerformance(userInfo.getPuuid());
+        List<SummonerPerformance> summonerPerformances = inGameExternalApi.callRiotSummonerPerformance(
+                userInfo.getPuuid());
 
-        List<SummonerPerformanceInfo> performanceInfos = summonerPerformanceInfoRepository.findByUserInfoId(userInfo.getId());
+        List<SummonerPerformanceInfo> performanceInfos = summonerPerformanceInfoRepository.findByUserInfoId(
+                userInfo.getId());
 
         update(summonerPerformances, userInfo, performanceInfos);
 
@@ -96,9 +101,10 @@ public class InGameService {
     public UserPerformanceDto viewUserGamePerformance(String gameName, String tagLine) {
         UserInfo userInfo = getUserInfo(gameName, tagLine);
 
-        if(!summonerPerformanceInfoRepository.existsByUserInfoId(userInfo.getId())) {
+        if (!summonerPerformanceInfoRepository.existsByUserInfoId(userInfo.getId())) {
 
-            List<SummonerPerformanceInfo> summonerPerformanceInfos = inGameExternalApi.callRiotSummonerPerformance(userInfo.getPuuid())
+            List<SummonerPerformanceInfo> summonerPerformanceInfos = inGameExternalApi.callRiotSummonerPerformance(
+                            userInfo.getPuuid())
                     .stream()
                     .map(summonerPerformance -> SummonerPerformanceInfo.of(summonerPerformance, userInfo))
                     .toList();
@@ -111,7 +117,8 @@ public class InGameService {
         return UserPerformanceDto.of(getUserProfileDto(normalViews), getUserChampionPerformanceDtos(normalViews));
     }
 
-    private void update(List<SummonerPerformance> summonerPerformances, UserInfo userInfo, List<SummonerPerformanceInfo> performanceInfos) {
+    private void update(List<SummonerPerformance> summonerPerformances, UserInfo userInfo,
+                        List<SummonerPerformanceInfo> performanceInfos) {
         IntStream.rangeClosed(0, summonerPerformances.size() - 1)
                 .forEach(idx -> queryDslRepository.updateSummonerPerformanceInfo(
                         summonerPerformances.get(idx),
@@ -127,7 +134,8 @@ public class InGameService {
     private List<UserChampionPerformanceDto> getUserChampionPerformanceDtos(List<NormalView> normalViews) {
         return normalViews
                 .stream()
-                .map(normalView -> UserChampionPerformanceDto.of(mapToChampions.get(normalView.championId()), normalView))
+                .map(normalView -> UserChampionPerformanceDto.of(mapToChampions.get(normalView.championId()),
+                        normalView))
                 .toList();
     }
 
@@ -172,7 +180,6 @@ public class InGameService {
                 .stream()
                 .filter(summonerPerformance -> Objects.equals(summonerPerformance.championId(), championId.intValue()))
                 .toList();
-
 
         int killSum = performances.stream().mapToInt(SummonerPerformance::kills).sum();
         int deathSum = performances.stream().mapToInt(SummonerPerformance::deaths).sum();

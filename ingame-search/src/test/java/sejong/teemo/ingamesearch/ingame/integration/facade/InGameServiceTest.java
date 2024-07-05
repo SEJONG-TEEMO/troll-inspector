@@ -1,18 +1,17 @@
 package sejong.teemo.ingamesearch.ingame.integration.facade;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import sejong.teemo.ingamesearch.container.TestContainer;
-import sejong.teemo.ingamesearch.presentation.dto.InGameView;
-import sejong.teemo.ingamesearch.presentation.dto.user.performance.UserPerformanceDto;
-import sejong.teemo.ingamesearch.domain.entity.UserInfo;
 import sejong.teemo.ingamesearch.application.service.InGameService;
+import sejong.teemo.ingamesearch.container.TestContainer;
+import sejong.teemo.ingamesearch.domain.entity.UserInfo;
 import sejong.teemo.ingamesearch.domain.repository.InGameRepository;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.*;
+import sejong.teemo.ingamesearch.domain.dto.InGameView;
+import sejong.teemo.ingamesearch.domain.dto.user.performance.UserPerformanceDto;
 
 @SpringBootTest
 class InGameServiceTest extends TestContainer {

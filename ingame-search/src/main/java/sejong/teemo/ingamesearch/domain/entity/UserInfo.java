@@ -1,11 +1,17 @@
 package sejong.teemo.ingamesearch.domain.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sejong.teemo.ingamesearch.presentation.dto.user.UserInfoDto;
+import sejong.teemo.ingamesearch.domain.dto.user.UserInfoDto;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -15,7 +21,8 @@ import sejong.teemo.ingamesearch.presentation.dto.user.UserInfoDto;
 })
 public class UserInfo {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "game_name", nullable = false)
@@ -61,7 +68,9 @@ public class UserInfo {
     private long summonerLevel;
 
     @Builder
-    private UserInfo(String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionData, long summonerLevel) {
+    private UserInfo(String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier,
+                     String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId,
+                     long revisionData, long summonerLevel) {
         this.gameName = gameName;
         this.tagLine = tagLine;
         this.puuid = puuid;
@@ -78,7 +87,9 @@ public class UserInfo {
         this.summonerLevel = summonerLevel;
     }
 
-    public static UserInfo of(String gameName, String tagLine, String puuid, String summonerId, String queueType, String tier, String rank, int wins, int losses, int leaguePoint, String accountId, int profileIconId, long revisionData, long summonerLevel) {
+    public static UserInfo of(String gameName, String tagLine, String puuid, String summonerId, String queueType,
+                              String tier, String rank, int wins, int losses, int leaguePoint, String accountId,
+                              int profileIconId, long revisionData, long summonerLevel) {
         return UserInfo.builder()
                 .gameName(gameName)
                 .tagLine(tagLine)

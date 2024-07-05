@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.presentation.dto.summoner;
+package sejong.teemo.ingamesearch.domain.dto.summoner;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;

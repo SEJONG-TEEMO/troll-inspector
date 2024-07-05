@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.presentation.dto.champion;
+package sejong.teemo.ingamesearch.domain.dto.champion;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

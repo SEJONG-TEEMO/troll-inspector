@@ -1,5 +1,11 @@
 package sejong.teemo.ingamesearch.ingame.unit.facade;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.anyString;
+import static org.mockito.BDDMockito.given;
+
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -7,23 +13,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import sejong.teemo.ingamesearch.presentation.dto.normal.NormalView;
-import sejong.teemo.ingamesearch.presentation.dto.summoner.SummonerPerformance;
-import sejong.teemo.ingamesearch.presentation.dto.user.Account;
-import sejong.teemo.ingamesearch.presentation.dto.user.UserInfoView;
-import sejong.teemo.ingamesearch.presentation.dto.user.performance.UserPerformanceDto;
-import sejong.teemo.ingamesearch.domain.entity.UserInfo;
 import sejong.teemo.ingamesearch.application.service.InGameService;
+import sejong.teemo.ingamesearch.domain.entity.UserInfo;
 import sejong.teemo.ingamesearch.domain.repository.InGameRepository;
 import sejong.teemo.ingamesearch.domain.repository.QueryDslRepository;
 import sejong.teemo.ingamesearch.domain.repository.SummonerPerformanceInfoRepository;
-import sejong.teemo.ingamesearch.presentation.api.external.InGameExternalApi;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
+import sejong.teemo.ingamesearch.infrastructure.external.InGameExternalApi;
+import sejong.teemo.ingamesearch.domain.dto.normal.NormalView;
+import sejong.teemo.ingamesearch.domain.dto.summoner.SummonerPerformance;
+import sejong.teemo.ingamesearch.domain.dto.user.Account;
+import sejong.teemo.ingamesearch.domain.dto.user.UserInfoView;
+import sejong.teemo.ingamesearch.domain.dto.user.performance.UserPerformanceDto;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -51,9 +51,11 @@ public class InGameServiceTest {
     @Test
     void 유저_이름과_태그를_입력하여_최근_전적_데이터를_조회_한다() {
         // given
-        given(inGameRepository.findByGameNameAndTagLine(anyString(), anyString())).willReturn(Optional.ofNullable(userInfoData()));
+        given(inGameRepository.findByGameNameAndTagLine(anyString(), anyString())).willReturn(
+                Optional.ofNullable(userInfoData()));
         given(summonerPerformanceInfoRepository.existsByUserInfoId(userInfoData().getId())).willReturn(true);
-        given(queryDslRepository.findRecentGamesByUserId(userInfoData().getId())).willReturn(viewUserGamePerformanceData());
+        given(queryDslRepository.findRecentGamesByUserId(userInfoData().getId())).willReturn(
+                viewUserGamePerformanceData());
 
         // when
         UserPerformanceDto performanceDto = inGameService.viewUserGamePerformance(anyString(), anyString());

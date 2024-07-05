@@ -1,20 +1,19 @@
 package sejong.teemo.ingamesearch.domain.repository;
 
+import static sejong.teemo.ingamesearch.domain.entity.QSummonerPerformanceInfo.summonerPerformanceInfo;
+
 import com.querydsl.core.types.dsl.MathExpressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import sejong.teemo.ingamesearch.presentation.dto.normal.NormalView;
+import sejong.teemo.ingamesearch.domain.dto.normal.NormalView;
 import sejong.teemo.ingamesearch.presentation.dto.normal.QNormalView;
-import sejong.teemo.ingamesearch.presentation.dto.summoner.SummonerPerformance;
+import sejong.teemo.ingamesearch.domain.dto.summoner.SummonerPerformance;
 import sejong.teemo.ingamesearch.presentation.dto.user.QUserInfoView;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static sejong.teemo.ingamesearch.domain.entity.QSummonerPerformanceInfo.summonerPerformanceInfo;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,33 +24,33 @@ public class QueryDslRepository {
 
     public List<NormalView> findRecentGamesByUserId(Long userId) {
         return queryFactory.select(
-                new QNormalView(
-                        new QUserInfoView(
-                                summonerPerformanceInfo.userInfo.gameName,
-                                summonerPerformanceInfo.userInfo.tagLine,
-                                summonerPerformanceInfo.userInfo.tier,
-                                summonerPerformanceInfo.userInfo.rank,
-                                summonerPerformanceInfo.userInfo.wins
-                                        .add(summonerPerformanceInfo.userInfo.losses),
-                                summonerPerformanceInfo.userInfo.wins,
-                                summonerPerformanceInfo.userInfo.losses,
-                                summonerPerformanceInfo.userInfo.profileIconId,
-                                summonerPerformanceInfo.userInfo.summonerLevel
-                        ),
-                        summonerPerformanceInfo.championId,
-                        summonerPerformanceInfo.championId.count().intValue(),
-                        MathExpressions.round(getWinRate(), 2),
-                        MathExpressions.round(summonerPerformanceInfo.kda.avg(), 2),
-                        MathExpressions.round(summonerPerformanceInfo.kills.avg(), 2),
-                        MathExpressions.round(summonerPerformanceInfo.deaths.avg(), 2),
-                        MathExpressions.round(summonerPerformanceInfo.assists.avg(), 2),
-                        MathExpressions.round(summonerPerformanceInfo.totalMinionKills.avg(), 2),
-                        summonerPerformanceInfo.multiKills.pentaKills.sum(),
-                        summonerPerformanceInfo.multiKills.quadraKiils.sum(),
-                        summonerPerformanceInfo.multiKills.tripleKills.sum(),
-                        getWinCount(true).intValue(),
-                        getWinCount(false).intValue()
-                )).from(summonerPerformanceInfo)
+                        new QNormalView(
+                                new QUserInfoView(
+                                        summonerPerformanceInfo.userInfo.gameName,
+                                        summonerPerformanceInfo.userInfo.tagLine,
+                                        summonerPerformanceInfo.userInfo.tier,
+                                        summonerPerformanceInfo.userInfo.rank,
+                                        summonerPerformanceInfo.userInfo.wins
+                                                .add(summonerPerformanceInfo.userInfo.losses),
+                                        summonerPerformanceInfo.userInfo.wins,
+                                        summonerPerformanceInfo.userInfo.losses,
+                                        summonerPerformanceInfo.userInfo.profileIconId,
+                                        summonerPerformanceInfo.userInfo.summonerLevel
+                                ),
+                                summonerPerformanceInfo.championId,
+                                summonerPerformanceInfo.championId.count().intValue(),
+                                MathExpressions.round(getWinRate(), 2),
+                                MathExpressions.round(summonerPerformanceInfo.kda.avg(), 2),
+                                MathExpressions.round(summonerPerformanceInfo.kills.avg(), 2),
+                                MathExpressions.round(summonerPerformanceInfo.deaths.avg(), 2),
+                                MathExpressions.round(summonerPerformanceInfo.assists.avg(), 2),
+                                MathExpressions.round(summonerPerformanceInfo.totalMinionKills.avg(), 2),
+                                summonerPerformanceInfo.multiKills.pentaKills.sum(),
+                                summonerPerformanceInfo.multiKills.quadraKiils.sum(),
+                                summonerPerformanceInfo.multiKills.tripleKills.sum(),
+                                getWinCount(true).intValue(),
+                                getWinCount(false).intValue()
+                        )).from(summonerPerformanceInfo)
                 .where(summonerPerformanceInfo.userInfo.id.eq(userId))
                 .groupBy(summonerPerformanceInfo.championId)
                 .orderBy(summonerPerformanceInfo.championId.count().desc())
@@ -75,7 +74,8 @@ public class QueryDslRepository {
                 .set(summonerPerformanceInfo.multiKills.tripleKills, performances.tripleKills())
                 .set(summonerPerformanceInfo.championWins, performances.win())
                 .set(summonerPerformanceInfo.updateAt, LocalDateTime.now())
-                .where(summonerPerformanceInfo.userInfo.id.eq(userInfoId).and(summonerPerformanceInfo.id.eq(performanceId)))
+                .where(summonerPerformanceInfo.userInfo.id.eq(userInfoId)
+                        .and(summonerPerformanceInfo.id.eq(performanceId)))
                 .execute();
     }
 

@@ -1,7 +1,7 @@
-package sejong.teemo.ingamesearch.presentation.dto;
+package sejong.teemo.ingamesearch.domain.dto;
 
 import lombok.Builder;
-import sejong.teemo.ingamesearch.presentation.dto.champion.Champion;
+import sejong.teemo.ingamesearch.domain.dto.champion.Champion;
 
 @Builder
 public record InGameView(

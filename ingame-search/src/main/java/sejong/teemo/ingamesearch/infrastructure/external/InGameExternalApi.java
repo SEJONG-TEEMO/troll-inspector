@@ -1,4 +1,4 @@
-package sejong.teemo.ingamesearch.presentation.api.external;
+package sejong.teemo.ingamesearch.infrastructure.external;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,11 +8,11 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import sejong.teemo.ingamesearch.common.generator.UriGenerator;
-import sejong.teemo.ingamesearch.presentation.dto.SpectatorDto;
-import sejong.teemo.ingamesearch.presentation.dto.summoner.SummonerPerformance;
-import sejong.teemo.ingamesearch.presentation.dto.user.Account;
-import sejong.teemo.ingamesearch.presentation.dto.user.LeagueEntryDto;
-import sejong.teemo.ingamesearch.presentation.dto.user.SummonerDto;
+import sejong.teemo.ingamesearch.domain.dto.SpectatorDto;
+import sejong.teemo.ingamesearch.domain.dto.summoner.SummonerPerformance;
+import sejong.teemo.ingamesearch.domain.dto.user.Account;
+import sejong.teemo.ingamesearch.domain.dto.user.LeagueEntryDto;
+import sejong.teemo.ingamesearch.domain.dto.user.SummonerDto;
 
 import java.util.List;
 
@@ -44,7 +44,8 @@ public class InGameExternalApi {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, RIOT_SUMMONER_PERFORMANCE_API_CALL_FAILED::handler)
                 .onStatus(HttpStatusCode::is5xxServerError, RIOT_SUMMONER_PERFORMANCE_API_CALL_FAILED::handler)
-                .body(new ParameterizedTypeReference<>() {});
+                .body(new ParameterizedTypeReference<>() {
+                });
     }
 
     public Account callApiAccount(String gameName, String tagLine) {

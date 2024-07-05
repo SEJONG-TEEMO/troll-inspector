@@ -1,9 +1,8 @@
 package sejong.teemo.ingamesearch.domain.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import sejong.teemo.ingamesearch.domain.entity.SummonerPerformanceInfo;
-
-import java.util.List;
 
 public interface SummonerPerformanceInfoRepository extends JpaRepository<SummonerPerformanceInfo, Long> {
 

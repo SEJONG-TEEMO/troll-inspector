@@ -1,7 +1,7 @@
-package sejong.teemo.ingamesearch.presentation.dto.user;
+package sejong.teemo.ingamesearch.domain.dto.user;
 
 import lombok.Builder;
-import sejong.teemo.ingamesearch.presentation.dto.normal.NormalView;
+import sejong.teemo.ingamesearch.domain.dto.normal.NormalView;
 
 @Builder
 public record UserProfileDto(
