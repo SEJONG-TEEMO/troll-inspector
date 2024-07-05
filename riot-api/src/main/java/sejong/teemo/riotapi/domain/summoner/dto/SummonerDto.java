@@ -1,4 +1,4 @@
-package sejong.teemo.riotapi.common.dto;
+package sejong.teemo.riotapi.domain.summoner.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;

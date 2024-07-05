@@ -5,10 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import sejong.teemo.riotapi.common.async.AsyncCall;
-import sejong.teemo.riotapi.common.dto.ChampionMastery;
-import sejong.teemo.riotapi.common.dto.CurrentGameParticipant;
-import sejong.teemo.riotapi.common.dto.Spectator;
-import sejong.teemo.riotapi.common.dto.SpectatorDto;
+import sejong.teemo.riotapi.domain.spectator.dto.ChampionMastery;
+import sejong.teemo.riotapi.domain.spectator.dto.CurrentGameParticipant;
+import sejong.teemo.riotapi.domain.spectator.dto.Spectator;
+import sejong.teemo.riotapi.domain.spectator.dto.SpectatorDto;
 import sejong.teemo.riotapi.infrastructure.external.SpectatorExternalApi;
 
 @Component

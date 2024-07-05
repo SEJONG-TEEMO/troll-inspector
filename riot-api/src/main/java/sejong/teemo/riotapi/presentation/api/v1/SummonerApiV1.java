@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sejong.teemo.riotapi.application.service.UserInfoService;
-import sejong.teemo.riotapi.common.dto.SummonerDto;
+import sejong.teemo.riotapi.domain.summoner.dto.SummonerDto;
 
 @RestController
 @RequiredArgsConstructor

@@ -1,6 +1,7 @@
-package sejong.teemo.riotapi.common.dto;
+package sejong.teemo.riotapi.domain.userinfo.dto;
 
 import lombok.Builder;
+import sejong.teemo.riotapi.domain.summoner.dto.SummonerDto;
 
 /**
  * link {UserDto}

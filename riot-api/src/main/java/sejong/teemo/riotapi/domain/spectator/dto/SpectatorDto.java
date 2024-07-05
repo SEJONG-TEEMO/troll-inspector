@@ -1,4 +1,4 @@
-package sejong.teemo.riotapi.common.dto;
+package sejong.teemo.riotapi.domain.spectator.dto;
 
 import java.util.List;
 import lombok.Builder;

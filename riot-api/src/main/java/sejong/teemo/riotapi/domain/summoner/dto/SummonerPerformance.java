@@ -1,8 +1,8 @@
-package sejong.teemo.riotapi.common.dto;
+package sejong.teemo.riotapi.domain.summoner.dto;
 
 import lombok.Builder;
-import sejong.teemo.riotapi.common.dto.match.ParticipantDto;
-import sejong.teemo.riotapi.common.dto.match.TeamDto;
+import sejong.teemo.riotapi.domain.match.dto.ParticipantDto;
+import sejong.teemo.riotapi.domain.match.dto.TeamDto;
 
 @Builder
 public record SummonerPerformance(

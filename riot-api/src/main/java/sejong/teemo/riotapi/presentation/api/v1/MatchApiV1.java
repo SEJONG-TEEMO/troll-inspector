@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sejong.teemo.riotapi.application.service.MatchService;
-import sejong.teemo.riotapi.common.dto.SummonerPerformance;
-import sejong.teemo.riotapi.common.dto.match.MatchDataDto;
-import sejong.teemo.riotapi.common.dto.match.MatchDto;
+import sejong.teemo.riotapi.domain.match.dto.MatchDataDto;
+import sejong.teemo.riotapi.domain.match.dto.MatchDto;
+import sejong.teemo.riotapi.domain.summoner.dto.SummonerPerformance;
 
 @RestController
 @RequiredArgsConstructor

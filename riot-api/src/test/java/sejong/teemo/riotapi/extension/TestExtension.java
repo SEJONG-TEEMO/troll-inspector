@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.test.context.ActiveProfiles;
-import sejong.teemo.riotapi.common.dto.Account;
-import sejong.teemo.riotapi.common.dto.LeagueEntryDto;
-import sejong.teemo.riotapi.common.dto.MiniSeriesDto;
-import sejong.teemo.riotapi.common.dto.Spectator;
-import sejong.teemo.riotapi.common.dto.SummonerDto;
+import sejong.teemo.riotapi.domain.spectator.dto.Spectator;
+import sejong.teemo.riotapi.domain.summoner.dto.SummonerDto;
+import sejong.teemo.riotapi.domain.userinfo.dto.Account;
+import sejong.teemo.riotapi.domain.userinfo.dto.LeagueEntryDto;
 import sejong.teemo.riotapi.common.properties.RiotApiProperties;
 
 @EnableConfigurationProperties(RiotApiProperties.class)
@@ -41,13 +40,6 @@ public class TestExtension {
     }
 
     protected String getLeague() {
-
-        MiniSeriesDto miniSeries = MiniSeriesDto.builder()
-                .losses(1)
-                .progress("WLLWN")
-                .target(3)
-                .wins(2)
-                .build();
 
         LeagueEntryDto leagueEntry = LeagueEntryDto.builder()
                 .leagueId("league123")

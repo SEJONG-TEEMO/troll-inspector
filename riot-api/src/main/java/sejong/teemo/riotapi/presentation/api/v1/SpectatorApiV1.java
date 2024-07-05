@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sejong.teemo.riotapi.application.service.SpectatorService;
-import sejong.teemo.riotapi.common.dto.SpectatorDto;
+import sejong.teemo.riotapi.domain.spectator.dto.SpectatorDto;
 
 @RestController
 @RequiredArgsConstructor
