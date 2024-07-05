@@ -1,4 +1,4 @@
-package sejong.teemo.riotapi.presentation.dto;
+package sejong.teemo.riotapi.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

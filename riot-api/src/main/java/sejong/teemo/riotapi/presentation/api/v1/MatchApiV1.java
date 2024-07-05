@@ -1,5 +1,6 @@
 package sejong.teemo.riotapi.presentation.api.v1;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -7,12 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sejong.teemo.riotapi.presentation.dto.SummonerPerformance;
-import sejong.teemo.riotapi.presentation.dto.match.MatchDataDto;
-import sejong.teemo.riotapi.presentation.dto.match.MatchDto;
 import sejong.teemo.riotapi.application.service.MatchService;
-
-import java.util.List;
+import sejong.teemo.riotapi.common.dto.SummonerPerformance;
+import sejong.teemo.riotapi.common.dto.match.MatchDataDto;
+import sejong.teemo.riotapi.common.dto.match.MatchDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,14 +29,16 @@ public class MatchApiV1 {
     }
 
     @GetMapping("/match/summoner-performance/{gameName}/{tagLine}")
-    public ResponseEntity<List<SummonerPerformance>> callApiMatchSummonerPerformance(@PathVariable("gameName") String gameName,
-                                                                                     @PathVariable("tagLine") String tagLine) {
+    public ResponseEntity<List<SummonerPerformance>> callApiMatchSummonerPerformance(
+            @PathVariable("gameName") String gameName,
+            @PathVariable("tagLine") String tagLine) {
 
         return ResponseEntity.ok(matchService.callRiotSummonerPerformance(gameName, tagLine));
     }
 
     @GetMapping("/match/summoner-performance/{puuid}")
-    public ResponseEntity<List<SummonerPerformance>> callApiMatchSummonerPerformance(@PathVariable("puuid") String puuid) {
+    public ResponseEntity<List<SummonerPerformance>> callApiMatchSummonerPerformance(
+            @PathVariable("puuid") String puuid) {
         return ResponseEntity.ok(matchService.callRiotSummonerPerformance(puuid));
     }
 

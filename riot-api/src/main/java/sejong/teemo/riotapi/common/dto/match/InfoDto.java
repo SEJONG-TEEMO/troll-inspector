@@ -1,4 +1,4 @@
-package sejong.teemo.riotapi.presentation.dto.match;
+package sejong.teemo.riotapi.common.dto.match;
 
 import java.util.List;
 

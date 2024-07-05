@@ -15,14 +15,14 @@ import org.springframework.web.client.RestClient;
 import sejong.teemo.riotapi.application.external.LeagueExternalApi;
 import sejong.teemo.riotapi.application.external.SpectatorExternalApi;
 import sejong.teemo.riotapi.application.external.SummonerExternalApi;
+import sejong.teemo.riotapi.common.dto.Account;
+import sejong.teemo.riotapi.common.dto.LeagueEntryDto;
+import sejong.teemo.riotapi.common.dto.Spectator;
+import sejong.teemo.riotapi.common.dto.SummonerDto;
 import sejong.teemo.riotapi.common.exception.FailedApiCallingException;
 import sejong.teemo.riotapi.common.generator.UriGenerator;
 import sejong.teemo.riotapi.common.properties.RiotApiProperties;
 import sejong.teemo.riotapi.extension.TestExtension;
-import sejong.teemo.riotapi.presentation.dto.Account;
-import sejong.teemo.riotapi.presentation.dto.LeagueEntryDto;
-import sejong.teemo.riotapi.presentation.dto.Spectator;
-import sejong.teemo.riotapi.presentation.dto.SummonerDto;
 
 class SpectatorExternalApiTest extends TestExtension {
 

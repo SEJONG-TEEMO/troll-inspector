@@ -1,8 +1,7 @@
-package sejong.teemo.riotapi.presentation.dto;
-
-import lombok.Builder;
+package sejong.teemo.riotapi.common.dto;
 
 import java.util.List;
+import lombok.Builder;
 
 @Builder
 public record SpectatorDto(Long gameId, String gameType, List<ChampionMastery> championMasteryList) {

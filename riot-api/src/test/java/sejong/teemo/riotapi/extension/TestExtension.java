@@ -1,16 +1,19 @@
 package sejong.teemo.riotapi.extension;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.test.context.ActiveProfiles;
+import sejong.teemo.riotapi.common.dto.Account;
+import sejong.teemo.riotapi.common.dto.LeagueEntryDto;
+import sejong.teemo.riotapi.common.dto.MiniSeriesDto;
+import sejong.teemo.riotapi.common.dto.Spectator;
+import sejong.teemo.riotapi.common.dto.SummonerDto;
 import sejong.teemo.riotapi.common.properties.RiotApiProperties;
-import sejong.teemo.riotapi.presentation.dto.*;
-
-import java.util.List;
 
 @EnableConfigurationProperties(RiotApiProperties.class)
 @ActiveProfiles("test")

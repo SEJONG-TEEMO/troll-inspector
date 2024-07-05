@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 import sejong.teemo.riotapi.application.external.AccountExternalApi;
 import sejong.teemo.riotapi.application.external.MatchExternalApi;
 import sejong.teemo.riotapi.common.async.AsyncCall;
+import sejong.teemo.riotapi.common.dto.Account;
+import sejong.teemo.riotapi.common.dto.SummonerPerformance;
+import sejong.teemo.riotapi.common.dto.match.MatchDataDto;
+import sejong.teemo.riotapi.common.dto.match.MatchDto;
+import sejong.teemo.riotapi.common.dto.match.ParticipantDto;
+import sejong.teemo.riotapi.common.dto.match.TeamDto;
 import sejong.teemo.riotapi.common.exception.ExceptionProvider;
 import sejong.teemo.riotapi.common.exception.NotFoundException;
-import sejong.teemo.riotapi.presentation.dto.Account;
-import sejong.teemo.riotapi.presentation.dto.SummonerPerformance;
-import sejong.teemo.riotapi.presentation.dto.match.MatchDataDto;
-import sejong.teemo.riotapi.presentation.dto.match.MatchDto;
-import sejong.teemo.riotapi.presentation.dto.match.ParticipantDto;
-import sejong.teemo.riotapi.presentation.dto.match.TeamDto;
 
 @Component
 @RequiredArgsConstructor

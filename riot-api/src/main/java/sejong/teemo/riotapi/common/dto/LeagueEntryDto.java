@@ -1,9 +1,10 @@
-package sejong.teemo.riotapi.presentation.dto;
+package sejong.teemo.riotapi.common.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 /**
+ *
  */
 @Builder
 public record LeagueEntryDto(

@@ -1,9 +1,9 @@
-package sejong.teemo.riotapi.presentation.dto;
+package sejong.teemo.riotapi.common.dto;
 
 import lombok.Builder;
 
 /**
-  link {UserDto}
+ * link {UserDto}
  */
 @Builder
 public record UserInfoDto(

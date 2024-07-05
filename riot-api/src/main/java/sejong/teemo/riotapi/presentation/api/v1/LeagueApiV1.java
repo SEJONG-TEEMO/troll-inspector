@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import sejong.teemo.riotapi.application.external.LeagueExternalApi;
 import sejong.teemo.riotapi.application.service.UserInfoService;
-import sejong.teemo.riotapi.presentation.dto.LeagueEntryDto;
+import sejong.teemo.riotapi.common.dto.LeagueEntryDto;
 
 @RestController
 @RequiredArgsConstructor
