@@ -1,7 +1,18 @@
 package sejong.teemo.batch.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withBadRequest;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withForbiddenRequest;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withResourceNotFound;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withTooManyRequests;
+import static sejong.teemo.batch.common.generator.UriGenerator.RIOT_LEAGUE;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -12,36 +23,29 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
-import sejong.teemo.batch.application.service.BatchService;
-import sejong.teemo.batch.domain.dto.LeagueEntryDto;
-import sejong.teemo.batch.domain.dto.UserInfoDto;
+import sejong.teemo.batch.application.job.info.DivisionInfo;
+import sejong.teemo.batch.application.job.info.TierInfo;
 import sejong.teemo.batch.common.exception.ExceptionProvider;
 import sejong.teemo.batch.common.exception.FailedApiCallingException;
 import sejong.teemo.batch.common.exception.TooManyApiCallingException;
-import sejong.teemo.batch.application.job.info.DivisionInfo;
-import sejong.teemo.batch.application.job.info.TierInfo;
 import sejong.teemo.batch.common.property.RiotApiProperties;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
-import static sejong.teemo.batch.common.generator.UriGenerator.*;
+import sejong.teemo.batch.domain.dto.LeagueEntryDto;
+import sejong.teemo.batch.domain.dto.UserInfoDto;
+import sejong.teemo.batch.infrastructure.external.BatchExternalApi;
 
 @RestClientTest
 @ActiveProfiles("test")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @EnableConfigurationProperties(RiotApiProperties.class)
-class BatchServiceTest {
+class BatchExternalApiTest {
 
     private final MockRestServiceServer mockRestServiceServer;
-    private final BatchService batchService;
+    private final BatchExternalApi batchExternalApi;
 
-    public BatchServiceTest(@Autowired RestClient.Builder builder,
-                            @Autowired RiotApiProperties riotApiProperties) {
+    public BatchExternalApiTest(@Autowired RestClient.Builder builder,
+                                @Autowired RiotApiProperties riotApiProperties) {
         this.mockRestServiceServer = MockRestServiceServer.bindTo(builder).build();
-        this.batchService = new BatchService(builder.build(), riotApiProperties);
+        this.batchExternalApi = new BatchExternalApi(builder.build(), riotApiProperties);
     }
 
     @Test
@@ -58,7 +62,7 @@ class BatchServiceTest {
                 .andRespond(withSuccess(getUserInfo(), MediaType.APPLICATION_JSON));
 
         // when
-        List<LeagueEntryDto> leagueEntryDtos = batchService.callRiotLeague(division, tier, queue, 1);
+        List<LeagueEntryDto> leagueEntryDtos = batchExternalApi.callRiotLeague(division, tier, queue, 1);
 
         // then
         assertThat(leagueEntryDtos).hasSize(1);
@@ -82,7 +86,7 @@ class BatchServiceTest {
         // when
 
         // then
-        assertThatThrownBy(() -> batchService.callRiotLeague(division, tier, queue, 1))
+        assertThatThrownBy(() -> batchExternalApi.callRiotLeague(division, tier, queue, 1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("riot api 모듈 요청에 실패하였습니다.");
     }
@@ -103,7 +107,7 @@ class BatchServiceTest {
         // when
 
         // then
-        assertThatThrownBy(() -> batchService.callRiotLeague(division, tier, queue, 1))
+        assertThatThrownBy(() -> batchExternalApi.callRiotLeague(division, tier, queue, 1))
                 .isInstanceOf(FailedApiCallingException.class)
                 .hasMessage(ExceptionProvider.RIOT_API_MODULE_LEAGUE_SUMMONER_FAILED.getMessage());
     }
@@ -124,7 +128,7 @@ class BatchServiceTest {
         // when
 
         // then
-        assertThatThrownBy(() -> batchService.callRiotLeague(division, tier, queue, 1))
+        assertThatThrownBy(() -> batchExternalApi.callRiotLeague(division, tier, queue, 1))
                 .isInstanceOf(FailedApiCallingException.class)
                 .hasMessage(ExceptionProvider.RIOT_API_MODULE_LEAGUE_SUMMONER_FAILED.getMessage());
     }
@@ -145,7 +149,7 @@ class BatchServiceTest {
         // when
 
         // then
-        assertThatThrownBy(() -> batchService.callRiotLeague(division, tier, queue, 1))
+        assertThatThrownBy(() -> batchExternalApi.callRiotLeague(division, tier, queue, 1))
                 .isInstanceOf(TooManyApiCallingException.class)
                 .hasMessage(ExceptionProvider.TOO_MANY_CALLING_FAILED.getMessage());
     }

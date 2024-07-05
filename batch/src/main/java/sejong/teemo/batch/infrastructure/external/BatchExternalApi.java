@@ -1,5 +1,13 @@
-package sejong.teemo.batch.application.service;
+package sejong.teemo.batch.infrastructure.external;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static sejong.teemo.batch.common.exception.ExceptionProvider.RIOT_API_MODULE_ACCOUNT_FAILED;
+import static sejong.teemo.batch.common.exception.ExceptionProvider.RIOT_API_MODULE_LEAGUE_SUMMONER_FAILED;
+import static sejong.teemo.batch.common.exception.ExceptionProvider.RIOT_API_MODULE_SUMMONER_FAILED;
+import static sejong.teemo.batch.common.exception.ExceptionProvider.RIOT_API_MODULE_USER_INFO_FAILED;
+import static sejong.teemo.batch.common.generator.UriGenerator.RIOT_SUMMONER;
+
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -10,24 +18,18 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import sejong.teemo.batch.common.async.AsyncCall;
+import sejong.teemo.batch.common.exception.FailedApiCallingException;
+import sejong.teemo.batch.common.generator.UriGenerator;
+import sejong.teemo.batch.common.property.RiotApiProperties;
 import sejong.teemo.batch.domain.dto.Account;
 import sejong.teemo.batch.domain.dto.LeagueEntryDto;
 import sejong.teemo.batch.domain.dto.SummonerDto;
 import sejong.teemo.batch.domain.dto.UserInfoDto;
-import sejong.teemo.batch.common.exception.FailedApiCallingException;
-import sejong.teemo.batch.common.generator.UriGenerator;
-import sejong.teemo.batch.common.property.RiotApiProperties;
-
-import java.util.List;
-
-import static org.springframework.http.MediaType.*;
-import static sejong.teemo.batch.common.exception.ExceptionProvider.*;
-import static sejong.teemo.batch.common.generator.UriGenerator.*;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class BatchService {
+public class BatchExternalApi {
 
     private final RestClient restClient;
     private final RiotApiProperties riotApiProperties;

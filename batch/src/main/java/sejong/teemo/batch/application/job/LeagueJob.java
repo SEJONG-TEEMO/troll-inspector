@@ -1,6 +1,9 @@
 package sejong.teemo.batch.application.job;
 
 import io.github.bucket4j.Bucket;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -21,26 +24,22 @@ import org.springframework.retry.backoff.BackOffPolicy;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.transaction.PlatformTransactionManager;
-import sejong.teemo.batch.domain.dto.LeagueEntryDto;
-import sejong.teemo.batch.domain.entity.TempUserInfo;
 import sejong.teemo.batch.common.exception.FailedApiCallingException;
 import sejong.teemo.batch.common.exception.TooManyApiCallingException;
-import sejong.teemo.batch.application.item.process.LeagueItemProcess;
-import sejong.teemo.batch.application.item.reader.LeagueItemReader;
-import sejong.teemo.batch.application.item.writer.LeagueItemWriter;
+import sejong.teemo.batch.domain.dto.LeagueEntryDto;
+import sejong.teemo.batch.domain.entity.TempUserInfo;
 import sejong.teemo.batch.domain.repository.JdbcRepository;
-import sejong.teemo.batch.application.service.BatchService;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import sejong.teemo.batch.infrastructure.external.BatchExternalApi;
+import sejong.teemo.batch.infrastructure.item.process.LeagueItemProcess;
+import sejong.teemo.batch.infrastructure.item.reader.LeagueItemReader;
+import sejong.teemo.batch.infrastructure.item.writer.LeagueItemWriter;
 
 @Configuration
 @RequiredArgsConstructor
 public class LeagueJob {
 
     private final PlatformTransactionManager tm;
-    private final BatchService batchService;
+    private final BatchExternalApi batchExternalApi;
     private final JdbcRepository jdbcRepository;
     private final Bucket bucket;
 
@@ -78,13 +77,13 @@ public class LeagueJob {
     @StepScope
     public ItemReader<List<LeagueEntryDto>> leagueInfoItemReader(@Value("#{jobParameters['tier']}") String tier,
                                                                  @Value("#{jobParameters['division']}") String division) {
-        return new LeagueItemReader(batchService, tier, division);
+        return new LeagueItemReader(batchExternalApi, tier, division);
     }
 
     @Bean
     @StepScope
     public ItemProcessor<List<LeagueEntryDto>, List<TempUserInfo>> leagueInfoProcessor() {
-        return new LeagueItemProcess(batchService, bucket);
+        return new LeagueItemProcess(batchExternalApi, bucket);
     }
 
     @Bean

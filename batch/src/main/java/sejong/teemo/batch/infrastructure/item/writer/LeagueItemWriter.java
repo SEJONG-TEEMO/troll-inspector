@@ -1,13 +1,12 @@
-package sejong.teemo.batch.application.item.writer;
+package sejong.teemo.batch.infrastructure.item.writer;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import sejong.teemo.batch.domain.entity.TempUserInfo;
 import sejong.teemo.batch.domain.repository.JdbcRepository;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j

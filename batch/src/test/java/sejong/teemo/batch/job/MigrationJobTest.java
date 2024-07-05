@@ -1,8 +1,12 @@
 package sejong.teemo.batch.job;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.core.*;
+import org.springframework.batch.core.BatchStatus;
+import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,18 +16,16 @@ import org.springframework.test.context.jdbc.Sql;
 import sejong.teemo.batch.TestBatchConfig;
 import sejong.teemo.batch.application.job.MigrationJob;
 import sejong.teemo.batch.common.config.RestClientConfig;
-import sejong.teemo.batch.container.TestContainer;
 import sejong.teemo.batch.common.property.RiotApiProperties;
+import sejong.teemo.batch.container.TestContainer;
 import sejong.teemo.batch.domain.repository.JdbcRepository;
-import sejong.teemo.batch.application.service.BatchService;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import sejong.teemo.batch.infrastructure.external.BatchExternalApi;
 
 @SpringBootTest(classes = {
         MigrationJob.class,
         JdbcRepository.class,
         RestClientConfig.class,
-        BatchService.class,
+        BatchExternalApi.class,
         TestBatchConfig.class,
 })
 @EnableConfigurationProperties(value = RiotApiProperties.class)
@@ -35,7 +37,7 @@ public class MigrationJobTest extends TestContainer {
     private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Autowired
-    private BatchService batchService;
+    private BatchExternalApi batchExternalApi;
 
     @Autowired
     private JdbcRepository jdbcRepository;
