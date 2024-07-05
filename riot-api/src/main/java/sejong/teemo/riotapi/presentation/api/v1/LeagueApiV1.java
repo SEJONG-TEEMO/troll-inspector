@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import sejong.teemo.riotapi.application.external.LeagueExternalApi;
 import sejong.teemo.riotapi.application.service.UserInfoService;
 import sejong.teemo.riotapi.common.dto.LeagueEntryDto;
+import sejong.teemo.riotapi.infrastructure.external.LeagueExternalApi;
 
 @RestController
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package sejong.teemo.riotapi.application.external;
+package sejong.teemo.riotapi.infrastructure.external;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 

@@ -4,15 +4,15 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import sejong.teemo.riotapi.application.external.AccountExternalApi;
-import sejong.teemo.riotapi.application.external.LeagueExternalApi;
-import sejong.teemo.riotapi.application.external.SummonerExternalApi;
 import sejong.teemo.riotapi.common.async.AsyncCall;
 import sejong.teemo.riotapi.common.async.AsyncCallRiotApi;
 import sejong.teemo.riotapi.common.dto.Account;
 import sejong.teemo.riotapi.common.dto.LeagueEntryDto;
 import sejong.teemo.riotapi.common.dto.SummonerDto;
 import sejong.teemo.riotapi.common.dto.UserInfoDto;
+import sejong.teemo.riotapi.infrastructure.external.AccountExternalApi;
+import sejong.teemo.riotapi.infrastructure.external.LeagueExternalApi;
+import sejong.teemo.riotapi.infrastructure.external.SummonerExternalApi;
 
 @Component
 @RequiredArgsConstructor

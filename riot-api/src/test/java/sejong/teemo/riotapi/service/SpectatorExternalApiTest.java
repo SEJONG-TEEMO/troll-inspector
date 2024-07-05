@@ -12,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
-import sejong.teemo.riotapi.application.external.LeagueExternalApi;
-import sejong.teemo.riotapi.application.external.SpectatorExternalApi;
-import sejong.teemo.riotapi.application.external.SummonerExternalApi;
 import sejong.teemo.riotapi.common.dto.Account;
 import sejong.teemo.riotapi.common.dto.LeagueEntryDto;
 import sejong.teemo.riotapi.common.dto.Spectator;
@@ -23,6 +20,9 @@ import sejong.teemo.riotapi.common.exception.FailedApiCallingException;
 import sejong.teemo.riotapi.common.generator.UriGenerator;
 import sejong.teemo.riotapi.common.properties.RiotApiProperties;
 import sejong.teemo.riotapi.extension.TestExtension;
+import sejong.teemo.riotapi.infrastructure.external.LeagueExternalApi;
+import sejong.teemo.riotapi.infrastructure.external.SpectatorExternalApi;
+import sejong.teemo.riotapi.infrastructure.external.SummonerExternalApi;
 
 class SpectatorExternalApiTest extends TestExtension {
 

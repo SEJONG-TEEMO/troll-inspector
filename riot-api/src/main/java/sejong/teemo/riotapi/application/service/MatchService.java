@@ -6,8 +6,6 @@ import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import sejong.teemo.riotapi.application.external.AccountExternalApi;
-import sejong.teemo.riotapi.application.external.MatchExternalApi;
 import sejong.teemo.riotapi.common.async.AsyncCall;
 import sejong.teemo.riotapi.common.dto.Account;
 import sejong.teemo.riotapi.common.dto.SummonerPerformance;
@@ -17,6 +15,8 @@ import sejong.teemo.riotapi.common.dto.match.ParticipantDto;
 import sejong.teemo.riotapi.common.dto.match.TeamDto;
 import sejong.teemo.riotapi.common.exception.ExceptionProvider;
 import sejong.teemo.riotapi.common.exception.NotFoundException;
+import sejong.teemo.riotapi.infrastructure.external.AccountExternalApi;
+import sejong.teemo.riotapi.infrastructure.external.MatchExternalApi;
 
 @Component
 @RequiredArgsConstructor

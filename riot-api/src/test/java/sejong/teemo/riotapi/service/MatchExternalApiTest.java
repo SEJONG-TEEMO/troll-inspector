@@ -3,7 +3,7 @@ package sejong.teemo.riotapi.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import sejong.teemo.riotapi.application.external.MatchExternalApi;
+import sejong.teemo.riotapi.infrastructure.external.MatchExternalApi;
 
 @SpringBootTest
 class MatchExternalApiTest {
